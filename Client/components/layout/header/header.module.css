@@ -1,0 +1,65 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: transparent;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 2px solid #29292b;
+  padding: 0 100px;
+}
+
+.header_logo_link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo {
+  width: 154px;
+  height: auto;
+}
+
+.header_register {
+  display: flex;
+  margin-top: 8px;
+  gap: 15px;
+}
+
+.header_log_in {
+  padding: 11px 14px;
+  font-size: 20px;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+}
+
+.header_log_in:hover {
+  opacity: 0.8;
+}
+
+.header_sign_up {
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: var(--button-color);
+  border: none;
+  border: 1px solid var(--button-color);
+  border-radius: 100px;
+  cursor: pointer;
+  text-decoration: none;
+  text-decoration: none;
+  color: white;
+}
+
+.header_sign_up:hover {
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: transparent;
+  border: 1px solid var(--button-color);
+  border-radius: 100px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
