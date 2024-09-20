@@ -16,7 +16,7 @@ const Header: React.FC = () => {
         <Link href="/log-in" className={styles.header_log_in}>
           Log In
         </Link>
-        <Link href="/sign-up" className={styles.header_sign_up}>
+        <Link href="/register" className={styles.header_sign_up}>
           Sign Up
         </Link>
       </div>
