@@ -11,8 +11,8 @@ RUN npm install
 # Copy the rest of the project files
 COPY . .
 
-# Expose port 3000 for the Next.js app
-EXPOSE 3000
+# Expose port 5000 for the server
+EXPOSE 5000
 
-# Start the Next.js application
-CMD ["npm", "run", "dev"]
+# Start the Express server
+CMD ["node", "src/index.js"]
