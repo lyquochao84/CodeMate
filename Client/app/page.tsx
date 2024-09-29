@@ -1,7 +1,9 @@
+import React from "react";
 import Link from "next/link";
+
 import styles from "./page.module.css";
 
-export default function Home() {
+const Home: React.FC = (): JSX.Element => {
   return (
     <div className={styles.homepage_content}>
       <div className={styles.homepage_introduction}>
@@ -14,3 +16,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default Home;

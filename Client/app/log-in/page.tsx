@@ -1,12 +1,20 @@
+"use client";
 import React from "react";
 import Link from "next/link";
+import { useState } from "react";
+import { LogInTypes } from "@/types/types_interface";
 
 import styles from "./log-in.module.css";
 import { MdOutlineAlternateEmail } from "react-icons/md";
 import { MdOutlinePassword } from "react-icons/md";
 import { FaGithub } from "react-icons/fa";
 
-const LogIn: React.FC = () => {
+const LogIn: React.FC = (): JSX.Element => {
+  const [userInfos, setUserInfos] = useState<LogInTypes>({
+    email: "",
+    password: ""
+  });
+
   return (
     <div className={styles.register_content}>
       <div className={styles.register_modal}>
@@ -29,6 +37,10 @@ const LogIn: React.FC = () => {
                   name="email"
                   placeholder="Email"
                   required
+                  value={userInfos.email}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setUserInfos({ ...userInfos, email: e.target.value })
+                  }}
                 />
               </div>
               {/* Password */}
@@ -42,6 +54,10 @@ const LogIn: React.FC = () => {
                   name="password"
                   placeholder="Password"
                   required
+                  value={userInfos.password}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setUserInfos({ ...userInfos, password: e.target.value })
+                  }}
                 />
               </div>
               <div className={styles.register_btn_wrapper}>
@@ -57,7 +73,6 @@ const LogIn: React.FC = () => {
               </div>
             </div>
           </form>
-          {/*  */}
           <Link href="/register" className={styles.register_text}>Don't have an account yet?</Link>
         </div>
       </div>
