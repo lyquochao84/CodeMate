@@ -1,4 +1,3 @@
-const { MongoClient, ServerApiVersion } = require("mongodb");
 const mongoose = require("mongoose");
 
 // Load .env file
@@ -11,10 +10,7 @@ const uri = process.env.MONGO_URI;
 async function connectDB() {
   try {
     // Connect MongoDB Cluster
-    await mongoose.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(uri);
     console.log("Successfully connected to MongoDB with Mongoose!");
   } 
   catch (error) {
