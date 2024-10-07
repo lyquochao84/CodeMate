@@ -26,7 +26,7 @@ const Register: React.FC = (): JSX.Element => {
   // Submit Register Form
   const registerSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    
     try {
       const response = await fetch("http://localhost:5000/auth/register", {
         method: "POST",

@@ -14,6 +14,50 @@ const LogIn: React.FC = (): JSX.Element => {
     email: "",
     password: ""
   });
+  const [successMessage, setSuccessMessage] = useState<string>("");
+  const [invalidMessage, setInvalidMessage] = useState<string>("");
+
+  // Submit Log In
+  const loginSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:5000/auth/log-in", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userInfos),
+        credentials: "include"  // Ensures the cookie is set in the browser
+      });
+
+      const result: { message: string } = await response.json();
+      
+      // If user enter wrong email or password
+      if (response.status === 404 && result.message === "Invalid credentials!") {
+        setInvalidMessage("Please check again your email or password");
+      }
+
+      // If user not found
+      if (response.status === 404 && result.message === "User not found!") {
+        setInvalidMessage("Log in failed! User not found");
+        setUserInfos({ email: "", password: "" });
+      }
+
+      if (!response.ok) {
+        throw new Error("Log In Falied!");
+      }
+
+      setSuccessMessage("Log in successful!");
+      setUserInfos({ email: "", password: "" });
+    }
+    catch(error: unknown) {
+      if (error instanceof Error) {
+        // Error handling
+        console.log(error.message)
+      }
+    }
+  }
 
   return (
     <div className={styles.register_content}>
@@ -23,8 +67,9 @@ const LogIn: React.FC = (): JSX.Element => {
           <h2 className={styles.register_slogan_2}>Build Smarter</h2>
         </div>
         <div className={styles.register_part}>
-          <form className={styles.register_form}>
+          <form className={styles.register_form} onSubmit={loginSubmit}>
             <h3 className={styles.register_header}>Log In</h3>
+            {invalidMessage && <p className={styles.invalid_message}>{invalidMessage}</p>}
             <div className={styles.register_infos}>
               {/* Email */}
               <div className={styles.register_input_group}>
