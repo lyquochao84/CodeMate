@@ -193,3 +193,8 @@
 .register_text:hover {
     opacity: 0.7;
 }
+
+.invalid_message {
+  color: rgb(192, 63, 63);
+  margin-bottom: 20px;
+}
