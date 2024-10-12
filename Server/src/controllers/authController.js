@@ -58,12 +58,21 @@ class authController {
         { expiresIn: "1h" }
       );
 
-      // Send token in HTTP-only cookie
+      // Send token in HTTP-only cookie (Security for production)
+      // res.cookie("token", token, {
+      //   httpOnly: false, // Set it to true if we want prevents access to the cookie via JavaScript
+      //   secure: process.env.NODE_ENV === "production", // Set true in production (HTTPS)
+      //   maxAge: 3600000, // Token expires in 1 houre
+      //   sameSite: "strict", // Protects against CSRF attacks
+      //   path: "/"
+      // });
+
       res.cookie("token", token, {
-        httpOnly: true, // Prevents access to the cookie via JavaScript
-        secure: process.env.NODE_ENV === "production", // Set true in production (HTTPS)
+        httpOnly: false, // Set it to true if we want prevents access to the cookie via JavaScript
+        secure: false, // Set true in production (HTTPS)
         maxAge: 3600000, // Token expires in 1 houre
         sameSite: "strict", // Protects against CSRF attacks
+        path: "/"
       });
 
       res.status(200).json({ message: "Log in successful!" });

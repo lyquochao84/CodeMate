@@ -186,15 +186,66 @@
 }
 
 .register_text {
-    color: var(--button-color);
-    font-size: 16px;
+  color: var(--button-color);
+  font-size: 16px;
 }
 
 .register_text:hover {
-    opacity: 0.7;
+  opacity: 0.7;
 }
 
 .invalid_message {
   color: rgb(192, 63, 63);
   margin-bottom: 20px;
+}
+
+.registered_successfully_wrapper {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+}
+
+.registered_successfully {
+  font-size: 30px;
+  font-weight: 500;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.registered_successfully_icon {
+  font-size: 26px;
+  color: var(--successfully-icon);
+  margin-top: 10px;
+  margin-bottom: 14px;
+}
+
+.redirect_login {
+  font-size: 16px;
+  color: white;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: wave 1.5s infinite ease-in-out;
+}
+
+.redirect_login span {
+  animation: wave 1.5s infinite ease-in-out;
+}
+
+.redirect_login span:nth-child(odd) {
+  animation-delay: 0.15s;
+}
+
+.redirect_login span:nth-child(even) {
+  animation-delay: 0.3s;
+}
+
+@keyframes wave {
+  0% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
 }
