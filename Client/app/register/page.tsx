@@ -1,9 +1,10 @@
 "use client";
 import React, { Fragment } from "react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { RegisterTypes } from "@/types/types_interface";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 import styles from "./register.module.css";
 import { MdOutlineEmail } from "react-icons/md";
@@ -11,6 +12,7 @@ import { VscSymbolNamespace } from "react-icons/vsc";
 import { PiPasswordDuotone } from "react-icons/pi";
 import { PiPasswordFill } from "react-icons/pi";
 import { FaCheckCircle } from "react-icons/fa";
+import { useAuth } from "@/hooks/useAuth";
 
 const Register: React.FC = (): JSX.Element => {
   const [userData, setUserData] = useState<RegisterTypes>({
@@ -21,25 +23,34 @@ const Register: React.FC = (): JSX.Element => {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [isDuplicateEmail, setIsDuplicateEmail] = useState<boolean>(false);
-  const router = useRouter();
+  const router: AppRouterInstance = useRouter();
+  const { isLoggedIn, loading } = useAuth();
 
   // Submit Register Form
-  const registerSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const registerSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     event.preventDefault();
-    
+
     try {
-      const response = await fetch("http://localhost:5000/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      });
+      const response: Response = await fetch(
+        "http://localhost:5000/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userData),
+        }
+      );
 
       const result: { message: string } = await response.json();
 
       // Check if the email is already exists, and notify message to user
-      if (response.status === 400 && result.message === "Email already exists!") {
+      if (
+        response.status === 400 &&
+        result.message === "Email already exists!"
+      ) {
         setIsDuplicateEmail(true);
         // Reset form inputs
         setUserData({ email: "", password: "", nickname: "" });
@@ -58,8 +69,7 @@ const Register: React.FC = (): JSX.Element => {
       setTimeout(() => {
         router.push("/log-in");
       }, 1000);
-    } 
-    catch (error: unknown) {
+    } catch (error: unknown) {
       // Error handling
       if (error instanceof Error) {
         console.error(error.message);
@@ -68,11 +78,16 @@ const Register: React.FC = (): JSX.Element => {
   };
 
   // Check if password is match with confirm password
-  let validatePassword: boolean =
+  const validatePassword: boolean =
     userData.password !== confirmPassword ? false : true;
 
+  useEffect(() => {
+    if (isLoggedIn) router.push("/dashboard");
+  }, [isLoggedIn, router]);
+
+  if (loading) return <p>Loading...</p>;
+
   return (
-    
     <div className={styles.register_content}>
       <div className={styles.register_modal}>
         <div className={styles.register_background}>
@@ -115,9 +130,11 @@ const Register: React.FC = (): JSX.Element => {
                       setUserData({ ...userData, email: e.target.value });
                     }}
                   />
-                </div>  
+                </div>
                 {isDuplicateEmail ? (
-                  <p className={styles.duplicate_email}>Email already exists. Please use a different email.</p>
+                  <p className={styles.duplicate_email}>
+                    Email already exists. Please use a different email.
+                  </p>
                 ) : (
                   <Fragment></Fragment>
                 )}
