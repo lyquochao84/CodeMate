@@ -7,7 +7,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 class authController {
-  // Register Account
+  // [POST] Register Account
   async register(req, res) {
     const { email, password, nickname } = req.body;
     const hashedPassword = await hashPassword(password);
@@ -22,7 +22,8 @@ class authController {
       await newUser.save();
 
       res.status(201).json({ message: "User registered successfully!" });
-    } catch (error) {
+    } 
+    catch (error) {
       if (error.code === 11000) {
         res.status(400).json({ message: "Email already exists!" });
       } else {
@@ -31,7 +32,7 @@ class authController {
     }
   }
 
-  // Log In
+  // [POST] Log In
   async logIn(req, res) {
     const { email, password } = req.body;
 
@@ -58,15 +59,7 @@ class authController {
         { expiresIn: "1h" }
       );
 
-      // Send token in HTTP-only cookie (Security for production)
-      // res.cookie("token", token, {
-      //   httpOnly: false, // Set it to true if we want prevents access to the cookie via JavaScript
-      //   secure: process.env.NODE_ENV === "production", // Set true in production (HTTPS)
-      //   maxAge: 3600000, // Token expires in 1 houre
-      //   sameSite: "strict", // Protects against CSRF attacks
-      //   path: "/"
-      // });
-
+      // Keep it simple for class scope
       res.cookie("token", token, {
         httpOnly: false, // Set it to true if we want prevents access to the cookie via JavaScript
         secure: false, // Set true in production (HTTPS)
@@ -79,6 +72,30 @@ class authController {
     } 
     catch (error) {
       res.status(500).json({ message: "Server error", error });
+    }
+  }
+
+  // [GET] User's Data
+  async getUserData(req, res) {
+    try {
+      const token = req.cookies?.token; 
+
+      if (!token) {
+        return res.status(403).json({ message: "No token provided." });
+      }
+  
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+      const user = await User.findById(decodedToken.id).select("nickname email");
+  
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      res.status(200).json({ nickname: user.nickname });
+    } 
+    catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Server error", error: error.message });
     }
   }
 }
