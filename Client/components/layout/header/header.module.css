@@ -118,6 +118,7 @@
   margin-right: 20px;
   font-size: 28px;
   margin-top: 2px;
+  position: relative;
 }
 
 .header_notify_icon:hover {
@@ -153,17 +154,17 @@
   z-index: 1000;
 }
 
-.modal_content {
-
-}
-
 .modal_option_header {
   font-size: 32px;
   color: white;
   padding: 20px 0;
   padding-bottom: 12px;
-  font-weight: 600;
+  font-weight: bold;
   border-bottom: 1.5px solid var(--border);
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .modal_content_options {
@@ -190,6 +191,7 @@
   font-size: 16px;
   color: white;
   margin-top: 16px;
+  font-weight: 750;
 }
 
 .modal_option:hover {
@@ -207,9 +209,76 @@
   outline: none;
   font-size: 20px;
   margin-bottom: 8px;
+  font-weight: 750;
 }
 
 .sign_out_btn:hover {
   cursor: pointer;
   opacity: 0.7;
 }
+
+/* Notification modal */
+.notification_wrapper {
+  margin-top: 2px;
+}
+
+.notification_modal_wrapper {
+  position: absolute;
+  top: 115px;
+  right: 80px;
+  background-color: var(--background-color);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 600px;
+  height: 350px;
+  padding: 10px 20px;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.notification_item_wrapper {
+  padding: 23px 15px;
+  border-bottom: 1px solid #f0f0f0; 
+}
+
+.notification_item_wrapper:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.notification_item_wrapper:last-child {
+  border-bottom: none; 
+}
+
+.notification_item_header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+.notification_item_header p {
+  color: var(--button-color);
+  font-size: 20px;
+}
+
+.notification_item_header p:first-child {
+  margin-bottom: 5px;
+  font-weight: 800;
+}
+
+.notification_item_content {
+  color: white; 
+  margin-top: 5px; 
+  font-weight: 400;
+  font-size: 17px;
+  word-wrap: break-word; /* Allows long words to break onto the next line */
+  white-space: normal; /* Ensures text can wrap */
+  overflow-wrap: break-word; /* Prevents overflow of long text */
+  line-height: 1.5; /* Optional: to improve readability */
+}
+
+.notification_item_link {
+  text-decoration: none;
+}
+

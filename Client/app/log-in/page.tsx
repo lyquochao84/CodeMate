@@ -141,7 +141,7 @@ const LogIn: React.FC = (): JSX.Element => {
                     <button className={styles.register_btn}>Log In</button>
                   </div>
                   <div className={styles.or_txt_wrapper}>
-                    <p className={styles.or_txt}>Or Log In With</p>
+                    <p className={styles.or_txt}>or Log In with</p>
                   </div>
                   <div className={styles.sign_in_options}>
                     <button className={styles.sign_in_github_btn}>
