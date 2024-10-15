@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const passport = require("passport");
 const User = require("../models/User");
 const { hashPassword, verifyPassword } = require("../lib/auth");
 
@@ -22,8 +23,7 @@ class authController {
       await newUser.save();
 
       res.status(201).json({ message: "User registered successfully!" });
-    } 
-    catch (error) {
+    } catch (error) {
       if (error.code === 11000) {
         res.status(400).json({ message: "Email already exists!" });
       } else {
@@ -65,12 +65,11 @@ class authController {
         secure: false, // Set true in production (HTTPS)
         maxAge: 3600000, // Token expires in 1 houre
         sameSite: "strict", // Protects against CSRF attacks
-        path: "/"
+        path: "/",
       });
 
       res.status(200).json({ message: "Log in successful!" });
-    } 
-    catch (error) {
+    } catch (error) {
       res.status(500).json({ message: "Server error", error });
     }
   }
@@ -78,25 +77,74 @@ class authController {
   // [GET] User's Data
   async getUserData(req, res) {
     try {
-      const token = req.cookies?.token; 
+      const token = req.cookies?.token;
 
       if (!token) {
         return res.status(403).json({ message: "No token provided." });
       }
-  
+
       const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-      const user = await User.findById(decodedToken.id).select("nickname email");
-  
+      const user = await User.findById(decodedToken.id).select(
+        "nickname email"
+      );
+
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
-  
+
       res.status(200).json({ nickname: user.nickname });
-    } 
-    catch (error) {
+    } catch (error) {
       console.error(error);
-      return res.status(500).json({ message: "Server error", error: error.message });
+      return res
+        .status(500)
+        .json({ message: "Server error", error: error.message });
     }
+  }
+
+  // [GET] GitHub Auth Route
+  githubAuth(req, res, next) {
+    passport.authenticate("github", { scope: ["user:email"] })(req, res, next);
+  }
+
+  // [GET] GitHub Auth Callback
+  githubCallback(req, res, next) {
+    passport.authenticate(
+      "github",
+      { failureRedirect: "http://localhost:3000/log-in" },
+      (error, user, info) => {
+        if (error) {
+          return next(error);
+        }
+
+        if (!user) {
+          return res.redirect("http://localhost:3000/log-in");
+        }
+
+        try {
+          // Generate JWT token
+          const token = jwt.sign(
+            { id: user._id, githubId: user.githubId, email: user.email },
+            process.env.JWT_SECRET,
+            { expiresIn: "1h" }
+          );
+
+          // Keep it simple for class scope
+          res.cookie("token", token, {
+            httpOnly: false, // Set it to true if we want prevents access to the cookie via JavaScript
+            secure: false, // Set true in production (HTTPS)
+            maxAge: 3600000, // Token expires in 1 houre
+            sameSite: "strict", // Protects against CSRF attacks
+            path: "/",
+          });
+
+          // Redirect to the client-side dashboard after successful authentication
+          res.redirect("http://localhost:3000/dashboard");
+        } 
+        catch (error) {
+          return next(error);
+        }
+      }
+    )(req, res, next);
   }
 }
 
