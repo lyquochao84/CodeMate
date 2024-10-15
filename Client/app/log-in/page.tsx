@@ -43,7 +43,10 @@ const LogIn: React.FC = (): JSX.Element => {
       const result: { message: string } = await response.json();
 
       // If user enter wrong email or password
-      if (response.status === 404 && result.message === "Invalid credentials!") {
+      if (
+        response.status === 404 &&
+        result.message === "Invalid credentials!"
+      ) {
         setInvalidMessage("Please check again your email or password");
       }
 
@@ -55,15 +58,13 @@ const LogIn: React.FC = (): JSX.Element => {
 
       if (!response.ok) {
         throw new Error("Log In Falied!");
-      } 
-      else {
+      } else {
         setSuccessMessage("Log in successful!");
         setUserInfos({ email: "", password: "" });
         logIn();
-        router.replace('/dashboard');
+        router.replace("/dashboard");
       }
-    } 
-    catch (error: unknown) {
+    } catch (error: unknown) {
       if (error instanceof Error) {
         // Error handling
         console.log(error.message);
@@ -72,11 +73,11 @@ const LogIn: React.FC = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (isLoggedIn) router.push('/dashboard');
+    if (isLoggedIn) router.push("/dashboard");
   }, [isLoggedIn, router]);
-  
-  if (loading) return <p>Loading...</p>
-  
+
+  if (loading) return <p>Loading...</p>;
+
   return (
     <div className={styles.register_content}>
       <div className={styles.register_modal}>
@@ -144,9 +145,12 @@ const LogIn: React.FC = (): JSX.Element => {
                     <p className={styles.or_txt}>or Log In with</p>
                   </div>
                   <div className={styles.sign_in_options}>
-                    <button className={styles.sign_in_github_btn}>
+                    <Link
+                      href="http://localhost:5000/auth/github"
+                      className={styles.sign_in_github_btn}
+                    >
                       <FaGithub className={styles.sign_in_github} />
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </form>
