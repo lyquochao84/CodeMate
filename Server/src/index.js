@@ -6,6 +6,9 @@ const logger = require("./middlewares/logger");
 const cors = require("./middlewares/cors");
 const cookieParser = require('./middlewares/cookieParser');
 const configurePassport = require('./config/passport');
+const insertProblems = require('./scripts/problems');
+const insertRecommendationLists = require('./scripts/recommendationLists');
+const insertGeneralLists = require('./scripts/generalLists');
 
 const app = express();
 const PORT = 5000;
@@ -27,6 +30,11 @@ app.use(passport.initialize());
 
 // Import the configuration of passport
 configurePassport();
+
+// Insert problems/lists into the database
+insertProblems(); 
+insertRecommendationLists();
+insertGeneralLists();
 
 // Routes
 app.use("/", route);

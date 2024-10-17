@@ -1,0 +1,82 @@
+[
+  {
+    "name": "Array",
+    "type": "Data Structure"
+  },
+  {
+    "name": "Linked List",
+    "type": "Data Structure"
+  },
+  {
+    "name": "Stack",
+    "type": "Data Structure"
+  },
+  {
+    "name": "Queue",
+    "type": "Data Structure"
+  },
+  {
+    "name": "Hash Table",
+    "type": "Data Structure"
+  },
+  {
+    "name": "Binary Tree",
+    "type": "Data Structure"
+  },
+  {
+    "name": "Binary Search Tree",
+    "type": "Data Structure"
+  },
+  {
+    "name": "Trie",
+    "type": "Data Structure"
+  },
+  {
+    "name": "Heap & Priority Queue",
+    "type": "Data Structure"
+  },
+  {
+    "name": "Graph",
+    "type": "Data Structure"
+  },
+  {
+    "name": "Dynamic Programming",
+    "type": "Algorithm"
+  },
+  {
+    "name": "Depth-First Search (DFS)",
+    "type": "Algorithm"
+  },
+  {
+    "name": "Breadth-First Search (BFS)",
+    "type": "Algorithm"
+  },
+  {
+    "name": "Binary Search",
+    "type": "Algorithm"
+  },
+  {
+    "name": "Sorting Algorithms",
+    "type": "Algorithm"
+  },
+  {
+    "name": "Backtracking",
+    "type": "Algorithm"
+  },
+  {
+    "name": "Greedy Algorithms",
+    "type": "Algorithm"
+  },
+  {
+    "name": "Two Pointers",
+    "type": "Algorithm"
+  },
+  {
+    "name": "Sliding Window",
+    "type": "Algorithm"
+  },
+  {
+    "name": "Divide and Conquer",
+    "type": "Algorithm"
+  }
+]
