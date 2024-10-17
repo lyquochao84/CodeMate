@@ -1,0 +1,38 @@
+[
+  {
+    "list": "Blind75",
+    "description": "75 essential coding problems for interview preparation."
+  },
+  {
+    "list": "Neetcode",
+    "description": "Organized coding questions for systematic interview prep."
+  },
+  {
+    "list": "Striver's 79",
+    "description": "79 key problems focusing on essential coding concepts."
+  },
+  {
+    "list": "Amazon",
+    "description": "Common coding questions for Amazon."
+  },
+  {
+    "list": "Google",
+    "description": "Typical coding and system design questions at Google."
+  },
+  {
+    "list": "Meta",
+    "description": "Questions on coding, and design for Meta."
+  },
+  {
+    "list": "Netflix",
+    "description": "Coding questions for Netflix roles."
+  },
+  {
+    "list": "Apple",
+    "description": "Common interview questions at Apple."
+  },
+  {
+    "list": "Microsoft",
+    "description": "Common coding questions for Microsoft."
+  }
+]

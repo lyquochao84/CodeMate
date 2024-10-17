@@ -18,3 +18,15 @@ export interface AuthContextTypes {
   logIn: () => void;
   logOut: () => void;
 }
+
+// Recommendation Lists
+export interface RecommendationListsTypes {
+  list: string;
+  description: string;
+}
+
+// General Lists
+export interface GeneralListsTypes {
+  name: string;
+  type: string;
+}

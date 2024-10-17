@@ -9,6 +9,9 @@
     --input-border: #59595c;
     --successfully-icon: #72d47a;
     --red-color: #ed3b4d;
+
+    --content-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    --content-box-background: #1a1a1a; 
 }
 
 /* CSS Reset */
