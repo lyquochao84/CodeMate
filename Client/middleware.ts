@@ -12,8 +12,7 @@ export async function middleware(req: NextRequest, res: NextResponse) {
   try {
     await jwtVerify(token, new TextEncoder().encode(process.env.JWT_SECRET));
     return NextResponse.next();
-  } 
-  catch (error: unknown) {
+  } catch (error: unknown) {
     if (error instanceof Error) {
       return NextResponse.redirect(new URL("/log-in", req.url));
     }
@@ -22,5 +21,10 @@ export async function middleware(req: NextRequest, res: NextResponse) {
 
 export const config = {
   // Protected routes
-  matcher: ["/dashboard/:path*"], 
+  matcher: [
+    "/dashboard/:path*",
+    "/problems/:path*",
+    "/leaderboard/:path*",
+    "/about/:path*",
+  ],
 };

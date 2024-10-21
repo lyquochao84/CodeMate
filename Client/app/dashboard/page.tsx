@@ -9,6 +9,7 @@ import {
 
 import styles from "./dashboard.module.css";
 import congrat_logo from "@/public/img/applause.png";
+import Link from "next/link";
 
 const DashBoard: React.FC = (): JSX.Element => {
   const [recommendationLists, setRecommendationLists] = useState<
@@ -49,6 +50,7 @@ const DashBoard: React.FC = (): JSX.Element => {
   return (
     <div className={styles.dashboard}>
       <div className={styles.dashboard_content}>
+        {/* Ongoing Problem(s) */}
         <div className={styles.dashboard_item}>
           <h2 className={styles.dashboard_item_header}>Ongoing Problem(s)</h2>
           <div className={styles.dashboard_item_ongoing_content}>
@@ -58,19 +60,45 @@ const DashBoard: React.FC = (): JSX.Element => {
             </p>
           </div>
         </div>
+        {/* Grinding Goals */}
         <div className={styles.dashboard_item}>
           <h2 className={styles.dashboard_item_header}>Grinding Goals</h2>
-          <div className={styles.dashboard_item_lists}>
-            <div className={styles.dashboard_recommendation_list_item}>
-              {/* Image */}
-              {/* Data details */}
-              {recommendationLists.map((item) => (
-                <>
-                  <h4>{item.list}</h4>
-                  <p>{item.description}</p>
-                </>
+          <div className={styles.dashboard_recommendation_list_item_wrapper}>
+            {recommendationLists.length > 0 &&
+              recommendationLists.map((item, index) => {
+                // Convert the item name to lowercase and replace spaces with dashes
+                const formattedList = item.list
+                  .toLowerCase()
+                  .replace(/\s+/g, "-");
+
+                return (
+                  <Link
+                    href={`/${formattedList}`}
+                    className={styles.recommendation_list_item_link}
+                    key={index}
+                  >
+                    <div className={styles.recommendation_list_item}>
+                      <Image src={item.image} alt="." width={50} height={50} />
+                      <h4>{item.list}</h4>
+                    </div>
+                  </Link>
+                );
+              })}
+          </div>
+        </div>
+        {/* Topics */}
+        <div className={styles.dashboard_item}>
+          <h2 className={styles.dashboard_item_header_topics}>Topics</h2>
+          <div className={styles.dashboard_topics_list}>
+            {generalLists.length > 0 &&
+              generalLists.map((item, index) => (
+                <Link href="/" className={styles.dashboard_topic_link}>
+                  <div key={index} className={styles.dashboard_topic_item}>
+                    <Image src={item.image} alt="." width={60} height={60} />
+                    <h4>{item.name}</h4>
+                  </div>
+                </Link>
               ))}
-            </div>
           </div>
         </div>
       </div>

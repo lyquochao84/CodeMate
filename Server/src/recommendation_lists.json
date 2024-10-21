@@ -1,38 +1,47 @@
 [
   {
     "list": "Blind75",
-    "description": "75 essential coding problems for interview preparation."
+    "description": "75 essential coding problems for interview preparation.",
+    "image": "/icons/75.png"
   },
   {
     "list": "Neetcode",
-    "description": "Organized coding questions for systematic interview prep."
+    "description": "Organized coding questions for systematic interview prep.",
+    "image": "/icons/neetcode.png"
   },
   {
     "list": "Striver's 79",
-    "description": "79 key problems focusing on essential coding concepts."
+    "description": "79 key problems focusing on essential coding concepts.",
+    "image": "/icons/79.png"
   },
   {
     "list": "Amazon",
-    "description": "Common coding questions for Amazon."
+    "description": "Common coding questions for Amazon.",
+    "image": "/icons/amazon.png"
   },
   {
     "list": "Google",
-    "description": "Typical coding and system design questions at Google."
+    "description": "Typical coding and system design questions at Google.",
+    "image": "/icons/google.png"
   },
   {
     "list": "Meta",
-    "description": "Questions on coding, and design for Meta."
+    "description": "Questions on coding, and design for Meta.",
+    "image": "/icons/meta.png"
   },
   {
     "list": "Netflix",
-    "description": "Coding questions for Netflix roles."
+    "description": "Coding questions for Netflix roles.",
+    "image": "/icons/netflix.png"
   },
   {
     "list": "Apple",
-    "description": "Common interview questions at Apple."
+    "description": "Common interview questions at Apple.",
+    "image": "/icons/apple.png"
   },
   {
     "list": "Microsoft",
-    "description": "Common coding questions for Microsoft."
+    "description": "Common coding questions for Microsoft.",
+    "image": "/icons/microsoft.png"
   }
 ]

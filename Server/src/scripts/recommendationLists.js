@@ -11,7 +11,7 @@ const insertRecommendationLists = async () => {
             const existingLists = await RecommendationLists.findOne({ list: list.list });
 
             if (!existingLists) {
-                await Lists.create(list);
+                await RecommendationLists.create(list);
             }
         }
     }
