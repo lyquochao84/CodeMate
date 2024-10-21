@@ -16,7 +16,7 @@ import logo from "@/public/img/Logo.png";
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoNotificationsOutline } from "react-icons/io5";
 
-const Header: React.FC = () => {
+const Header: React.FC = (): JSX.Element => {
   const [userNickname, setUserNickname] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isNotiModalOpen, setIsNotiModalOpen] = useState<boolean>(false);
@@ -137,19 +137,19 @@ const Header: React.FC = () => {
           <>
             <div className={styles.header_features}>
               <Link
-                href="/dashboard/problems"
+                href="/problems"
                 className={styles.header_navigation_link}
               >
                 <p className={styles.header_navigation_item}>Problems</p>
               </Link>
               <Link
-                href="/dashboard/leaderboard"
+                href="/leaderboard"
                 className={styles.header_navigation_link}
               >
                 <p className={styles.header_navigation_item}>Leaderboard</p>
               </Link>
               <Link
-                href="/dashboard/about"
+                href="/about"
                 className={styles.header_navigation_link}
               >
                 <p className={styles.header_navigation_item}>About</p>

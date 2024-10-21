@@ -10,5 +10,6 @@ router.get("/recommendation-list", dataController.getRecommendationList);
 router.get("/general-list", dataController.getGeneralList);
 
 // [GET] Problems
+router.get("/problems", dataController.getProblems);
 
 module.exports = router;

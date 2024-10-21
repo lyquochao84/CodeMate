@@ -26,6 +26,18 @@ class dataController {
         res.status(500).json({ message: "Internal Server Error" });
     }
   }
+
+  // [GET] Problems
+  async getProblems(req, res) {
+    try {
+      const problemsList = await Problems.find();
+      res.status(200).json(problemsList);
+    }
+    catch(error) {
+      console.error(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
 }
 
 module.exports = new dataController();
