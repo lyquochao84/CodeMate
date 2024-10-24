@@ -91,14 +91,24 @@ const DashBoard: React.FC = (): JSX.Element => {
           <h2 className={styles.dashboard_item_header_topics}>Topics</h2>
           <div className={styles.dashboard_topics_list}>
             {generalLists.length > 0 &&
-              generalLists.map((item, index) => (
-                <Link href="/" className={styles.dashboard_topic_link}>
-                  <div key={index} className={styles.dashboard_topic_item}>
-                    <Image src={item.image} alt="." width={60} height={60} />
-                    <h4>{item.name}</h4>
-                  </div>
-                </Link>
-              ))}
+              generalLists.map((item, index) => {
+                const formattedList = item.list
+                  .toLowerCase()
+                  .replace(/\s+/g, "-");
+
+                return (
+                  <Link
+                    key={index}
+                    href={`/${formattedList}`}
+                    className={styles.dashboard_topic_link}
+                  >
+                    <div key={index} className={styles.dashboard_topic_item}>
+                      <Image src={item.image} alt="." width={60} height={60} />
+                      <h4>{item.list}</h4>
+                    </div>
+                  </Link>
+                );
+              })}
           </div>
         </div>
       </div>

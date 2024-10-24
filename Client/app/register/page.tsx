@@ -140,13 +140,13 @@ const Register: React.FC = (): JSX.Element => {
                 )}
                 {/* Nickname */}
                 <div className={styles.register_input_group}>
-                  <label htmlFor="username">
+                  <label htmlFor="nickname">
                     <VscSymbolNamespace />
                   </label>
                   <input
                     type="text"
-                    id="username"
-                    name="username"
+                    id="nickname"
+                    name="nickname"
                     placeholder="Nickname"
                     required
                     value={userData.nickname}
@@ -164,6 +164,7 @@ const Register: React.FC = (): JSX.Element => {
                     type="password"
                     id="password"
                     name="password"
+                    data-testid="password"
                     placeholder="Password"
                     required
                     value={userData.password}
@@ -181,6 +182,7 @@ const Register: React.FC = (): JSX.Element => {
                     type="password"
                     id="confirmPassword"
                     name="confirmPassword"
+                    data-testid="confirmPassword"
                     placeholder="Confirm your password"
                     required
                     value={confirmPassword}

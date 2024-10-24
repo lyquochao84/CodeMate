@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const generalListsSchema = new mongoose.Schema({
-    name: String,
+    list: String,
     type: String,
     image: String
 });
