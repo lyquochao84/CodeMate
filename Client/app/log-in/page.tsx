@@ -155,7 +155,7 @@ const LogIn: React.FC = (): JSX.Element => {
                 </div>
               </form>
               <Link href="/register" className={styles.register_text}>
-                Don't have an account yet?
+                Don&apos;t have an account yet?
               </Link>
             </>
           )}

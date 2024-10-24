@@ -1,101 +1,101 @@
 [
   {
-    "name": "Array",
+    "list": "Array",
     "type": "Data Structure",
     "image": "/icons/array.png"
   },
   {
-    "name": "Linked List",
+    "list": "Linked List",
     "type": "Data Structure",
     "image": "/icons/linked_list.png"
   },
   {
-    "name": "Stack",
+    "list": "Stack",
     "type": "Data Structure",
     "image": "/icons/stack.png"
   },
   {
-    "name": "Queue",
+    "list": "Queue",
     "type": "Data Structure",
     "image": "/icons/queue.png"
   },
   {
-    "name": "Hash Table",
+    "list": "Hash Table",
     "type": "Data Structure",
     "image": "/icons/hash_table.png"
   },
   {
-    "name": "Binary Tree",
+    "list": "Binary Tree",
     "type": "Data Structure",
     "image": "/icons/binary_tree.png"
   },
   {
-    "name": "Binary Search Tree",
+    "list": "Binary Search Tree",
     "type": "Data Structure",
     "image": "/icons/binary_search_tree.png"
   },
   {
-    "name": "Trie",
+    "list": "Trie",
     "type": "Data Structure",
     "image": "/icons/trie.png"
   },
   {
-    "name": "Heap & Priority Queue",
+    "list": "Heap & Priority Queue",
     "type": "Data Structure",
     "image": "/icons/heap.png"
   },
   {
-    "name": "Graph",
+    "list": "Graph",
     "type": "Data Structure",
     "image": "/icons/graph.png"
   },
   {
-    "name": "Dynamic Programming",
+    "list": "Dynamic Programming",
     "type": "Algorithm",
     "image": "/icons/dynamic_programming.png"
   },
   {
-    "name": "Depth-First Search (DFS)",
+    "list": "Depth-First Search (DFS)",
     "type": "Algorithm",
     "image": "/icons/dfs.png"
   },
   {
-    "name": "Breadth-First Search (BFS)",
+    "list": "Breadth-First Search (BFS)",
     "type": "Algorithm",
     "image": "/icons/bfs.png"
   },
   {
-    "name": "Binary Search",
+    "list": "Binary Search",
     "type": "Algorithm",
     "image": "/icons/binary_search.png"
   },
   {
-    "name": "Sorting Algorithms",
+    "list": "Sorting Algorithms",
     "type": "Algorithm",
     "image": "/icons/sorting.png"
   },
   {
-    "name": "Backtracking",
+    "list": "Backtracking",
     "type": "Algorithm",
     "image": "/icons/backtracking.png"
   },
   {
-    "name": "Greedy Algorithms",
+    "list": "Greedy Algorithms",
     "type": "Algorithm",
     "image": "/icons/greedy.png"
   },
   {
-    "name": "Two Pointers",
+    "list": "Two Pointers",
     "type": "Algorithm",
     "image": "/icons/two_pointers.png"
   },
   {
-    "name": "Sliding Window",
+    "list": "Sliding Window",
     "type": "Algorithm",
     "image": "/icons/sliding_window.png"
   },
   {
-    "name": "Divide and Conquer",
+    "list": "Divide and Conquer",
     "type": "Algorithm",
     "image": "/icons/divide_and_conquer.png"
   }

@@ -28,7 +28,7 @@ export interface RecommendationListsTypes {
 
 // General Lists
 export interface GeneralListsTypes {
-  name: string;
+  list: string;
   type: string;
   image: string;
 }

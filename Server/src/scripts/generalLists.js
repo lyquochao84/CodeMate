@@ -7,7 +7,7 @@ const insertGeneralLists = async () => {
         const generalLists = JSON.parse(data);
 
         for (const list of generalLists) {
-            const existingGeneralList = await GeneralLists.findOne({ name: list.name });
+            const existingGeneralList = await GeneralLists.findOne({ list: list.list });
 
             if (!existingGeneralList) {
                 await GeneralLists.create(generalLists);
