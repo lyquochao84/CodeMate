@@ -1,18 +1,23 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { ProblemsTypes } from "@/types/types_interface";
+import { ProblemsTypes } from "@/types/interfaces";
 import { useAuth } from "@/hooks/useAuth";
 import { GrSort, GrPrevious, GrNext } from "react-icons/gr";
 import Link from "next/link";
 
 import styles from "./problems.module.css";
+import Pagination from "@/components/pagination/Pagination";
+import SortingModal from "@/components/sorting-modal/SortingModal";
+import ProblemsList from "@/components/problems-list/ProblemsList";
 
 const Problems: React.FC = (): JSX.Element => {
   const { loading } = useAuth();
   const [problems, setProblems] = useState<ProblemsTypes[]>([]);
+
   const [isDisplaySortingModal, setIsDisplaySortingModal] =
     useState<boolean>(false);
   const [filteredProblems, setFilteredProblems] = useState<ProblemsTypes[]>([]);
+
   const [difficultySelections, setDifficultySelections] = useState<{
     [key: string]: boolean;
   }>({
@@ -46,14 +51,6 @@ const Problems: React.FC = (): JSX.Element => {
     };
     fetchProblems();
   }, []);
-
-  // Calculate the paginated problems
-  const indexOfLastProblem = currentPage * itemsPerPage; // 1 * 10 = 10
-  const indexOfFirstProblem = indexOfLastProblem - itemsPerPage; // 10 - 10 = 1
-  const currentProblems = filteredProblems.slice(
-    indexOfFirstProblem,
-    indexOfLastProblem
-  ); // 1 -> 10
 
   // Helper function to get class based on difficulty
   const getDifficultyClass = (difficulty: string) => {
@@ -106,7 +103,7 @@ const Problems: React.FC = (): JSX.Element => {
     setCurrentPage(1);
   };
 
-  // Handle clicks outside the modal
+  // Handle clicks outside the modal + useEffect
   const handleClickOutside = (event: MouseEvent) => {
     if (
       modalRef.current &&
@@ -131,6 +128,14 @@ const Problems: React.FC = (): JSX.Element => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isDisplaySortingModal]);
+
+  // Calculate the paginated problems
+  const indexOfLastProblem = currentPage * itemsPerPage; // 1 * 10 = 10
+  const indexOfFirstProblem = indexOfLastProblem - itemsPerPage; // 10 - 10 = 1
+  const currentProblems = filteredProblems.slice(
+    indexOfFirstProblem,
+    indexOfLastProblem
+  ); // 1 -> 10
 
   // Pagination Controls
   const totalPages = Math.ceil(filteredProblems.length / itemsPerPage);
@@ -160,71 +165,24 @@ const Problems: React.FC = (): JSX.Element => {
         </div>
         {/* Sorting Modal */}
         {isDisplaySortingModal && (
-          <div className={styles.sorting_modal} ref={modalRef}>
-            <label>
-              <input
-                type="checkbox"
-                checked={difficultySelections.easy}
-                onChange={() => handleDifficultyChange("easy")}
-              />
-              Easy
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={difficultySelections.medium}
-                onChange={() => handleDifficultyChange("medium")}
-              />
-              Medium
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={difficultySelections.hard}
-                onChange={() => handleDifficultyChange("hard")}
-              />
-              Hard
-            </label>
-          </div>
+          <SortingModal
+            modalRef={modalRef}
+            difficultySelections={difficultySelections}
+            handleDifficultyChange={handleDifficultyChange}
+          />
         )}
-        <div className={styles.problems_list_item}>
-          {currentProblems.length > 0 &&
-            currentProblems.map((item, index) => (
-              <Link href="/" className={styles.problems_item_link} key={index}>
-                <div className={styles.problems_item}>
-                  <div className={styles.problems_item_header}>
-                    <h5>{item.title}</h5>
-                    <p className={getDifficultyClass(item.difficulty)}>
-                      {item.difficulty}
-                    </p>
-                  </div>
-                  <div className={styles.problems_item_status_wrapper}>
-                    <button className={styles.problems_item_button}>
-                      Start Coding
-                    </button>
-                  </div>
-                </div>
-              </Link>
-            ))}
-        </div>
+        {/* Problems */}
+        <ProblemsList
+          currentProblems={currentProblems}
+          getDifficultyClass={getDifficultyClass}
+        />
         {/* Pagination Controls */}
-        <div className={styles.pagination}>
-          {/* Previous Button */}
-          {currentPage !== 1 && <button onClick={handlePrevPage} disabled={currentPage === 1} className={styles.prev_page_btn}>
-            <GrPrevious className={styles.pagination_btn_icon} />
-          </button>}
-          <p>
-            {currentPage}
-          </p>
-          {/* Next Button */}
-          {currentPage !== totalPages && <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-            className={styles.next_page_btn}
-          >
-            <GrNext className={styles.pagination_btn_icon} />
-          </button>}
-        </div>
+        <Pagination
+          currentPage={currentPage}
+          handlePrevPage={handlePrevPage}
+          handleNextPage={handleNextPage}
+          totalPages={totalPages}
+        />
       </div>
     </div>
   );

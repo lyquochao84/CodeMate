@@ -12,4 +12,7 @@ router.get("/general-list", dataController.getGeneralList);
 // [GET] Problems
 router.get("/problems", dataController.getProblems);
 
+// [POST] Problems
+router.post("/problems", dataController.filterProblemTitle);
+
 module.exports = router;

@@ -1,0 +1,50 @@
+.code_editor_buttons {
+  display: flex;
+}
+
+.code_editor_run_btn,
+.code_editor_submit_btn {
+  display: flex;
+  padding: 12px 22px;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.code_editor_run_btn {
+  font-size: 18px;
+  background-color: var(--content-box-background);
+  border-radius: 10px;
+  box-shadow: var(--content-box-shadow);
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.code_editor_submit_btn {
+  font-size: 18px;
+  background-color: var(--button-color);
+  border: none;
+  border: 1px solid var(--button-color);
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  color: white;
+  margin-left: 8px;
+}
+
+.code_editor_run_btn:hover,
+.code_editor_submit_btn:hover {
+  opacity: 0.8;
+}
+
+.code_editor_icon {
+  color: white;
+}
+
+.code_editor_buttons_txt {
+  margin-left: 6px;
+  font-weight: 750;
+}
