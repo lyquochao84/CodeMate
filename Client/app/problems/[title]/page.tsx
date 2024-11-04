@@ -22,9 +22,13 @@ export default function CodingProblemPage({
     setIsOpen(false);
   };
 
+  // Function to handle code change 
   const handleCodeChange = (value: string | undefined) => {
     setCode(value || "");
   };
+
+  // Convert language to lowercase
+  let convertedLanguage = language.toLowerCase();
 
   if (loading) return <p>Loading...</p>;
 
@@ -38,7 +42,7 @@ export default function CodingProblemPage({
           isOpen={isOpen}
           setIsOpen={setIsOpen}
         />
-        <CodeEditor language="javascript" onChange={handleCodeChange} />
+        <CodeEditor language={convertedLanguage} onChange={handleCodeChange} />
       </div>
     </div>
   );
