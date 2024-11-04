@@ -1,0 +1,251 @@
+.register_content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 40px 0;
+}
+
+.register_modal {
+  background-color: transparent;
+  border-radius: 10px;
+  max-width: 900px;
+  max-height: 500px;
+  width: 100%;
+  height: 100%;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  text-align: center;
+  display: flex;
+}
+
+.register_background {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 2px solid var(--border);
+  background-image: url("../../public/img/LogIn_Background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+}
+
+.register_slogan_1 {
+  margin-bottom: 20px;
+  font-size: 38px;
+  font-weight: 500;
+}
+
+.register_slogan_2 {
+  margin-bottom: 40px;
+  font-size: 46px;
+  font-weight: 800;
+}
+
+.register_slogan_1,
+.register_slogan_2 {
+  color: white;
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+}
+
+.register_part {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.register_header {
+  font-size: 34px;
+  color: white;
+  font-family: "Roboto", sans-serif;
+  margin-bottom: 20px;
+}
+
+.register_infos {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.register_input_group {
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--input-border);
+  border-radius: 5px;
+  padding: 5px 50px;
+  padding-left: 15px;
+  background-color: transparent;
+  transition: border 0.3s ease;
+}
+
+.register_input_group label {
+  font-size: 1.5rem;
+  color: white;
+  margin-right: 10px;
+}
+
+.register_input_group input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 1rem;
+  color: white;
+}
+
+.register_input_group:hover {
+  border-color: var(--button-color);
+}
+
+.register_input_group input:focus {
+  border-color: var(--button-color);
+}
+
+.register_btn_wrapper {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.register_btn {
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: var(--button-color);
+  border: none;
+  border: 1px solid var(--button-color);
+  border-radius: 100px;
+  cursor: pointer;
+  text-decoration: none;
+  text-decoration: none;
+  color: white;
+  margin-right: 10px;
+}
+
+.register_btn:hover {
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: transparent;
+  border: 1px solid var(--button-color);
+  border-radius: 100px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.or_txt_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.or_txt {
+  color: white;
+  font-size: 16px;
+  font-style: italic;
+}
+
+.sign_in_options {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.sign_in_github_btn {
+  background-color: transparent; /* GitHub's dark gray */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  padding-top: 2px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-bottom: 20px;
+}
+
+.sign_in_github_btn:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.sign_in_github {
+  font-size: 30px;
+  color: white;
+}
+
+.register_text {
+  color: var(--button-color);
+  font-size: 16px;
+}
+
+.register_text:hover {
+  opacity: 0.7;
+}
+
+.invalid_message {
+  color: rgb(192, 63, 63);
+  margin-bottom: 20px;
+}
+
+.registered_successfully_wrapper {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+}
+
+.registered_successfully {
+  font-size: 30px;
+  font-weight: 500;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.registered_successfully_icon {
+  font-size: 26px;
+  color: var(--successfully-icon);
+  margin-top: 10px;
+  margin-bottom: 14px;
+}
+
+.redirect_login {
+  font-size: 16px;
+  color: white;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: wave 1.5s infinite ease-in-out;
+}
+
+.redirect_login span {
+  animation: wave 1.5s infinite ease-in-out;
+}
+
+.redirect_login span:nth-child(odd) {
+  animation-delay: 0.15s;
+}
+
+.redirect_login span:nth-child(even) {
+  animation-delay: 0.3s;
+}
+
+@keyframes wave {
+  0% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}

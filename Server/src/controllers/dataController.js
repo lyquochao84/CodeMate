@@ -38,6 +38,28 @@ class dataController {
       res.status(500).json({ message: "Internal Server Error" });
     }
   }
+
+  // [POST] Filter problem's title
+  async filterProblemTitle(req, res) {
+    const { title } = req.body;
+    
+    console.log(title);
+
+    try {
+      // Creates a regular expression that matches title in a case-insensitive way
+      const problem = await Problems.findOne({ title: new RegExp(`^${title}$`, 'i') });
+
+      if (problem) {
+        res.json({ problem });
+      }
+      else {
+        res.status(404).json({ message: "Problem not found" });
+      }
+    }
+    catch(error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
 }
 
 module.exports = new dataController();

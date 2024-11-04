@@ -1,0 +1,80 @@
+.coding_instruction_part {
+  width: 44%;
+}
+
+.coding_instruction_title {
+  color: white;
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.coding_instruction_details {
+  display: flex;
+}
+
+.coding_instruction_difficulty,
+.coding_instruction_tag {
+  margin-right: 16px;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: var(--content-box-background);
+  box-shadow: var(--content-box-shadow);
+  font-size: 18px;
+  font-weight: 650;
+  margin-bottom: 30px;
+}
+
+.coding_instruction_tag {
+  color: white;
+}
+
+.coding_instruction_content h4 {
+  font-size: 26px;
+  color: var(--button-color);
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+.coding_instruction_description {
+  font-size: 20px;
+  font-weight: 500;
+  color: white;
+  line-height: 32px;
+  margin-bottom: 30px;
+}
+
+.coding_instruction_description_example {
+  color: var(--button-color);
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.coding_instruction_examples {
+  margin-bottom: 30px;
+}
+
+.coding_instruction_examples_text {
+  font-size: 20px;
+  line-height: 36px;
+  color: white;
+}
+
+.coding_instruction_examples_text strong {
+  font-weight: 750;
+  font-style: italic;
+  color: var(--button-color);
+}
+
+.easy {
+  color: var(--easy);
+}
+
+.medium {
+  color: var(--medium);
+}
+
+.hard {
+  color: var(--hard);
+}

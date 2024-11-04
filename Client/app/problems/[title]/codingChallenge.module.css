@@ -1,0 +1,13 @@
+.coding_problem_page {
+    display: flex;
+    width: 100%;
+    padding-top: 50px;
+    padding-bottom: 0px;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+.coding_problem_code_editor {
+    display: block;
+    width: 56%;
+}

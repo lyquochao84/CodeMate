@@ -1,5 +1,5 @@
 "use client";
-import { AuthContextTypes } from "@/types/types_interface";
+import { AuthContextTypes } from "@/types/interfaces";
 import React, { createContext, useState, ReactNode, useEffect } from "react";
 import Cookies from "js-cookie";
 
