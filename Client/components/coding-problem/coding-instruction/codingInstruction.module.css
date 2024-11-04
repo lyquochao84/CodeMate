@@ -1,5 +1,9 @@
 .coding_instruction_part {
   width: 44%;
+  height: 100vh;
+  overflow-y: scroll;
+  scrollbar-width: thin; 
+  scrollbar-color: var(--border) var(--background-color); 
 }
 
 .coding_instruction_title {

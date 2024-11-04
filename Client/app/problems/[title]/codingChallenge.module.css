@@ -9,5 +9,6 @@
 
 .coding_problem_code_editor {
     display: block;
-    width: 56%;
+    width: 52%;
+    margin-left: 40px;
 }
