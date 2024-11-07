@@ -11,7 +11,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   return (
     <div className={styles.code_editor_part}>
       <Editor
-        height="86vh"
+        height="100%"
         language={language}
         defaultValue={initialValue}
         onChange={onChange}

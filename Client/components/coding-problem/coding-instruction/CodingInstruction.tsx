@@ -3,37 +3,7 @@ import styles from "./codingInstruction.module.css";
 import { ProblemDetailsProps, ProblemsTypes } from "@/types/interfaces";
 import { formatURL } from "@/lib/formatURL";
 
-const CodingInstruction: React.FC<ProblemDetailsProps> = ({ params }): JSX.Element => {
-  const [problemDetails, setProblemDetails] = useState<ProblemsTypes | null>(null); 
-
-  // Fetch problem details
-  useEffect(() => {
-    const fetchProblemsData = async () => {
-      try {
-        const response: Response = await fetch(
-          "http://localhost:5000/data/problems",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ title: formatURL(params.title) }),
-            credentials: "include",
-          }
-        );
-        const data = await response.json();
-        setProblemDetails(data.problem);
-      } 
-      catch (error: unknown) {
-        if (error instanceof Error) {
-          console.log(error);
-        }
-      }
-    };
-
-    fetchProblemsData();
-  }, []);
-
+const CodingInstruction: React.FC<ProblemDetailsProps> = ({ problemDetails }): JSX.Element => {
   // Change styles for difficulty
   const getDifficultyClass = (difficulty: string) => {
     switch (difficulty.toLowerCase()) {

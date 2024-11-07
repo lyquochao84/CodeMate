@@ -40,9 +40,14 @@ interface ProblemExample {
   explanation: string;
 }
 
+// Test Cases
+interface TestCase {
+  input: Record<string, string>;
+  output: string;
+}
+
 // Problems interface
 export interface ProblemsTypes {
-  // find(arg0: (problem: any) => void): unknown;
   title: string;
   description: string;
   difficulty: string;
@@ -50,6 +55,7 @@ export interface ProblemsTypes {
   company: string[];
   lists: string[];
   examples: ProblemExample[];
+  testCases: TestCase[];
 }
 
 // List details props
@@ -80,7 +86,8 @@ export interface PaginationProps {
 
 // Problem Details Page Props
 export interface ProblemDetailsProps {
-  params: { title: string };
+  // params: { title: string };
+  problemDetails: ProblemsTypes | null;
 }
 
 // Code Edtior Props
@@ -91,9 +98,15 @@ export interface CodeEditorProps {
 }
 
 // Code Editor Header Dropdown
-export interface CodeEditorDropdownProps {
+export interface CodeEditorHeaderProps {
   language: string;
   handleChooseLanguage: (selectedLanguage: string) => void;
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  handleCodeSubmission?: () => Promise<void>; 
+}
+
+// Code Editor Buttons
+export interface CodeEditorButtonsProps {
+  handleCodeSubmission?: () => Promise<void>; 
 }

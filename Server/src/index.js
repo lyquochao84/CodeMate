@@ -31,7 +31,7 @@ app.use(passport.initialize());
 // Import the configuration of passport
 configurePassport();
 
-// Insert problems/lists into the database
+// Scripts to insert problems/lists into the database
 insertProblems(); 
 insertRecommendationLists();
 insertGeneralLists();

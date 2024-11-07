@@ -2,17 +2,18 @@ import React from "react";
 import styles from "./codeEditorHeader.module.css";
 import CodeEditorButtons from "./code-editor-btn/CodeEditorButtons";
 import CodeEditorDropdown from "./code-editor-dropdown/CodeEditorDropdown";
-import { CodeEditorDropdownProps } from "@/types/interfaces";
+import { CodeEditorHeaderProps } from "@/types/interfaces";
 
-const CodeEditorHeader: React.FC<CodeEditorDropdownProps> = ({
+const CodeEditorHeader: React.FC<CodeEditorHeaderProps> = ({
   isOpen,
   setIsOpen,
   language,
   handleChooseLanguage,
+  handleCodeSubmission
 }): JSX.Element => {
   return (
     <div className={styles.code_editor_header}>
-      <CodeEditorButtons />
+      <CodeEditorButtons handleCodeSubmission={handleCodeSubmission} />
       <CodeEditorDropdown
         language={language}
         handleChooseLanguage={handleChooseLanguage}
