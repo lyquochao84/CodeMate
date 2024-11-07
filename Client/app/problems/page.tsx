@@ -43,7 +43,8 @@ const Problems: React.FC = (): JSX.Element => {
         const problemsData = await response.json();
         setProblems(problemsData);
         setFilteredProblems(problemsData); // Initially show all problems
-      } catch (error: unknown) {
+      } 
+      catch (error: unknown) {
         if (error instanceof Error) {
           console.log(error);
         }

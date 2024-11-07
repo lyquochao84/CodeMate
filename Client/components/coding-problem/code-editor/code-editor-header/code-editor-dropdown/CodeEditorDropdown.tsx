@@ -1,9 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
 import styles from "./codeEditorDropdown.module.css";
 import programmingLanguages from "@/lib/programmingLanguages";
-import { CodeEditorDropdownProps } from "@/types/interfaces";
+import { CodeEditorHeaderProps } from "@/types/interfaces";
 
-const CodeEditorDropdown: React.FC<CodeEditorDropdownProps> = ({
+const CodeEditorDropdown: React.FC<CodeEditorHeaderProps> = ({
   isOpen,
   setIsOpen,
   language,

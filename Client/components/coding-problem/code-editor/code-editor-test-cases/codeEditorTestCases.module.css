@@ -1,0 +1,151 @@
+.code_editor_test_cases_wrapper {
+  width: 100%;
+  background-color: rgb(30 30 30);
+  box-shadow: var(--content-box-shadow);
+  border: none;
+  padding: 20px;
+  border-top: 3px solid var(--border);
+  position: relative;
+}
+
+.code_editor_test_cases_close_modal {
+  display: flex;
+  padding: 12px;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease,
+    background-color 0.3s ease;
+  background-color: var(--content-box-background);
+  border-radius: 10px;
+  box-shadow: var(--content-box-shadow);
+  border: 2px solid var(--button-color);
+  color: white;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.code_editor_test_cases_close_modal:hover {
+  opacity: 0.7;
+}
+
+.code_editor_test_cases_close_modal p {
+  font-size: 16px;
+  font-weight: 750;
+}
+
+.brackets_icon {
+  font-size: 22px;
+  margin-left: 4px;
+  font-weight: 750;
+}
+
+.code_editor_test_cases_open_modal {
+  width: 100%;
+  background-color: rgb(30 30 30);
+  border-top: 3px solid var(--border);
+  z-index: 1000;
+  position: absolute;
+  bottom: 92px;
+  left: 0;
+}
+
+.code_editor_test_cases_header {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid var(--border);
+  /* margin-bottom: 20px; */
+} 
+
+.code_editor_test_cases_header p {
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  position: relative; /* To position the pseudo-element */
+}
+
+.code_editor_test_cases_header p:first-child {
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.code_editor_test_cases_header p:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.code_editor_test_cases_header p::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--button-color); 
+  transition: width 0.3s ease; 
+}
+
+.code_editor_test_cases_header p:not(.activeTab):hover::after {
+  width: 100%;
+}
+
+.code_editor_test_cases_content {
+  padding: 20px;
+  display: block;
+  height: 310px;
+}
+
+.code_editor_test_cases_content_wrapper_btn {
+  display: flex;
+}
+
+.test_case_btn {
+  display: flex;
+  padding: 12px;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease,
+    background-color 0.3s ease;
+  background-color: var(--content-box-background);
+  border-radius: 10px;
+  box-shadow: var(--content-box-shadow);
+  border: 2px solid var(--button-color);
+  color: white;
+  cursor: pointer;
+  margin-right: 12px;
+  font-size: 16px;
+  font-weight: 750;
+}
+
+.active {
+  background-color: var(--button-color);
+  font-weight: 750;
+  transition: ease-in;
+}
+
+.test_case_details {
+  padding: 20px 0;
+}
+
+.test_case_details_key {
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+}
+
+.test_case_details_values_wrapper {
+  margin: 14px 0;
+  padding: 12px;
+  background-color: var(--border);
+}
+
+.test_case_details_values_wrapper strong {
+  font-size: 20px;
+  font-weight: 650;
+  color: white;
+}
+
+.activeTab {
+  border-bottom: 2px solid var(--button-color);
+}

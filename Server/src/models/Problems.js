@@ -17,6 +17,18 @@ const problemSchema = new mongoose.Schema({
       },
     },
   ],
+  testCases: [
+    {
+      input: {
+        type: mongoose.Schema.Types.Mixed, 
+        required: true,
+      },
+      output: {
+        type: mongoose.Schema.Types.Mixed, 
+        required: true,
+      },
+    },
+  ],
 });
 
 const Problem = mongoose.model("Problems", problemSchema);

@@ -1,0 +1,5 @@
+.code_editor_part {
+  height: calc(100vh - 30vh);
+  display: flex;
+  flex-direction: column;
+}
