@@ -8,6 +8,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   initialValue,
   onChange,
 }): JSX.Element => {
+
   return (
     <div className={styles.code_editor_part}>
       <Editor
@@ -18,7 +19,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
         theme="vs-dark"
         options={{
           scrollBeyondLastLine: true,
-          fontSize: 20,
+          fontSize: 17,
           fontWeight: "700",
         }}
       />

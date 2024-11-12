@@ -88,6 +88,8 @@ export interface PaginationProps {
 export interface ProblemDetailsProps {
   // params: { title: string };
   problemDetails: ProblemsTypes | null;
+  submissionResults?: any;
+  isSubmissionTriggered?: boolean;
 }
 
 // Code Edtior Props

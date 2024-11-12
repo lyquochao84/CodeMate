@@ -21,8 +21,8 @@ export default function CodingProblemPage({
   const [code, setCode] = useState<string>("");
   const [language, setLanguage] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [tokens, setTokens] = useState<string[]>([]);
-  const [submissionResults, setSubmissionResults] = useState<any[]>([]);
+  const [submissionResults, setSubmissionResults] = useState<any>(null);
+  const [isSubmissionTriggered, setIsSubmissionTriggered] = useState<boolean>(false);
 
   // Fetch problem details
   useEffect(() => {
@@ -77,32 +77,21 @@ export default function CodingProblemPage({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ code, language }),
+        body: JSON.stringify({
+          code,
+          language,
+          title: formatURL(params.title),
+        }),
       }
     );
 
+    // Get token from server
     const data = await response.json();
-    setTokens(data.tokens);
+    setSubmissionResults(data);
+    
+    // When user clicked the "Run" btn
+    setIsSubmissionTriggered(true);
   };
-
-  // Function to fetch results using tokens
-  useEffect(() => {
-    try {
-      const fetchResults = async () => {
-        const response: Response = await fetch(
-          `http://localhost:5000/code/submission/results?tokens=${tokens.join(
-            ","
-          )}`
-        );
-        const data = await response.json();
-        setSubmissionResults(data);
-      };
-
-      fetchResults();
-    } catch (error) {
-      console.log(error);
-    }
-  }, [tokens]);
 
   if (loading) return <p>Loading...</p>;
 
@@ -118,7 +107,7 @@ export default function CodingProblemPage({
           handleCodeSubmission={handleCodeSubmission}
         />
         <CodeEditor language={convertedLanguage} onChange={handleCodeChange} />
-        <CodeEditorTestCases problemDetails={problemDetails} />
+        <CodeEditorTestCases problemDetails={problemDetails} submissionResults={submissionResults} isSubmissionTriggered={isSubmissionTriggered}/>
       </div>
     </div>
   );
