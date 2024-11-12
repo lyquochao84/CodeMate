@@ -94,6 +94,7 @@
   padding: 20px;
   display: block;
   height: 310px;
+  overflow-y: auto;
 }
 
 .code_editor_test_cases_content_wrapper_btn {
@@ -116,6 +117,14 @@
   margin-right: 12px;
   font-size: 16px;
   font-weight: 750;
+}
+
+.test_successfully_txt {
+  color: var(--successfully-icon);
+}
+
+.test_failed_txt {
+  color: var(--red-color);
 }
 
 .active {
@@ -148,4 +157,50 @@
 
 .activeTab {
   border-bottom: 2px solid var(--button-color);
+}
+
+.test_case_header_wrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.test_case_header {
+  font-size: 26px;
+  color: var(--successfully-icon);
+  font-weight: 750;
+  margin-right: 18px;
+}
+
+.test_case_header_notAccepted {
+  font-size: 26px;
+  color: var(--red-color);
+  font-weight: 750;
+  margin-right: 18px;
+}
+
+.test_case_run_time {
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 3px;
+  color: var(--input-border);
+}
+
+.test_case_details_output {
+  padding: 20px 0;
+}
+
+.test_case_details_output p {
+  margin: 14px 0 20px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--button-color);
+  padding: 12px;
+  background-color: var(--border);
+}
+
+.test_case_details_output strong {
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
 }

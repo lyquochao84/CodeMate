@@ -23,20 +23,23 @@
     ],
     "testCases": [
       {
-        "input": { "nums": "[2, 7, 11, 15]", "target": "9" },
-        "output": "[0, 1]"
+        "input": { "nums": [2, 7, 11, 15], "target": 9 },
+        "output": [0, 1]
       },
       {
-        "input": { "nums": "[3, 2, 4]", "target": "6" },
-        "output": "[1, 2]"
+        "input": { 
+          "nums": [3, 2, 4], 
+          "target": 6 
+        },
+        "output": [1, 2]
       },
       {
-        "input": { "nums": "[3, 3]", "target": "6" },
-        "output": "[0, 1]"
+        "input": { "nums": [3, 3], "target": 6 },
+        "output": [0, 1]
       },
       {
-        "input": { "nums": "[1, 3, 7, 9, 2]", "target": "10" },
-        "output": "[0, 3]"
+        "input": { "nums": [1, 3, 7, 9, 2], "target": 10 },
+        "output": [0, 3]
       }
     ]
   },
@@ -67,20 +70,20 @@
     ],
     "testCases": [
       {
-        "input": { "s": "\"abcabcbb\"" },
-        "output": "3"
+        "input": { "s": "abcabcbb" },
+        "output": 3
       },
       {
-        "input": { "s": "\"bbbbb\"" },
-        "output": "1"
+        "input": { "s": "bbbbb" },
+        "output": 1
       },
       {
-        "input": { "s": "\"pwwkew\"" },
-        "output": "3"
+        "input": { "s": "pwwkew" },
+        "output": 3
       },
       {
-        "input": { "s": "\"abcdef\"" },
-        "output": "6"
+        "input": { "s": "abcdef" },
+        "output": 6
       }
     ]
   },
@@ -107,27 +110,46 @@
     "testCases": [
       {
         "input": {
-          "intervals": "[[1, 3],[2, 6],[8, 10],[15, 18]]"
+          "intervals": [
+            [1, 3],
+            [2, 6],
+            [8, 10],
+            [15, 18]
+          ]
         },
-        "output": "[[1, 6],[8, 10],[15, 18]]"
+        "output": [
+          [1, 6],
+          [8, 10],
+          [15, 18]
+        ]
       },
       {
         "input": {
-          "intervals": "[[1, 4],[4, 5]]"
+          "intervals": [
+            [1, 4],
+            [4, 5]
+          ]
         },
-        "output": "[[1, 5]]"
+        "output": [[1, 5]]
       },
       {
         "input": {
-          "intervals": "[[1, 4],[2, 3]]"
+          "intervals": [
+            [1, 4],
+            [2, 3]
+          ]
         },
-        "output": "[[1, 4]]"
+        "output": [[1, 4]]
       },
       {
         "input": {
-          "intervals": "[[5, 10],[15, 20],[10, 15]]"
+          "intervals": [
+            [5, 10],
+            [15, 20],
+            [10, 15]
+          ]
         },
-        "output": "[[5, 20]]"
+        "output": [[5, 20]]
       }
     ]
   },
@@ -151,20 +173,20 @@
     ],
     "testCases": [
       {
-        "input": { "nums": "[1, 2, 3, 4]" },
-        "output": "[24, 12, 8, 6]"
+        "input": { "nums": [1, 2, 3, 4] },
+        "output": [24, 12, 8, 6]
       },
       {
-        "input": { "nums": "[-1, 1, 0, -3, 3]" },
-        "output": "[0, 0, 9, 0, 0]"
+        "input": { "nums": [-1, 1, 0, -3, 3] },
+        "output": [0, 0, 9, 0, 0]
       },
       {
-        "input": { "nums": "[5, 4, 3, 2, 1]" },
-        "output": "[24, 30, 40, 60, 120]"
+        "input": { "nums": [5, 4, 3, 2, 1] },
+        "output": [24, 30, 40, 60, 120]
       },
       {
-        "input": { "nums": "[2, 2, 3, 4]" },
-        "output": "[24, 24, 16, 12]"
+        "input": { "nums": [2, 2, 3, 4] },
+        "output": [24, 24, 16, 12]
       }
     ]
   },
@@ -190,20 +212,20 @@
     ],
     "testCases": [
       {
-        "input": { "stream": "[1, 2, 3]" },
-        "output": "2.0"
+        "input": { "stream": [1, 2, 3] },
+        "output": 2.0
       },
       {
-        "input": { "stream": "[1, 2]" },
-        "output": "1.5"
+        "input": { "stream": [1, 2] },
+        "output": 1.5
       },
       {
-        "input": { "stream": "[5, 2, 8, 10]" },
-        "output": "6.5"
+        "input": { "stream": [5, 2, 8, 10] },
+        "output": 6.5
       },
       {
-        "input": { "stream": "[3, 7, 1, 9, 5]" },
-        "output": "5"
+        "input": { "stream": [3, 7, 1, 9, 5] },
+        "output": 5
       }
     ]
   },
@@ -229,19 +251,19 @@
     ],
     "testCases": [
       {
-        "input": { "s": "\"babad\"" },
+        "input": { "s": "babad" },
         "output": "bab"
       },
       {
-        "input": { "s": "\"cbbd\"" },
+        "input": { "s": "cbbd" },
         "output": "bb"
       },
       {
-        "input": { "s": "\"abcd\"" },
+        "input": { "s": "abcd" },
         "output": "a"
       },
       {
-        "input": { "s": "\"abccba\"" },
+        "input": { "s": "abccba" },
         "output": "abccba"
       }
     ]
@@ -269,17 +291,27 @@
     "testCases": [
       {
         "input": {
-          "adjList": "[[2, 4], [1, 3], [2, 4], [1, 3]]"
+          "adjList": [
+            [2, 4],
+            [1, 3],
+            [2, 4],
+            [1, 3]
+          ]
         },
-        "output": "[[2, 4], [1, 3], [2, 4], [1, 3]]"
+        "output": [
+          [2, 4],
+          [1, 3],
+          [2, 4],
+          [1, 3]
+        ]
       },
       {
-        "input": { "adjList": "[[]]" },
-        "output": "[[]]"
+        "input": { "adjList": [[]] },
+        "output": [[]]
       },
       {
-        "input": { "adjList": "[[2], [3], [4], []]" },
-        "output": "[[2], [3], [4], []]"
+        "input": { "adjList": [[2], [3], [4], []] },
+        "output": [[2], [3], [4], []]
       }
     ]
   },
@@ -305,20 +337,20 @@
     ],
     "testCases": [
       {
-        "input": { "tree": "[1, 2, 3]" },
-        "output": "6"
+        "input": { "tree": [1, 2, 3] },
+        "output": 6
       },
       {
-        "input": { "tree": "[1, -2, 3]" },
-        "output": "4"
+        "input": { "tree": [1, -2, 3] },
+        "output": 4
       },
       {
-        "input": { "tree": "[-10, 9, 20, null, null, 15, 7]" },
-        "output": "42"
+        "input": { "tree": [-10, 9, 20, null, null, 15, 7] },
+        "output": 42
       },
       {
-        "input": { "tree": "[-3]" },
-        "output": "-3"
+        "input": { "tree": [-3] },
+        "output": -3
       }
     ]
   },
@@ -344,20 +376,20 @@
     ],
     "testCases": [
       {
-        "input": { "nums":" [3, 2, 1, 5, 6, 4]", "k": "2" },
-        "output": "5"
+        "input": { "nums": [3, 2, 1, 5, 6, 4], "k": 2 },
+        "output": 5
       },
       {
-        "input": { "nums": "[3, 2, 3, 1, 2, 4, 5, 5, 6]", "k": "4" },
-        "output": "4"
+        "input": { "nums": [3, 2, 3, 1, 2, 4, 5, 5, 6], "k": 4 },
+        "output": 4
       },
       {
-        "input": { "nums": "[7, 10, 4, 3, 20, 15]", "k": "3" },
-        "output": "10"
+        "input": { "nums": [7, 10, 4, 3, 20, 15], "k": 3 },
+        "output": 10
       },
       {
-        "input": { "nums": "[1]", "k": "1" },
-        "output": "1"
+        "input": { "nums": [1], "k": 1 },
+        "output": 1
       }
     ]
   },
@@ -389,24 +421,36 @@
     "testCases": [
       {
         "input": {
-          "board": "[['A','B','C','E'],['S','F','C','S'],['A','D','E','E']]",
+          "board": [
+            ["A", "B", "C", "E"],
+            ["S", "F", "C", "S"],
+            ["A", "D", "E", "E"]
+          ],
           "word": "ABCCED"
         },
-        "output": "true"
+        "output": true
       },
       {
         "input": {
-          "board": "[['A','B','C','E'],['S','F','C','S'],['A','D','E','E']]",
+          "board": [
+            ["A", "B", "C", "E"],
+            ["S", "F", "C", "S"],
+            ["A", "D", "E", "E"]
+          ],
           "word": "SEE"
         },
-        "output": "true"
+        "output": true
       },
       {
         "input": {
-          "board": "[['A','B','C','E'],['S','F','C','S'],['A','D','E','E']]",
+          "board": [
+            ["A", "B", "C", "E"],
+            ["S", "F", "C", "S"],
+            ["A", "D", "E", "E"]
+          ],
           "word": "ABCB"
         },
-        "output": "false"
+        "output": false
       }
     ]
   },
@@ -433,19 +477,19 @@
     "testCases": [
       {
         "input": {
-          "tree": "[3, 5, 1, 6, 2, 0, 8, null, null, 7, 4]",
-          "p": "5",
-          "q": "1"
+          "tree": [3, 5, 1, 6, 2, 0, 8, null, null, 7, 4],
+          "p": 5,
+          "q": 1
         },
-        "output": "3"
+        "output": 3
       },
       {
         "input": {
-          "tree": "[3, 5, 1, 6, 2, 0, 8, null, null, 7, 4]",
-          "p": "5",
-          "q": "4"
+          "tree": [3, 5, 1, 6, 2, 0, 8, null, null, 7, 4],
+          "p": 5,
+          "q": 4
         },
-        "output": "5"
+        "output": 5
       }
     ]
   },
@@ -471,12 +515,12 @@
     ],
     "testCases": [
       {
-        "input": { "list": "[1, 2, 3, 4, 5]" },
-        "output": "[5, 4, 3, 2, 1]"
+        "input": { "list": [1, 2, 3, 4, 5] },
+        "output": [5, 4, 3, 2, 1]
       },
       {
-        "input": { "list": "[1, 2]" },
-        "output": "[2, 1]"
+        "input": { "list": [1, 2] },
+        "output": [2, 1]
       }
     ]
   },
@@ -503,15 +547,24 @@
     "testCases": [
       {
         "input": {
-          "grid": "[['1','1','1','1','0'],['1','1','0','1','0'],['0','0','1','0','0'],['0','0','0','0','0']]"
+          "grid": [
+            ["1", "1", "1", "1", "0"],
+            ["1", "1", "0", "1", "0"],
+            ["1", "1", "0", "0", "1"]
+          ]
         },
-        "output": "1"
+        "output": 2
       },
       {
         "input": {
-          "grid": "[['1','1','0','0','0'],['1','0','0','1','1'],['0','0','1','0','0']]"
+          "grid": [
+            ["1", "1", "0", "0", "0"],
+            ["1", "1", "0", "0", "0"],
+            ["0", "0", "1", "0", "0"],
+            ["0", "0", "0", "1", "1"]
+          ]
         },
-        "output": "3"
+        "output": 3
       }
     ]
   },
@@ -537,24 +590,24 @@
     ],
     "testCases": [
       {
-        "input": { "s": "'()'" },
-        "output": "true"
+        "input": { "s": "()" },
+        "output": true
       },
       {
-        "input": { "s": "'()[]{}'" },
-        "output": "true"
+        "input": { "s": "()[]{}" },
+        "output": true
       },
       {
-        "input": { "s": "'(]'" },
-        "output": "false"
+        "input": { "s": "(]" },
+        "output": false
       },
       {
-        "input": { "s": "'([)]'" },
-        "output": "false"
+        "input": { "s": "([)]" },
+        "output": false
       },
       {
-        "input": { "s": "'{[]}'" },
-        "output": "true"
+        "input": { "s": "{[]}" },
+        "output": true
       }
     ]
   },
@@ -580,12 +633,24 @@
     ],
     "testCases": [
       {
-        "input": { "nums": "[1, 1, 1, 2, 2, 3]", "k": "2" },
-        "output": "[1, 2]"
+        "input": { "nums": [1, 1, 1, 2, 2, 3], "k": 2 },
+        "output": [1, 2]
       },
       {
-        "input": { "nums": "[1]", "k": "1" },
-        "output": "[1]"
+        "input": { "nums": [1], "k": 1 },
+        "output": [1]
+      },
+      {
+        "input": { "nums": [1, 2, 3, 4, 5, 5, 5, 4, 4, 4], "k": 2 },
+        "output": [4, 5]
+      },
+      {
+        "input": { "nums": [6, 5, 6, 7, 8, 8, 8], "k": 1 },
+        "output": [8]
+      },
+      {
+        "input": { "nums": [4, 4, 4, 6, 6, 6, 5, 5, 5, 3, 3, 3], "k": 3 },
+        "output": [4, 6, 5]
       }
     ]
   }
