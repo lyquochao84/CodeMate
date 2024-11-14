@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import styles from "./codeEditorTestCases.module.css";
 import { ProblemDetailsProps } from "@/types/interfaces";
 import { HiOutlineCodeBracketSquare } from "react-icons/hi2";
+import { FaUserFriends } from "react-icons/fa";
+import CollaborationModal from "@/components/collaboration-modal/CollaborationModal";
 
 const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
   problemDetails,
@@ -16,6 +18,8 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
   const [outputs, setOutputs] = useState<
     { actual: string; expected: string }[]
   >([]);
+  const [isOpenCollaborationModal, setIsOpenCollaborationModal] =
+    useState<boolean>(false);
 
   // Effect to handle the loading delay after "Run" is triggered
   useEffect(() => {
@@ -70,6 +74,11 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
   const testCaseHeader = testResults.every((result) => result === "Accepted")
     ? "Accepted"
     : "Not Accepted";
+
+  // Handle open modal
+  const handleOpenCollaborationModal = (): void => {
+    setIsOpenCollaborationModal((prev) => !prev);
+  };
 
   return (
     <div className={styles.code_editor_test_cases_wrapper}>
@@ -193,13 +202,27 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
           </div>
         </div>
       )}
-      <button
-        className={styles.code_editor_test_cases_close_modal}
-        onClick={handleOpenTestCasesModal}
-      >
-        <p>Console</p>
-        <HiOutlineCodeBracketSquare className={styles.brackets_icon} />
-      </button>
+      <div className={styles.code_editor_bottom_wrapper}>
+        <button
+          className={styles.code_editor_test_cases_close_modal}
+          onClick={handleOpenTestCasesModal}
+        >
+          <p>Console</p>
+          <HiOutlineCodeBracketSquare className={styles.brackets_icon} />
+        </button>
+        <button
+          className={styles.code_editor_test_cases_close_modal}
+          onClick={handleOpenCollaborationModal}
+        >
+          <FaUserFriends
+            className={styles.code_editor_collaboration_icon}
+          />
+          <p className={styles.code_editor_buttons_txt}>Room</p>
+        </button>
+      </div>
+      {isOpenCollaborationModal && (
+        <CollaborationModal onClose={handleOpenCollaborationModal} />
+      )}
     </div>
   );
 };

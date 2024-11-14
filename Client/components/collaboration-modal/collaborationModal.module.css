@@ -1,0 +1,201 @@
+.modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.903); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it overlays other elements */
+}
+
+.modal_content {
+  position: relative; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 3px solid var(--button-color);
+  border-radius: 10px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal_close_btn {
+  position: absolute; 
+  top: 10px; 
+  right: 10px; 
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.modal_close_btn:hover {
+  color: var(--button-color); /* Optional: change color on hover */
+}
+
+.room_modal_content_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+}
+
+.room_modal_content_item {
+  padding: 30px;
+  border: 2px solid var(--button-color);
+  border-radius: 10px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s;
+  background-color: transparent;
+}
+
+.room_modal_content_item:hover {
+  cursor: pointer;
+  background-color: var(--button-color);
+  opacity: 0.7;
+}
+
+.room_modal_content_item:first-child {
+  margin-right: 12px;
+}
+
+.room_modal_content_item:last-child {
+  margin-left: 12px;
+}
+
+.room_modal_content_icon {
+  margin-bottom: 12px;
+  font-size: 30px;
+  font-weight: 750;
+}
+
+.room_modal_content_item p {
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.create_room_content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+}
+
+.room_header {
+  font-size: 30px;
+  font-weight: 750;
+  color: white;
+}
+
+.room_form {
+  padding: 20px;
+}
+
+.room_form_name_wrapper {
+  margin-bottom: 20px;
+  display: flex;
+  width: 100%;
+}
+
+.room_form_name_wrapper input {
+  width: 100%;
+  padding: 20px;
+  border: 2px solid var(--button-color);
+  /* border-radius: 10px; */
+  background-color: transparent;
+  color: white;
+  outline: none;
+  font-size: 16px;
+}
+
+.room_form_name_wrapper input::placeholder {
+  color: rgb(211, 208, 208);
+  font-size: 16px;
+}
+
+.room_generate_id_wrapper {
+  /* border-radius: 10px; */
+}
+
+.generate_button {
+  background-color: transparent;
+  outline: none;
+  color: white;
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 700;
+  border: 2px solid var(--button-color);
+  transition: 0.3;
+}
+
+.generate_button:hover {
+  background-color: var(--button-color);
+  color: white;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.room_id_input {
+  background-color: transparent;
+  outline: none;
+  color: white;
+  padding: 14px 0;
+  font-size: 12px;
+  border: none;
+  padding-top: 16px;
+  padding-left: 10px;
+  /* border-radius: 10px; */
+}
+
+.create_room_btn {
+  margin-top: 10px;
+  background-color: transparent;
+  outline: none;
+  color: white;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  border: 2px solid var(--button-color);
+  border-radius: 10px;
+  transition: 0.4;
+}
+
+.create_room_btn:hover {
+  background-color: var(--button-color);
+  color: white;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.room_form_id_wrapper input {
+  width: 100%;
+  padding: 20px;
+  border: 2px solid var(--button-color);
+  /* border-radius: 10px; */
+  background-color: transparent;
+  color: white;
+  outline: none;
+  font-size: 16px;
+}
+
+.back_btn {
+  position: absolute; 
+  top: 18px; 
+  left: 12px; 
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.3s;
+  text-decoration: underline;
+}

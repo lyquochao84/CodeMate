@@ -35,6 +35,11 @@
   margin-left: 8px;
 }
 
+.code_editor_join_room_btn {
+  margin-left: 16px;
+  background-color: transparent;
+}
+
 .code_editor_run_btn:hover,
 .code_editor_submit_btn:hover {
   opacity: 0.8;
@@ -42,6 +47,10 @@
 
 .code_editor_icon {
   color: white;
+}
+
+.code_editor_collaboration_icon {
+  color: var(--button-color);
 }
 
 .code_editor_buttons_txt {
