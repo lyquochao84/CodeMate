@@ -54,7 +54,7 @@ class codeController {
     }
   };
 
-  // Get batch code submissions
+  // Helper function to polling the result 
   pollJudge0Result = async (token) => {
     const getOptions = {
       method: 'GET',

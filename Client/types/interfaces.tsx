@@ -112,3 +112,8 @@ export interface CodeEditorHeaderProps {
 export interface CodeEditorButtonsProps {
   handleCodeSubmission?: () => Promise<void>; 
 }
+
+// Handle Collaboration Modal Open/Close
+export interface CollaborationModalProps {
+  onClose: () => void;
+}

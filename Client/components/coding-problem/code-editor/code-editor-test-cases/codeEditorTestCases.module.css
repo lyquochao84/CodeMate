@@ -204,3 +204,17 @@
   font-weight: 700;
   color: white;
 }
+
+.code_editor_bottom_wrapper {
+  display: flex;
+}
+
+.code_editor_buttons_txt {
+  margin-left: 6px;
+  font-size: 16px;
+  font-weight: 750;
+}
+
+.code_editor_collaboration_icon {
+  font-size: 18px;
+}
