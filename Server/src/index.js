@@ -1,16 +1,25 @@
+const http = require("http");
 const express = require("express");
+
 const passport = require("passport");
-const connectDB = require("./database/mogodb");
 const route = require("./routes");
+
+const connectDB = require("./database/mogodb");
+
 const logger = require("./middlewares/logger");
 const cors = require("./middlewares/cors");
 const cookieParser = require('./middlewares/cookieParser');
+
+const setupSocket = require("./config/socket_io");
 const configurePassport = require('./config/passport');
+
 const insertProblems = require('./scripts/problems');
 const insertRecommendationLists = require('./scripts/recommendationLists');
 const insertGeneralLists = require('./scripts/generalLists');
 
 const app = express();
+const server = http.createServer(app);
+const io = setupSocket(server);
 const PORT = 5000;
 
 // Connect to DB
@@ -39,6 +48,6 @@ insertGeneralLists();
 // Routes
 app.use("/", route);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

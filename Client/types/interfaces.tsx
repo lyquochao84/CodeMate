@@ -90,6 +90,10 @@ export interface ProblemDetailsProps {
   problemDetails: ProblemsTypes | null;
   submissionResults?: any;
   isSubmissionTriggered?: boolean;
+  roomId?: string | null,
+  handleGenerateRoomId?: () => void;
+  handleCreateRoom?: () => void;
+  handleJoinRoom?: (roomId: string) => void;
 }
 
 // Code Edtior Props
@@ -116,4 +120,8 @@ export interface CodeEditorButtonsProps {
 // Handle Collaboration Modal Open/Close
 export interface CollaborationModalProps {
   onClose: () => void;
+  roomId?: string | null,
+  handleGenerateRoomId?: () => void;
+  handleCreateRoom?: () => void;
+  handleJoinRoom?: (roomId: string) => void;
 }

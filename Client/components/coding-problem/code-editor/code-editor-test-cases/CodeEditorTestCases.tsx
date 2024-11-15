@@ -9,6 +9,10 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
   problemDetails,
   submissionResults,
   isSubmissionTriggered,
+  roomId,
+  handleGenerateRoomId,
+  handleCreateRoom,
+  handleJoinRoom,
 }): JSX.Element => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpenTestCases, setIsOpenTestCases] = useState<boolean>(false);
@@ -214,14 +218,18 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
           className={styles.code_editor_test_cases_close_modal}
           onClick={handleOpenCollaborationModal}
         >
-          <FaUserFriends
-            className={styles.code_editor_collaboration_icon}
-          />
+          <FaUserFriends className={styles.code_editor_collaboration_icon} />
           <p className={styles.code_editor_buttons_txt}>Room</p>
         </button>
       </div>
       {isOpenCollaborationModal && (
-        <CollaborationModal onClose={handleOpenCollaborationModal} />
+        <CollaborationModal
+          onClose={handleOpenCollaborationModal}
+          roomId={roomId}
+          handleGenerateRoomId={handleGenerateRoomId}
+          handleCreateRoom={handleCreateRoom}
+          handleJoinRoom={handleJoinRoom}
+        />
       )}
     </div>
   );

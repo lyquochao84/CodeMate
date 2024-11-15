@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "./codingChallenge.module.css";
 import { useAuth } from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
+import socket from "@/config/socket_io";
 import CodingInstruction from "@/components/coding-problem/coding-instruction/CodingInstruction";
 import CodeEditor from "@/components/coding-problem/code-editor/CodeEditor";
 import CodeEditorHeader from "@/components/coding-problem/code-editor/code-editor-header/CodeEditorHeader";
@@ -14,6 +16,7 @@ export default function CodingProblemPage({
 }: {
   params: { title: string };
 }) {
+  const router = useRouter();
   const { loading } = useAuth();
   const [problemDetails, setProblemDetails] = useState<ProblemsTypes | null>(
     null
@@ -22,7 +25,9 @@ export default function CodingProblemPage({
   const [language, setLanguage] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [submissionResults, setSubmissionResults] = useState<any>(null);
-  const [isSubmissionTriggered, setIsSubmissionTriggered] = useState<boolean>(false);
+  const [isSubmissionTriggered, setIsSubmissionTriggered] =
+    useState<boolean>(false);
+  const [roomId, setRoomId] = useState<string | null>(null); // Store roomId
 
   // Fetch problem details
   useEffect(() => {
@@ -56,6 +61,7 @@ export default function CodingProblemPage({
     setLanguage(selectedLanguage);
     setIsOpen(false);
   };
+  let convertedLanguage = language.toLowerCase();
 
   // Function to handle code change
   const handleCodeChange = (value: string | undefined) => {
@@ -63,7 +69,6 @@ export default function CodingProblemPage({
   };
 
   // Handle Code Submission
-  let convertedLanguage = language.toLowerCase();
   const handleCodeSubmission = async (): Promise<void> => {
     if (!code || !language) {
       alert("Please enter code and select a language.");
@@ -88,9 +93,29 @@ export default function CodingProblemPage({
     // Get token from server
     const data = await response.json();
     setSubmissionResults(data);
-    
+
     // When user clicked the "Run" btn
     setIsSubmissionTriggered(true);
+  };
+
+  // Generate random ID for user
+  const handleGenerateRoomId = () => {
+    const generatedId =
+      Math.random().toString(36).substring(2, 15) +
+      Math.random().toString(36).substring(2, 15);
+    setRoomId(generatedId);
+  };
+
+  // Handle creating a new room
+  const handleCreateRoom = (): void => {
+    socket.emit("joinRoom", roomId); // Create a new room and join room on server
+    router.push(`/problems/${params.title}/${roomId}`); // Redirect to the same problem page with roomId in the URL
+  };
+
+  // Handle joining an existing room
+  const handleJoinRoom = (roomId: string): void => {
+    socket.emit("joinRoom", roomId); // Join room on the server
+    router.push(`/problems/${params.title}/${roomId}`);
   };
 
   if (loading) return <p>Loading...</p>;
@@ -107,7 +132,15 @@ export default function CodingProblemPage({
           handleCodeSubmission={handleCodeSubmission}
         />
         <CodeEditor language={convertedLanguage} onChange={handleCodeChange} />
-        <CodeEditorTestCases problemDetails={problemDetails} submissionResults={submissionResults} isSubmissionTriggered={isSubmissionTriggered}/>
+        <CodeEditorTestCases
+          problemDetails={problemDetails}
+          submissionResults={submissionResults}
+          isSubmissionTriggered={isSubmissionTriggered}
+          roomId={roomId}
+          handleGenerateRoomId={handleGenerateRoomId}
+          handleCreateRoom={handleCreateRoom}
+          handleJoinRoom={handleJoinRoom}
+        />
       </div>
     </div>
   );
