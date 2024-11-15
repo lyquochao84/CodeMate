@@ -7,10 +7,12 @@ import { IoMdCloseCircleOutline } from "react-icons/io";
 
 const CollaborationModal: React.FC<CollaborationModalProps> = ({
   onClose,
+  roomId,
+  handleGenerateRoomId,
+  handleCreateRoom,
+  handleJoinRoom = () => {},
 }): JSX.Element => {
   const [detectRoom, setDetectRoom] = useState<string>("");
-  const [roomId, setRoomId] = useState<string>("");
-  const [roomName, setRoomName] = useState<string>("");
   const [inputRoomId, setInputRoomId] = useState<string>("");
 
   // Handle change mode
@@ -20,14 +22,6 @@ const CollaborationModal: React.FC<CollaborationModalProps> = ({
     e.preventDefault();
     const buttonText = e.currentTarget.innerText;
     setDetectRoom(buttonText);
-  };
-
-  // Generate random ID for user
-  const handleGenerateRoomId = () => {
-    const generatedId =
-      Math.random().toString(36).substring(2, 15) +
-      Math.random().toString(36).substring(2, 15);
-    setRoomId(generatedId);
   };
 
   // Handle back to default view
@@ -67,21 +61,11 @@ const CollaborationModal: React.FC<CollaborationModalProps> = ({
         {/* Conditional rendering for Create Room */}
         {detectRoom === "Create Room" && (
           <div className={styles.create_room_content}>
-            <p onClick={handleBack} className={styles.back_btn}>Back</p>
+            <p onClick={handleBack} className={styles.back_btn}>
+              Back
+            </p>
             <h3 className={styles.room_header}>New Room</h3>
             <form className={styles.room_form}>
-              <div className={styles.room_form_name_wrapper}>
-                <input
-                  type="text"
-                  id="room"
-                  name="room"
-                  placeholder="Enter room name"
-                  value={roomName}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setRoomName(e.target.value)
-                  }
-                />
-              </div>
               <div className={styles.room_generate_id_wrapper}>
                 <button
                   type="button"
@@ -92,20 +76,27 @@ const CollaborationModal: React.FC<CollaborationModalProps> = ({
                 </button>
                 <input
                   type="text"
-                  value={roomId}
+                  value={roomId || ""}
                   readOnly
                   className={styles.room_id_input}
                 />
               </div>
             </form>
-            <button className={styles.create_room_btn}>Create Room</button>
+            <button
+              className={styles.create_room_btn}
+              onClick={handleCreateRoom}
+            >
+              Create Room
+            </button>
           </div>
         )}
 
         {/* Conditional rendering for Join Room */}
         {detectRoom === "Join Room" && (
           <div className={styles.create_room_content}>
-            <p onClick={handleBack} className={styles.back_btn}>Back</p>
+            <p onClick={handleBack} className={styles.back_btn}>
+              Back
+            </p>
             <h3 className={styles.room_header}>Join Room</h3>
             <form className={styles.room_form}>
               <div className={styles.room_form_id_wrapper}>
@@ -121,7 +112,12 @@ const CollaborationModal: React.FC<CollaborationModalProps> = ({
                 />
               </div>
             </form>
-            <button className={styles.create_room_btn}>Join Room</button>
+            <button
+              className={styles.create_room_btn}
+              onClick={() => handleJoinRoom(roomId || "")}
+            >
+              Join Room
+            </button>
           </div>
         )}
       </div>
