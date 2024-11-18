@@ -4,6 +4,7 @@ import { ProblemDetailsProps } from "@/types/interfaces";
 import { HiOutlineCodeBracketSquare } from "react-icons/hi2";
 import { FaUserFriends } from "react-icons/fa";
 import CollaborationModal from "@/components/collaboration-modal/CollaborationModal";
+import { IoChatbubble } from "react-icons/io5";
 
 const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
   problemDetails,
@@ -12,7 +13,6 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
   roomId,
   handleGenerateRoomId,
   handleCreateRoom,
-  handleJoinRoom,
 }): JSX.Element => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpenTestCases, setIsOpenTestCases] = useState<boolean>(false);
@@ -214,13 +214,20 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
           <p>Console</p>
           <HiOutlineCodeBracketSquare className={styles.brackets_icon} />
         </button>
-        <button
-          className={styles.code_editor_test_cases_close_modal}
-          onClick={handleOpenCollaborationModal}
-        >
-          <FaUserFriends className={styles.code_editor_collaboration_icon} />
-          <p className={styles.code_editor_buttons_txt}>Room</p>
-        </button>
+        {!roomId && (
+          <button
+            className={styles.code_editor_test_cases_close_modal}
+            onClick={handleOpenCollaborationModal}
+          >
+            <FaUserFriends className={styles.code_editor_collaboration_icon} />
+            <p className={styles.code_editor_buttons_txt}>Room</p>
+          </button>
+        )}
+        {roomId && (
+          <div className={styles.chat_icon_wrapper}>
+            <IoChatbubble className={styles.chat_icon} />
+          </div>
+        )}
       </div>
       {isOpenCollaborationModal && (
         <CollaborationModal
@@ -228,7 +235,6 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
           roomId={roomId}
           handleGenerateRoomId={handleGenerateRoomId}
           handleCreateRoom={handleCreateRoom}
-          handleJoinRoom={handleJoinRoom}
         />
       )}
     </div>

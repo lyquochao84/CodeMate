@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styles from "./collaborationModal.module.css";
 import { CollaborationModalProps } from "@/types/interfaces";
 import { MdMeetingRoom } from "react-icons/md";
-import { FaUserFriends } from "react-icons/fa";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 
 const CollaborationModal: React.FC<CollaborationModalProps> = ({
@@ -10,10 +9,8 @@ const CollaborationModal: React.FC<CollaborationModalProps> = ({
   roomId,
   handleGenerateRoomId,
   handleCreateRoom,
-  handleJoinRoom = () => {},
 }): JSX.Element => {
   const [detectRoom, setDetectRoom] = useState<string>("");
-  const [inputRoomId, setInputRoomId] = useState<string>("");
 
   // Handle change mode
   const handleChangeRoom = (
@@ -48,13 +45,6 @@ const CollaborationModal: React.FC<CollaborationModalProps> = ({
               <MdMeetingRoom className={styles.room_modal_content_icon} />
               <p>Create Room</p>
             </button>
-            <button
-              onClick={(e) => handleChangeRoom(e)}
-              className={styles.room_modal_content_item}
-            >
-              <FaUserFriends className={styles.room_modal_content_icon} />
-              <p>Join Room</p>
-            </button>
           </div>
         )}
 
@@ -87,36 +77,6 @@ const CollaborationModal: React.FC<CollaborationModalProps> = ({
               onClick={handleCreateRoom}
             >
               Create Room
-            </button>
-          </div>
-        )}
-
-        {/* Conditional rendering for Join Room */}
-        {detectRoom === "Join Room" && (
-          <div className={styles.create_room_content}>
-            <p onClick={handleBack} className={styles.back_btn}>
-              Back
-            </p>
-            <h3 className={styles.room_header}>Join Room</h3>
-            <form className={styles.room_form}>
-              <div className={styles.room_form_id_wrapper}>
-                <input
-                  type="text"
-                  id="room"
-                  name="room"
-                  placeholder="Enter Room ID"
-                  value={inputRoomId}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setInputRoomId(e.target.value)
-                  }
-                />
-              </div>
-            </form>
-            <button
-              className={styles.create_room_btn}
-              onClick={() => handleJoinRoom(roomId || "")}
-            >
-              Join Room
             </button>
           </div>
         )}

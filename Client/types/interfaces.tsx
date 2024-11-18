@@ -93,7 +93,6 @@ export interface ProblemDetailsProps {
   roomId?: string | null,
   handleGenerateRoomId?: () => void;
   handleCreateRoom?: () => void;
-  handleJoinRoom?: (roomId: string) => void;
 }
 
 // Code Edtior Props
@@ -123,5 +122,4 @@ export interface CollaborationModalProps {
   roomId?: string | null,
   handleGenerateRoomId?: () => void;
   handleCreateRoom?: () => void;
-  handleJoinRoom?: (roomId: string) => void;
 }
