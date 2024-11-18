@@ -207,6 +207,7 @@
 
 .code_editor_bottom_wrapper {
   display: flex;
+  align-items: center;
 }
 
 .code_editor_buttons_txt {
@@ -217,4 +218,30 @@
 
 .code_editor_collaboration_icon {
   font-size: 18px;
+}
+
+.chat_icon_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--button-color);
+  border-radius: 500px;
+  padding: 8px;
+  height: 100%;
+  margin-left: 10px;
+  border: 1px solid var(--button-color);
+}
+
+.chat_icon {
+  color: white;
+  font-size: 20px;
+}
+
+.chat_icon_wrapper:hover {
+  padding: 8px;
+  background-color: transparent;
+  border: 1px solid var(--button-color);
+  border-radius: 100px;
+  cursor: pointer;
+  text-decoration: none;
 }

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./codingChallenge.module.css";
 import { useAuth } from "@/hooks/useAuth";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import socket from "@/config/socket_io";
 import CodingInstruction from "@/components/coding-problem/coding-instruction/CodingInstruction";
 import CodeEditor from "@/components/coding-problem/code-editor/CodeEditor";
@@ -14,7 +14,7 @@ import { formatURL } from "@/lib/formatURL";
 export default function CodingProblemPage({
   params,
 }: {
-  params: { title: string };
+  params: { title: string; roomId?: string }; // Accept roomId as optional
 }) {
   const router = useRouter();
   const { loading } = useAuth();
@@ -27,7 +27,19 @@ export default function CodingProblemPage({
   const [submissionResults, setSubmissionResults] = useState<any>(null);
   const [isSubmissionTriggered, setIsSubmissionTriggered] =
     useState<boolean>(false);
-  const [roomId, setRoomId] = useState<string | null>(null); // Store roomId
+  const [roomId, setRoomId] = useState<string | null>(params.roomId || null); // Store roomId from params if available
+
+  // Initialize socket and join room if roomId exists
+  useEffect(() => {
+    if (roomId) {
+      socket.emit("joinRoom", roomId);
+
+      // Listen for code updates
+      socket.on("receiveCodeUpdate", (newCode: string) => {
+        setCode(newCode);
+      });
+    }
+  }, [roomId]);
 
   // Fetch problem details
   useEffect(() => {
@@ -56,19 +68,17 @@ export default function CodingProblemPage({
     fetchProblemsData();
   }, []);
 
-  // Choose language and close dropdown
-  const handleChooseLanguage = (selectedLanguage: string): void => {
-    setLanguage(selectedLanguage);
-    setIsOpen(false);
-  };
-  let convertedLanguage = language.toLowerCase();
-
-  // Function to handle code change
+  // Function to handle code change and emit code updates
   const handleCodeChange = (value: string | undefined) => {
     setCode(value || "");
+    
+    // If there is live coding, update the code for everyone in the room
+    if (roomId) {
+      socket.emit("codeUpdate", { roomId, code: value });
+    }
   };
 
-  // Handle Code Submission
+  // Handle code submission
   const handleCodeSubmission = async (): Promise<void> => {
     if (!code || !language) {
       alert("Please enter code and select a language.");
@@ -90,15 +100,12 @@ export default function CodingProblemPage({
       }
     );
 
-    // Get token from server
     const data = await response.json();
     setSubmissionResults(data);
-
-    // When user clicked the "Run" btn
     setIsSubmissionTriggered(true);
   };
 
-  // Generate random ID for user
+  // Generate random room ID
   const handleGenerateRoomId = () => {
     const generatedId =
       Math.random().toString(36).substring(2, 15) +
@@ -106,18 +113,14 @@ export default function CodingProblemPage({
     setRoomId(generatedId);
   };
 
-  // Handle creating a new room
+  // Handle creating or joining a room
   const handleCreateRoom = (): void => {
-    socket.emit("joinRoom", roomId); // Create a new room and join room on server
-    router.push(`/problems/${params.title}/${roomId}`); // Redirect to the same problem page with roomId in the URL
+    if (roomId) {
+      socket.emit("joinRoom", roomId); // Join room on server
+      router.push(`/problems/${params.title}/${roomId}`);
+    }
   };
-
-  // Handle joining an existing room
-  const handleJoinRoom = (roomId: string): void => {
-    socket.emit("joinRoom", roomId); // Join room on the server
-    router.push(`/problems/${params.title}/${roomId}`);
-  };
-
+  
   if (loading) return <p>Loading...</p>;
 
   return (
@@ -126,12 +129,17 @@ export default function CodingProblemPage({
       <div className={styles.coding_problem_code_editor}>
         <CodeEditorHeader
           language={language}
-          handleChooseLanguage={handleChooseLanguage}
+          handleChooseLanguage={(selectedLanguage) =>
+            setLanguage(selectedLanguage)
+          }
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           handleCodeSubmission={handleCodeSubmission}
         />
-        <CodeEditor language={convertedLanguage} onChange={handleCodeChange} />
+        <CodeEditor
+          language={language.toLowerCase()}
+          onChange={handleCodeChange}
+        />
         <CodeEditorTestCases
           problemDetails={problemDetails}
           submissionResults={submissionResults}
@@ -139,7 +147,6 @@ export default function CodingProblemPage({
           roomId={roomId}
           handleGenerateRoomId={handleGenerateRoomId}
           handleCreateRoom={handleCreateRoom}
-          handleJoinRoom={handleJoinRoom}
         />
       </div>
     </div>

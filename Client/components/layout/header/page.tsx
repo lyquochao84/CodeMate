@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,16 +15,21 @@ import styles from "./header.module.css";
 import logo from "@/public/img/Logo.png";
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoNotificationsOutline } from "react-icons/io5";
+import { IoMdCloseCircleOutline } from "react-icons/io";
 
 const Header: React.FC = (): JSX.Element => {
   const [userNickname, setUserNickname] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isNotiModalOpen, setIsNotiModalOpen] = useState<boolean>(false);
+  const [isJoinRoomOpen, setIsJoinRoomOpen] = useState<boolean>(false);
+  const [isInRoom, setIsInRoom] = useState<boolean>(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
   const iconRef = useRef<HTMLDivElement | null>(null);
   const notifyModalRef = useRef<HTMLDivElement | null>(null);
   const iconNotifyRef = useRef<HTMLDivElement | null>(null);
+  const joinRoomRef = useRef<HTMLDivElement | null>(null);
   const router: AppRouterInstance = useRouter();
+  const pathname = usePathname(); // Get the current route path
   const { isLoggedIn, logOut, loading } = useAuth();
 
   // Get user's nickname
@@ -65,6 +70,10 @@ const Header: React.FC = (): JSX.Element => {
 
   const toggleNotifyModal = (): void => {
     setIsNotiModalOpen((prev) => !prev);
+  };
+
+  const toggleJoinRoom = (): void => {
+    setIsJoinRoomOpen((prev) => !prev);
   };
 
   // Log Out Button
@@ -111,14 +120,56 @@ const Header: React.FC = (): JSX.Element => {
   useEffect(() => {
     if (isNotiModalOpen) {
       document.addEventListener("mousedown", handleNotifyClickOutside);
-    } 
-    else {
+    } else {
       document.removeEventListener("mousedown", handleNotifyClickOutside);
     }
 
     // Clean up the event listener when the component unmounts
-    return () => document.removeEventListener("mousedown", handleNotifyClickOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleNotifyClickOutside);
   }, [isNotiModalOpen]);
+
+  // Handle mouse event that clicked outside of the join room modal
+  const handleClickJoinRoomOutside = (e: MouseEvent): void => {
+    if (
+      joinRoomRef.current &&
+      !joinRoomRef.current.contains(e.target as Node)
+    ) {
+      setIsJoinRoomOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isJoinRoomOpen) {
+      document.addEventListener("mousedown", handleClickJoinRoomOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickJoinRoomOutside);
+    }
+
+    // Clean up the event listener when the component unmounts
+    return () =>
+      document.removeEventListener("mousedown", handleClickJoinRoomOutside);
+  }, [isJoinRoomOpen]);
+
+  // Check if user is in room or not
+  useEffect(() => {
+    // Check if the pathname includes a roomId
+    const pathParts = pathname.split("/");
+    const hasRoomId = pathParts[3]; 
+    setIsInRoom(!!hasRoomId); 
+  }, [pathname]);
+
+  // Join Room Button
+  const handleJoinRoom = (): void => {
+    console.log("Join Room");
+  };
+
+  // Leave Room Button
+  const handleLeaveRoom = (): void => {
+    console.log("Leave room logic here");
+    setIsInRoom(false);
+    router.push(`/problems`);
+  };
 
   // Loading until component mount
   if (loading) return <p>Loading...</p>;
@@ -136,22 +187,10 @@ const Header: React.FC = (): JSX.Element => {
           // Features
           <>
             <div className={styles.header_features}>
-              <Link
-                href="/problems"
-                className={styles.header_navigation_link}
-              >
+              <Link href="/problems" className={styles.header_navigation_link}>
                 <p className={styles.header_navigation_item}>Problems</p>
               </Link>
-              <Link
-                href="/leaderboard"
-                className={styles.header_navigation_link}
-              >
-                <p className={styles.header_navigation_item}>Leaderboard</p>
-              </Link>
-              <Link
-                href="/about"
-                className={styles.header_navigation_link}
-              >
+              <Link href="/about" className={styles.header_navigation_link}>
                 <p className={styles.header_navigation_item}>About</p>
               </Link>
             </div>
@@ -173,6 +212,14 @@ const Header: React.FC = (): JSX.Element => {
         {isLoggedIn ? (
           <>
             <>
+              <button
+                className={`${
+                  isInRoom ? styles.leave_room_btn : styles.join_room_btn
+                }`}
+                onClick={isInRoom ? handleLeaveRoom : toggleJoinRoom}
+              >
+                {isInRoom ? "Leave Room" : "Join Room"}
+              </button>
               <div className={styles.notification_wrapper}>
                 <div ref={iconNotifyRef}>
                   <IoNotificationsOutline
@@ -181,10 +228,13 @@ const Header: React.FC = (): JSX.Element => {
                   />
                 </div>
                 {isNotiModalOpen && (
-                  <div className={styles.notification_modal_wrapper} ref={notifyModalRef}>
+                  <div
+                    className={styles.notification_modal_wrapper}
+                    ref={notifyModalRef}
+                  >
                     <h3 className={styles.modal_option_header}>Notification</h3>
                     <div className={styles.notification_item_wrapper}>
-                      <Link href='/' className={styles.notification_item_link}>
+                      <Link href="/" className={styles.notification_item_link}>
                         <div className={styles.notification_item_header}>
                           <p>Update A</p>
                           <p>October 14, 2024, 10:30 PM</p>
@@ -283,6 +333,41 @@ const Header: React.FC = (): JSX.Element => {
                   >
                     Sign Out
                   </button>
+                </div>
+              </div>
+            )}
+            {isJoinRoomOpen && (
+              <div className={styles.modal_overlay}>
+                <div
+                  className={styles.join_room_modal_content}
+                  onClick={(e) => e.stopPropagation()}
+                  ref={joinRoomRef}
+                >
+                  <IoMdCloseCircleOutline
+                    className={styles.modal_close_btn}
+                    onClick={toggleJoinRoom}
+                  />
+                  <div className={styles.create_room_content}>
+                    <h3 className={styles.room_header}>Join Room</h3>
+                    <form className={styles.room_form}>
+                      <div className={styles.room_form_id_wrapper}>
+                        <input
+                          type="text"
+                          id="room"
+                          name="room"
+                          placeholder="Enter Room ID"
+                          value={""}
+                          onChange={() => ""}
+                        />
+                      </div>
+                    </form>
+                    <button
+                      className={styles.create_room_btn}
+                      onClick={handleJoinRoom}
+                    >
+                      Join Room
+                    </button>
+                  </div>
                 </div>
               </div>
             )}

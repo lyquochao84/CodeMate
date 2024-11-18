@@ -25,7 +25,7 @@ function setupSocketIO(server) {
     // Handle code updates
     socket.on("codeUpdate", (data) => {
       const { roomId, code } = data;
-      socket.to(roomId).emit("receiveCodeUpdate", code); // Broadcast to others in the room
+      socket.to(roomId).emit("receiveCodeUpdate", code); 
     });
 
     // Client disconencted from WebSocket
