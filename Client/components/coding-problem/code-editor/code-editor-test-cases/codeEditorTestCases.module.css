@@ -229,6 +229,7 @@
   padding: 8px;
   height: 100%;
   margin-left: 10px;
+  right: 0;
   border: 1px solid var(--button-color);
 }
 
