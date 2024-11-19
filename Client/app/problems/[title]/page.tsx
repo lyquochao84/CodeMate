@@ -14,7 +14,7 @@ import { formatURL } from "@/lib/formatURL";
 export default function CodingProblemPage({
   params,
 }: {
-  params: { title: string; roomId?: string }; // Accept roomId as optional
+  params: { title: string; roomId?: string }; 
 }) {
   const router = useRouter();
   const { loading } = useAuth();
@@ -27,20 +27,8 @@ export default function CodingProblemPage({
   const [submissionResults, setSubmissionResults] = useState<any>(null);
   const [isSubmissionTriggered, setIsSubmissionTriggered] =
     useState<boolean>(false);
-  const [roomId, setRoomId] = useState<string | null>(params.roomId || null); // Store roomId from params if available
-
-  // Initialize socket and join room if roomId exists
-  useEffect(() => {
-    if (roomId) {
-      socket.emit("joinRoom", roomId);
-
-      // Listen for code updates
-      socket.on("receiveCodeUpdate", (newCode: string) => {
-        setCode(newCode);
-      });
-    }
-  }, [roomId]);
-
+  const [roomId, setRoomId] = useState<string>(""); 
+  
   // Fetch problem details
   useEffect(() => {
     const fetchProblemsData = async () => {
@@ -71,11 +59,6 @@ export default function CodingProblemPage({
   // Function to handle code change and emit code updates
   const handleCodeChange = (value: string | undefined) => {
     setCode(value || "");
-    
-    // If there is live coding, update the code for everyone in the room
-    if (roomId) {
-      socket.emit("codeUpdate", { roomId, code: value });
-    }
   };
 
   // Handle code submission
@@ -114,10 +97,35 @@ export default function CodingProblemPage({
   };
 
   // Handle creating or joining a room
-  const handleCreateRoom = (): void => {
-    if (roomId) {
-      socket.emit("joinRoom", roomId); // Join room on server
-      router.push(`/problems/${params.title}/${roomId}`);
+  const handleCreateRoom = async (): Promise<void> => {
+    if (!roomId) {
+      alert("Please generate the room Id");
+      return;
+    }
+
+    try {
+      const response: Response = await fetch(
+        "http://localhost:5000/room/create-room",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            roomId: roomId,
+            title: formatURL(params.title)
+          })
+        }
+      );
+
+      if (response.status === 201) {
+        router.push(`/problems/${params.title}/${roomId}`);
+      }
+    }
+    catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log(error);
+      }
     }
   };
   

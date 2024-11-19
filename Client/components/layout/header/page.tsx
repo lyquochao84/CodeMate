@@ -49,7 +49,8 @@ const Header: React.FC = (): JSX.Element => {
 
           if (response.ok) {
             setUserNickname(result.nickname);
-          } else {
+          } 
+          else {
             console.error(`Error fetching user data: ${result.message}`);
           }
         } catch (error: unknown) {
