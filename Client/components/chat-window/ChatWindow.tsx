@@ -1,10 +1,18 @@
 import React from "react";
-import styles from './chatWindow.module.css';
+import styles from "./chatWindow.module.css";
+import { ChatWindowProps } from "@/types/interfaces";
 
-const ChatWindow: React.FC = (): JSX.Element => {
-    return (
-        <h1>Chat</h1>
-    )
+const ChatWindow: React.FC<ChatWindowProps> = ({ roomUsers }): JSX.Element => {
+  console.log(roomUsers);
+  return (
+    <div className={styles.chat_window}>
+      <ul>
+        {roomUsers.map((user, index) => (
+          <li key={index}>{user}</li>
+        ))}
+      </ul>
+    </div>
+  );
 };
 
 export default ChatWindow;

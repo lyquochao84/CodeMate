@@ -10,6 +10,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [userNickname, setUserNickname] = useState<string>("");
 
   useEffect(() => {
     const checkAuth = (): void => {
@@ -46,8 +47,40 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     setIsLoggedIn(false);
   };
 
+   // Get user's nickname
+   useEffect(() => {
+    if (isLoggedIn) {
+      const fetchUserName = async () => {
+        try {
+          const response: Response = await fetch(
+            "http://localhost:5000/auth/user",
+            {
+              method: "GET",
+              credentials: "include", // Include cookie
+            }
+          );
+
+          const result = await response.json();
+
+          if (response.ok) {
+            setUserNickname(result.nickname);
+          } 
+          else {
+            console.error(`Error fetching user data: ${result.message}`);
+          }
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            console.error(`${error.message}`);
+          }
+        }
+      };
+
+      fetchUserName();
+    }
+  }, [isLoggedIn]);
+
   return (
-    <AuthContext.Provider value={{ loading, isLoggedIn, logIn, logOut }}>
+    <AuthContext.Provider value={{ loading, isLoggedIn, logIn, logOut, userNickname }}>
       {children}
     </AuthContext.Provider>
   );

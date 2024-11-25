@@ -58,7 +58,8 @@ const LogInForm: React.FC<RegisterFormProps> = ({
 
       if (!response.ok) {
         throw new Error("Log In Falied!");
-      } else {
+      } 
+      else {
         setSuccessMessage("Log In Successfully");
         setUserInfos({ email: "", password: "" });
         logIn();

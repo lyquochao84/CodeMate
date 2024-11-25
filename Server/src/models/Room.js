@@ -6,16 +6,14 @@ const roomSchema = new mongoose.Schema({
     require: true,
     unique: true,
   },
-  title: { 
-    type: String, 
-    required: true 
+  title: {
+    type: String,
+    required: true,
   },
-  users: [
-    {
-      socketId: String,
-      name: String,
-    },
-  ],
+  users: {
+    type: [String],
+    default: [], // Initialize as an empty array
+  }
 });
 
 const Room = mongoose.model("Room", roomSchema);

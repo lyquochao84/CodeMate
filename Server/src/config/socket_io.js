@@ -1,6 +1,8 @@
 const { Server } = require("socket.io");
+const Room = require("../models/Room");
 
 function setupSocketIO(server) {
+  // Set up Socket.IO
   const io = new Server(server, {
     cors: {
       origin: "http://localhost:3000",
@@ -9,28 +11,35 @@ function setupSocketIO(server) {
     },
   });
 
+  // Open new connection
   io.on("connection", (socket) => {
-    console.log("New client connected:", socket.id);
+    // The event when the user first created a new room or joined an existing room
+    socket.on("joinRoom", async ({ room_id, user }) => {
+      try {
+        // Find the room in database
+        const room = await Room.findOne({ room_id });
+        if (!room) {
+          return socket.emit("Error", { message: "Room not found." });
+        }
 
-    // Listen for room joining
-    socket.on("joinRoom", (roomId) => {
-      socket.join(roomId);
-      console.log(`Client ${socket.id} joined room ${roomId}`);
-      io.to(roomId).emit(
-        "userJoined",
-        `User ${socket.id} joined room ${roomId}`
-      );
-    });
+        console.log(room);
 
-    // Handle code updates
-    socket.on("codeUpdate", (data) => {
-      const { roomId, code } = data;
-      socket.to(roomId).emit("receiveCodeUpdate", code); 
-    });
+        // Check if the user is already in the room
+        if (!room.users.includes(user)) {
+          room.users.push(user);
+          await room.save();
 
-    // Client disconencted from WebSocket
-    socket.on("disconnect", () => {
-      console.log("Client disconnected:", socket.id);
+
+          // Notify all clients in the room about the updated users list
+          io.to(room_id).emit("updatedUser", { users: room.users });
+        }
+
+        // Join the socket.io room
+        socket.join(room_id); 
+      } 
+      catch (error) {
+        socket.emit("error", { message: "Failed to join room.", error });
+      }
     });
   });
 }
