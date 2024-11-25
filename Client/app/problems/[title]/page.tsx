@@ -14,7 +14,7 @@ import { formatURL } from "@/lib/formatURL";
 export default function CodingProblemPage({
   params,
 }: {
-  params: { title: string; roomId?: string }; 
+  params: { title: string; id?: string };
 }) {
   const router = useRouter();
   const { loading } = useAuth();
@@ -22,13 +22,38 @@ export default function CodingProblemPage({
     null
   );
   const [code, setCode] = useState<string>("");
+  const [roomUsers, setRoomUsers] = useState<string[]>([]); // Store users in room
   const [language, setLanguage] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [submissionResults, setSubmissionResults] = useState<any>(null);
   const [isSubmissionTriggered, setIsSubmissionTriggered] =
     useState<boolean>(false);
-  const [roomId, setRoomId] = useState<string>(""); 
-  
+  const [roomId, setRoomId] = useState<string>("");
+  const { userNickname } = useAuth();
+
+  // Socket.IO
+  useEffect(() => {
+    // If a room created
+    if (params.id) {
+      // Emit joinRoom event
+      socket.emit("joinRoom", {
+        room_id: params.id,
+        user: { name: userNickname, id: socket.id },
+      });
+
+      // Listen for updates to the user list
+      socket.on("updatedUser", (data) => {
+        console.log("Received updated users:", data.users);
+        setRoomUsers(data.users);
+      });
+
+      // Cleanup on component unmount
+      return () => {
+        socket.off("updatedUser");
+      };
+    }
+  }, [userNickname, params.id]);
+
   // Fetch problem details
   useEffect(() => {
     const fetchProblemsData = async () => {
@@ -46,7 +71,8 @@ export default function CodingProblemPage({
         );
         const data = await response.json();
         setProblemDetails(data.problem);
-      } catch (error: unknown) {
+      } 
+      catch (error: unknown) {
         if (error instanceof Error) {
           console.log(error);
         }
@@ -113,22 +139,28 @@ export default function CodingProblemPage({
           },
           body: JSON.stringify({
             roomId: roomId,
-            title: formatURL(params.title)
-          })
+            title: params.title,
+            user: userNickname,
+          }),
         }
       );
 
+      const data = await response.json();
+     
       if (response.status === 201) {
         router.push(`/problems/${params.title}/${roomId}`);
       }
-    }
+      else {
+        alert("Failed to create a room");
+      }
+    } 
     catch (error: unknown) {
       if (error instanceof Error) {
         console.log(error);
       }
     }
   };
-  
+
   if (loading) return <p>Loading...</p>;
 
   return (
@@ -153,6 +185,8 @@ export default function CodingProblemPage({
           submissionResults={submissionResults}
           isSubmissionTriggered={isSubmissionTriggered}
           roomId={roomId}
+          paramsId={params.id}
+          roomUsers={roomUsers}
           handleGenerateRoomId={handleGenerateRoomId}
           handleCreateRoom={handleCreateRoom}
         />

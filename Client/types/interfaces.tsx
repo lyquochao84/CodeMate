@@ -17,6 +17,7 @@ export interface AuthContextTypes {
   isLoggedIn: boolean;
   logIn: () => void;
   logOut: () => void;
+  userNickname: string;
 }
 
 // Recommendation Lists
@@ -90,7 +91,9 @@ export interface ProblemDetailsProps {
   problemDetails: ProblemsTypes | null;
   submissionResults?: any;
   isSubmissionTriggered?: boolean;
-  roomId?: string | null,
+  roomId?: string | null;
+  paramsId?: string | null;
+  roomUsers?: string[];
   handleGenerateRoomId?: () => void;
   handleCreateRoom?: () => void;
 }
@@ -122,4 +125,10 @@ export interface CollaborationModalProps {
   roomId?: string | null,
   handleGenerateRoomId?: () => void;
   handleCreateRoom?: () => void;
+}
+
+
+// Chat Window
+export interface ChatWindowProps {
+  roomUsers: string[];
 }

@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Image from "next/image";
 import Link from "next/link";
-
+import socket from "@/config/socket_io";
 import listImg from "@/public/img/check-list.png";
 import friendListImg from "@/public/img/followers.png";
 import progressImg from "@/public/img/goal.png";
@@ -18,11 +18,11 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 
 const Header: React.FC = (): JSX.Element => {
-  const [userNickname, setUserNickname] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isNotiModalOpen, setIsNotiModalOpen] = useState<boolean>(false);
   const [isJoinRoomOpen, setIsJoinRoomOpen] = useState<boolean>(false);
   const [isInRoom, setIsInRoom] = useState<boolean>(false);
+  const [inputRoomId, setInputRoomId] = useState<string>("");
   const modalRef = useRef<HTMLDivElement | null>(null);
   const iconRef = useRef<HTMLDivElement | null>(null);
   const notifyModalRef = useRef<HTMLDivElement | null>(null);
@@ -30,39 +30,7 @@ const Header: React.FC = (): JSX.Element => {
   const joinRoomRef = useRef<HTMLDivElement | null>(null);
   const router: AppRouterInstance = useRouter();
   const pathname = usePathname(); // Get the current route path
-  const { isLoggedIn, logOut, loading } = useAuth();
-
-  // Get user's nickname
-  useEffect(() => {
-    if (isLoggedIn) {
-      const fetchUserName = async () => {
-        try {
-          const response: Response = await fetch(
-            "http://localhost:5000/auth/user",
-            {
-              method: "GET",
-              credentials: "include", // Include cookie
-            }
-          );
-
-          const result = await response.json();
-
-          if (response.ok) {
-            setUserNickname(result.nickname);
-          } 
-          else {
-            console.error(`Error fetching user data: ${result.message}`);
-          }
-        } catch (error: unknown) {
-          if (error instanceof Error) {
-            console.error(`${error.message}`);
-          }
-        }
-      };
-
-      fetchUserName();
-    }
-  }, [isLoggedIn]);
+  const { isLoggedIn, logOut, loading, userNickname } = useAuth();
 
   // Toggle modal open/close
   const toggleModal = (): void => {
@@ -156,20 +124,57 @@ const Header: React.FC = (): JSX.Element => {
   useEffect(() => {
     // Check if the pathname includes a roomId
     const pathParts = pathname.split("/");
-    const hasRoomId = pathParts[3]; 
-    setIsInRoom(!!hasRoomId); 
+    const hasRoomId = pathParts[3];
+    setIsInRoom(!!hasRoomId);
   }, [pathname]);
 
   // Join Room Button
-  const handleJoinRoom = (): void => {
-    console.log("Join Room");
+  const handleJoinRoom = async (): Promise<void> => {
+    if (!inputRoomId) {
+      alert("Please type your Room ID");
+      return;
+    }
+
+    try {
+      const response: Response = await fetch(
+        "http://localhost:5000/room/join-room",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            roomId: inputRoomId,
+            user: userNickname,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      // Navigate user to the room if the room-id was found
+      if (response.ok && data.message === "Joined room successfully") {
+        socket.emit("joinRoom", { inputRoomId, user: { name: userNickname, id: socket.id } });
+        alert("Successfully joined the room!");
+        router.push(`/problems/${data.title}/${inputRoomId}`);
+        setIsInRoom(true);
+      }
+
+      // Alert user if they entered the wrong room-id
+      if (response.status === 404 && data.message === "Room not found!") {
+        alert("Please re-enter the Room ID");
+      }
+    } 
+    catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log(error);
+      }
+    }
   };
 
   // Leave Room Button
   const handleLeaveRoom = (): void => {
-    console.log("Leave room logic here");
-    setIsInRoom(false);
-    router.push(`/problems`);
+
   };
 
   // Loading until component mount
@@ -357,8 +362,12 @@ const Header: React.FC = (): JSX.Element => {
                           id="room"
                           name="room"
                           placeholder="Enter Room ID"
-                          value={""}
-                          onChange={() => ""}
+                          value={inputRoomId}
+                          onChange={(
+                            e: React.ChangeEvent<HTMLInputElement>
+                          ) => {
+                            setInputRoomId(e.target.value);
+                          }}
                         />
                       </div>
                     </form>

@@ -5,12 +5,15 @@ import { HiOutlineCodeBracketSquare } from "react-icons/hi2";
 import { FaUserFriends } from "react-icons/fa";
 import CollaborationModal from "@/components/collaboration-modal/CollaborationModal";
 import { IoChatbubble } from "react-icons/io5";
+import ChatWindow from "@/components/chat-window/ChatWindow";
 
 const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
   problemDetails,
   submissionResults,
   isSubmissionTriggered,
   roomId,
+  paramsId,
+  roomUsers,
   handleGenerateRoomId,
   handleCreateRoom,
 }): JSX.Element => {
@@ -24,6 +27,7 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
   >([]);
   const [isOpenCollaborationModal, setIsOpenCollaborationModal] =
     useState<boolean>(false);
+  const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
 
   // Effect to handle the loading delay after "Run" is triggered
   useEffect(() => {
@@ -72,6 +76,10 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
 
   const handleOpenTestCasesModal = (): void => {
     setIsOpenTestCases((prev) => !prev);
+  };
+
+  const handleOpenChat = (): void => {
+    setIsChatOpen((prev) => !prev);
   };
 
   const runTime = Math.floor(submissionResults?.time);
@@ -214,7 +222,7 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
           <p>Console</p>
           <HiOutlineCodeBracketSquare className={styles.brackets_icon} />
         </button>
-        {!roomId && (
+        {!paramsId && (
           <button
             className={styles.code_editor_test_cases_close_modal}
             onClick={handleOpenCollaborationModal}
@@ -223,9 +231,12 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
             <p className={styles.code_editor_buttons_txt}>Room</p>
           </button>
         )}
-        {roomId && (
+        {paramsId && (
           <div className={styles.chat_icon_wrapper}>
-            <IoChatbubble className={styles.chat_icon} />
+            <IoChatbubble
+              className={styles.chat_icon}
+              onClick={handleOpenChat}
+            />
           </div>
         )}
       </div>
@@ -236,6 +247,9 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
           handleGenerateRoomId={handleGenerateRoomId}
           handleCreateRoom={handleCreateRoom}
         />
+      )}
+      {isChatOpen && (
+        <ChatWindow roomUsers={roomUsers || []} />
       )}
     </div>
   );
