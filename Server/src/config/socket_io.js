@@ -1,5 +1,6 @@
 const { Server } = require("socket.io");
-const Room = require("../models/Room");
+const Actions = require("../lib/actions");
+const ACTIONS = require("../lib/actions");
 
 function setupSocketIO(server) {
   // Set up Socket.IO
@@ -11,35 +12,37 @@ function setupSocketIO(server) {
     },
   });
 
-  // Open new connection
-  io.on("connection", (socket) => {
-    // The event when the user first created a new room or joined an existing room
-    socket.on("joinRoom", async ({ room_id, user }) => {
-      try {
-        // Find the room in database
-        const room = await Room.findOne({ room_id });
-        if (!room) {
-          return socket.emit("Error", { message: "Room not found." });
-        }
+  const CodeMateAI = "CodeMate_AI";
+  const userMap = {};
 
-        console.log(room);
-
-        // Check if the user is already in the room
-        if (!room.users.includes(user)) {
-          room.users.push(user);
-          await room.save();
-
-
-          // Notify all clients in the room about the updated users list
-          io.to(room_id).emit("updatedUser", { users: room.users });
-        }
-
-        // Join the socket.io room
-        socket.join(room_id); 
-      } 
-      catch (error) {
-        socket.emit("error", { message: "Failed to join room.", error });
+  const getAllConnectedUsers = (roomId) => {
+    return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(
+      (socketId) => {
+        return {
+          socketId,
+          username: userMap[socketId],
+        };
       }
+    );
+  };
+
+  io.on("connection", (socket) => {
+    console.log("Socket connected", socket.id);
+
+    // Join Room
+    socket.on(ACTIONS.JOIN_ROOM, ({ roomId, userNickname }) => {
+      userMap[socket.id] = userNickname;
+      socket.join(roomId);
+      const users = getAllConnectedUsers(roomId);
+      
+      // Notify to all the users in the room that the new user just joined
+      users.forEach(({ socketId }) => {
+        io.to(socketId).emit(ACTIONS.JOINED_ROOM, {
+          users,
+          userNickname,
+          socketId: socket.id,
+        })
+      })
     });
   });
 }

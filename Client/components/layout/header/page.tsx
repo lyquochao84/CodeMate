@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Image from "next/image";
 import Link from "next/link";
-import socket from "@/config/socket_io";
+
 import listImg from "@/public/img/check-list.png";
 import friendListImg from "@/public/img/followers.png";
 import progressImg from "@/public/img/goal.png";
@@ -16,8 +16,11 @@ import logo from "@/public/img/Logo.png";
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { IoMdCloseCircleOutline } from "react-icons/io";
+import { useProblemTitle } from "@/hooks/useProblemTitle";
 
 const Header: React.FC = (): JSX.Element => {
+  const { problemTitle } = useProblemTitle();
+  console.log(problemTitle);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isNotiModalOpen, setIsNotiModalOpen] = useState<boolean>(false);
   const [isJoinRoomOpen, setIsJoinRoomOpen] = useState<boolean>(false);
@@ -129,52 +132,18 @@ const Header: React.FC = (): JSX.Element => {
   }, [pathname]);
 
   // Join Room Button
-  const handleJoinRoom = async (): Promise<void> => {
+  const handleJoinRoom = (): void => {
     if (!inputRoomId) {
-      alert("Please type your Room ID");
+      alert("Please enter Room ID");
       return;
     }
 
-    try {
-      const response: Response = await fetch(
-        "http://localhost:5000/room/join-room",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            roomId: inputRoomId,
-            user: userNickname,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      // Navigate user to the room if the room-id was found
-      if (response.ok && data.message === "Joined room successfully") {
-        socket.emit("joinRoom", { inputRoomId, user: { name: userNickname, id: socket.id } });
-        alert("Successfully joined the room!");
-        router.push(`/problems/${data.title}/${inputRoomId}`);
-        setIsInRoom(true);
-      }
-
-      // Alert user if they entered the wrong room-id
-      if (response.status === 404 && data.message === "Room not found!") {
-        alert("Please re-enter the Room ID");
-      }
-    } 
-    catch (error: unknown) {
-      if (error instanceof Error) {
-        console.log(error);
-      }
-    }
+    router.push(`/problems/${problemTitle}/${inputRoomId}`);
   };
 
   // Leave Room Button
   const handleLeaveRoom = (): void => {
-
+    
   };
 
   // Loading until component mount

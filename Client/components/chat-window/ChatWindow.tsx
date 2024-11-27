@@ -3,12 +3,11 @@ import styles from "./chatWindow.module.css";
 import { ChatWindowProps } from "@/types/interfaces";
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ roomUsers }): JSX.Element => {
-  console.log(roomUsers);
   return (
     <div className={styles.chat_window}>
       <ul>
         {roomUsers.map((user, index) => (
-          <li key={index}>{user}</li>
+          <li key={index}>{user.username}</li> 
         ))}
       </ul>
     </div>

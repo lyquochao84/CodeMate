@@ -3,56 +3,32 @@ import React, { useEffect, useState } from "react";
 import styles from "./codingChallenge.module.css";
 import { useAuth } from "@/hooks/useAuth";
 import { useRouter, useParams } from "next/navigation";
-import socket from "@/config/socket_io";
+
 import CodingInstruction from "@/components/coding-problem/coding-instruction/CodingInstruction";
 import CodeEditor from "@/components/coding-problem/code-editor/CodeEditor";
 import CodeEditorHeader from "@/components/coding-problem/code-editor/code-editor-header/CodeEditorHeader";
 import CodeEditorTestCases from "@/components/coding-problem/code-editor/code-editor-test-cases/CodeEditorTestCases";
-import { ProblemsTypes } from "@/types/interfaces";
+import { CodingProblemPageProps, ProblemsTypes } from "@/types/interfaces";
 import { formatURL } from "@/lib/formatURL";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { useProblemTitle } from "@/hooks/useProblemTitle";
 
 export default function CodingProblemPage({
-  params,
-}: {
-  params: { title: string; id?: string };
-}) {
-  const router = useRouter();
+  params, roomUsers
+}: CodingProblemPageProps) {
+  const router: AppRouterInstance = useRouter();
   const { loading } = useAuth();
+  const { setProblemTitle } = useProblemTitle();
   const [problemDetails, setProblemDetails] = useState<ProblemsTypes | null>(
     null
   );
   const [code, setCode] = useState<string>("");
-  const [roomUsers, setRoomUsers] = useState<string[]>([]); // Store users in room
   const [language, setLanguage] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [submissionResults, setSubmissionResults] = useState<any>(null);
   const [isSubmissionTriggered, setIsSubmissionTriggered] =
     useState<boolean>(false);
   const [roomId, setRoomId] = useState<string>("");
-  const { userNickname } = useAuth();
-
-  // Socket.IO
-  useEffect(() => {
-    // If a room created
-    if (params.id) {
-      // Emit joinRoom event
-      socket.emit("joinRoom", {
-        room_id: params.id,
-        user: { name: userNickname, id: socket.id },
-      });
-
-      // Listen for updates to the user list
-      socket.on("updatedUser", (data) => {
-        console.log("Received updated users:", data.users);
-        setRoomUsers(data.users);
-      });
-
-      // Cleanup on component unmount
-      return () => {
-        socket.off("updatedUser");
-      };
-    }
-  }, [userNickname, params.id]);
 
   // Fetch problem details
   useEffect(() => {
@@ -71,8 +47,7 @@ export default function CodingProblemPage({
         );
         const data = await response.json();
         setProblemDetails(data.problem);
-      } 
-      catch (error: unknown) {
+      } catch (error: unknown) {
         if (error instanceof Error) {
           console.log(error);
         }
@@ -81,6 +56,11 @@ export default function CodingProblemPage({
 
     fetchProblemsData();
   }, []);
+
+  // Share the params.title between the Context children
+  useEffect(() => {
+    setProblemTitle(params.title);
+  }, [params.title, setProblemTitle]);
 
   // Function to handle code change and emit code updates
   const handleCodeChange = (value: string | undefined) => {
@@ -123,42 +103,13 @@ export default function CodingProblemPage({
   };
 
   // Handle creating or joining a room
-  const handleCreateRoom = async (): Promise<void> => {
+  const handleCreateRoom = (): void => {
     if (!roomId) {
-      alert("Please generate the room Id");
+      alert("Please Generate Room ID");
       return;
     }
 
-    try {
-      const response: Response = await fetch(
-        "http://localhost:5000/room/create-room",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            roomId: roomId,
-            title: params.title,
-            user: userNickname,
-          }),
-        }
-      );
-
-      const data = await response.json();
-     
-      if (response.status === 201) {
-        router.push(`/problems/${params.title}/${roomId}`);
-      }
-      else {
-        alert("Failed to create a room");
-      }
-    } 
-    catch (error: unknown) {
-      if (error instanceof Error) {
-        console.log(error);
-      }
-    }
+    router.push(`/problems/${params.title}/${roomId}`);
   };
 
   if (loading) return <p>Loading...</p>;
@@ -185,8 +136,8 @@ export default function CodingProblemPage({
           submissionResults={submissionResults}
           isSubmissionTriggered={isSubmissionTriggered}
           roomId={roomId}
-          paramsId={params.id}
           roomUsers={roomUsers}
+          paramsId={params.id}
           handleGenerateRoomId={handleGenerateRoomId}
           handleCreateRoom={handleCreateRoom}
         />

@@ -20,6 +20,12 @@ export interface AuthContextTypes {
   userNickname: string;
 }
 
+// Problem Params Title Types
+export interface ProblemContextType {
+  problemTitle: string | null;
+  setProblemTitle: (title: string) => void;
+}
+
 // Recommendation Lists
 export interface RecommendationListsTypes {
   list: string;
@@ -85,6 +91,12 @@ export interface PaginationProps {
   totalPages: number;
 }
 
+// Coding Problem Page
+export interface CodingProblemPageProps {
+  params: { title: string; id?: string };
+  roomUsers: string[];
+}
+
 // Problem Details Page Props
 export interface ProblemDetailsProps {
   // params: { title: string };
@@ -92,8 +104,8 @@ export interface ProblemDetailsProps {
   submissionResults?: any;
   isSubmissionTriggered?: boolean;
   roomId?: string | null;
-  paramsId?: string | null;
   roomUsers?: string[];
+  paramsId?: string | null;
   handleGenerateRoomId?: () => void;
   handleCreateRoom?: () => void;
 }
@@ -127,8 +139,12 @@ export interface CollaborationModalProps {
   handleCreateRoom?: () => void;
 }
 
+interface User {
+  socketId: string;
+  username: string;
+}
 
 // Chat Window
 export interface ChatWindowProps {
-  roomUsers: string[];
+  roomUsers: User[];
 }
