@@ -12,8 +12,8 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
   submissionResults,
   isSubmissionTriggered,
   roomId,
-  paramsId,
   roomUsers,
+  paramsId,
   handleGenerateRoomId,
   handleCreateRoom,
 }): JSX.Element => {

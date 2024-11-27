@@ -10,7 +10,7 @@ const logger = require("./middlewares/logger");
 const cors = require("./middlewares/cors");
 const cookieParser = require('./middlewares/cookieParser');
 
-const setupSocket = require("./config/socket_io");
+const setupSocketIO  = require("./config/socket_io");
 const configurePassport = require('./config/passport');
 
 const insertProblems = require('./scripts/problems');
@@ -19,7 +19,7 @@ const insertGeneralLists = require('./scripts/generalLists');
 
 const app = express();
 const server = http.createServer(app);
-const io = setupSocket(server);
+const io = setupSocketIO(server);
 const PORT = 5000;
 
 // Connect to DB
