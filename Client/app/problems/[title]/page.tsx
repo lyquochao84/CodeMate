@@ -11,14 +11,12 @@ import CodeEditorTestCases from "@/components/coding-problem/code-editor/code-ed
 import { CodingProblemPageProps, ProblemsTypes } from "@/types/interfaces";
 import { formatURL } from "@/lib/formatURL";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { useProblemTitle } from "@/hooks/useProblemTitle";
 
 export default function CodingProblemPage({
   params, roomUsers
 }: CodingProblemPageProps) {
   const router: AppRouterInstance = useRouter();
   const { loading } = useAuth();
-  const { setProblemTitle } = useProblemTitle();
   const [problemDetails, setProblemDetails] = useState<ProblemsTypes | null>(
     null
   );
@@ -56,12 +54,7 @@ export default function CodingProblemPage({
 
     fetchProblemsData();
   }, []);
-
-  // Share the params.title between the Context children
-  useEffect(() => {
-    setProblemTitle(params.title);
-  }, [params.title, setProblemTitle]);
-
+  
   // Function to handle code change and emit code updates
   const handleCodeChange = (value: string | undefined) => {
     setCode(value || "");
@@ -103,10 +96,37 @@ export default function CodingProblemPage({
   };
 
   // Handle creating or joining a room
-  const handleCreateRoom = (): void => {
+  const handleCreateRoom = async (): Promise<void> => {
     if (!roomId) {
       alert("Please Generate Room ID");
       return;
+    }
+
+    try {
+      const response: Response = await fetch(
+        `http://localhost:5000/room/create-room`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            roomId,
+            title: params.title
+          })
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.message === "Room created successfully!") {
+        router.push(`/problems/${params.title}/${roomId}`);
+      }
+    }
+    catch(error: unknown) {
+      if (error instanceof Error) {
+        console.log(error);
+      }
     }
 
     router.push(`/problems/${params.title}/${roomId}`);

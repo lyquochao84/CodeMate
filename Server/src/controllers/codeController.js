@@ -1,7 +1,6 @@
 const dotenv = require("dotenv");
 const axios = require("axios");
 const languagesId = require("../lib/languagesID");
-const Problem = require("../models/Problems");
 
 // Load .env file
 dotenv.config();
@@ -41,7 +40,7 @@ class codeController {
         throw new Error(`Judge0 API responded with status ${results.status}`);
       }
 
-      // The result is still processing
+      // The result is still processing 
       if (results.status.id <= 2) {
         results = await pollJudge0Result(results.token);
       }
