@@ -16,11 +16,8 @@ import logo from "@/public/img/Logo.png";
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { IoMdCloseCircleOutline } from "react-icons/io";
-import { useProblemTitle } from "@/hooks/useProblemTitle";
 
 const Header: React.FC = (): JSX.Element => {
-  const { problemTitle } = useProblemTitle();
-  console.log(problemTitle);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isNotiModalOpen, setIsNotiModalOpen] = useState<boolean>(false);
   const [isJoinRoomOpen, setIsJoinRoomOpen] = useState<boolean>(false);
@@ -106,7 +103,8 @@ const Header: React.FC = (): JSX.Element => {
     if (
       joinRoomRef.current &&
       !joinRoomRef.current.contains(e.target as Node)
-    ) {
+    ) 
+    {
       setIsJoinRoomOpen(false);
     }
   };
@@ -132,13 +130,42 @@ const Header: React.FC = (): JSX.Element => {
   }, [pathname]);
 
   // Join Room Button
-  const handleJoinRoom = (): void => {
+  const handleJoinRoom = async (): Promise<void> => {
     if (!inputRoomId) {
       alert("Please enter Room ID");
       return;
     }
 
-    router.push(`/problems/${problemTitle}/${inputRoomId}`);
+    try {
+      const response: Response = await fetch(
+        "http://localhost:5000/room/join-room",
+        { 
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ roomId: inputRoomId })
+        }
+      )
+
+      const data = await response.json();
+      const problemTitle = data.problemTitle;
+
+      // If the room-id does not matches
+      if (data.message === "This room does not exist!") {
+        alert("This room does not exist!");
+      }
+
+      // If the room-id matches, redirect user to the existing room
+      if (data.message === "Redirect the user to the existing room!") {
+        router.push(`/problems/${problemTitle}/${inputRoomId}`);
+      }
+    }
+    catch(error: unknown) {
+      if (error instanceof Error) {
+        console.log(error);
+      }
+    }
   };
 
   // Leave Room Button

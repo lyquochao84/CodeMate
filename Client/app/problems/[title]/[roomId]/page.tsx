@@ -2,8 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
-import CodingProblemPage from "../page";
-import { formatURL } from "@/lib/formatURL";
+import CodingProblemPage from "@/app/problems/[title]/page";
 import { ACTIONS } from "@/lib/actionsSocket";
 import { initSocket } from "@/config/socket_io";
 import { Socket } from "socket.io-client";
@@ -50,14 +49,11 @@ const RoomCodingPage = () => {
         socketRef.current.off(ACTIONS.JOINED_ROOM);
       }
     };
-  }, []);
+  }, [id, userNickname]);
   
-  console.log(roomUsers);
-
   return (
     <div>
       <h1>Room Coding Page</h1>
-      <p>Problem Title: {formatURL(title)}</p>
       <p>Room ID: {id || "No Room ID"}</p>
       <CodingProblemPage roomUsers={roomUsers} params={{ title, id }} />
     </div>
