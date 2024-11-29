@@ -94,7 +94,7 @@ export interface PaginationProps {
 // Coding Problem Page
 export interface CodingProblemPageProps {
   params: { title: string; id?: string };
-  roomUsers: string[];
+  roomUsers: User[];
 }
 
 // Problem Details Page Props
@@ -104,7 +104,7 @@ export interface ProblemDetailsProps {
   submissionResults?: any;
   isSubmissionTriggered?: boolean;
   roomId?: string | null;
-  roomUsers?: string[];
+  roomUsers?: User[];
   paramsId?: string | null;
   handleGenerateRoomId?: () => void;
   handleCreateRoom?: () => void;
@@ -139,7 +139,7 @@ export interface CollaborationModalProps {
   handleCreateRoom?: () => void;
 }
 
-interface User {
+export interface User {
   socketId: string;
   username: string;
 }

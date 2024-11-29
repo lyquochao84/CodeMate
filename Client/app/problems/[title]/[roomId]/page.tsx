@@ -7,11 +7,12 @@ import { ACTIONS } from "@/lib/actionsSocket";
 import { initSocket } from "@/config/socket_io";
 import { Socket } from "socket.io-client";
 import { useAuth } from "@/hooks/useAuth";
+import { User } from "@/types/interfaces";
 
 const RoomCodingPage = () => {
   const params = useParams();
   const router = useRouter();
-  const [roomUsers, setRoomUsers] = useState<string[]>([]);
+  const [roomUsers, setRoomUsers] = useState<User[]>([]);
   const title = Array.isArray(params.title) ? params.title[0] : params.title; // Ensure title is a string
   const id = Array.isArray(params.roomId) ? params.roomId[0] : params.roomId; // Ensure roomId is a string
   const { userNickname } = useAuth();
@@ -32,7 +33,7 @@ const RoomCodingPage = () => {
         // Listen to the event user joined room
         socketRef.current.on(
           ACTIONS.JOINED_ROOM,
-          (data: { users: string[]; userNickname: string; socketId: string }) => {
+          (data: { users: User[]; userNickname: string; socketId: string }) => {
             const { users, userNickname, socketId } = data;
   
             alert(`${userNickname} has joined the room`);
