@@ -248,9 +248,7 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
           handleCreateRoom={handleCreateRoom}
         />
       )}
-      {isChatOpen && (
-        <ChatWindow roomUsers={roomUsers || []} />
-      )}
+      {isChatOpen && <ChatWindow roomUsers={roomUsers || []} />}
     </div>
   );
 };

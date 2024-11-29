@@ -1,5 +1,4 @@
 const { Server } = require("socket.io");
-const Actions = require("../lib/actions");
 const ACTIONS = require("../lib/actions");
 
 function setupSocketIO(server) {
@@ -34,15 +33,40 @@ function setupSocketIO(server) {
       userMap[socket.id] = userNickname;
       socket.join(roomId);
       const users = getAllConnectedUsers(roomId);
-      
+
       // Notify to all the users in the room that the new user just joined
       users.forEach(({ socketId }) => {
         io.to(socketId).emit(ACTIONS.JOINED_ROOM, {
           users,
           userNickname,
           socketId: socket.id,
-        })
-      })
+        });
+      });
+    });
+
+    // Sync the code
+    socket.on(ACTIONS.CHANGE_CODE, ({ roomId, code }) => {
+      socket.in(roomId).emit(ACTIONS.CODE_CHANGE, { code });
+    });
+
+    // When new user join the room, all the previous code display on the new user's editor
+    socket.on(ACTIONS.SYNC_CODE, ({ socketId, code }) => {
+      io.to(socketId).emit(ACTIONS.CODE_CHANGE, { code });
+    });
+
+    // leave room
+    socket.on("disconnecting", () => {
+      const rooms = [...socket.rooms];
+      // leave all the room
+      rooms.forEach((roomId) => {
+        socket.in(roomId).emit(ACTIONS.LEAVE_ROOM, {
+          socketId: socket.id,
+          username: userSocketMap[socket.id],
+        });
+      });
+
+      delete userSocketMap[socket.id];
+      socket.leave();
     });
   });
 }
