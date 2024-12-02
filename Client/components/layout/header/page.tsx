@@ -170,7 +170,7 @@ const Header: React.FC = (): JSX.Element => {
 
   // Leave Room Button
   const handleLeaveRoom = (): void => {
-    
+    router.push("/problems");
   };
 
   // Loading until component mount

@@ -11,7 +11,6 @@ function setupSocketIO(server) {
     },
   });
 
-  const CodeMateAI = "CodeMate_AI";
   const userMap = {};
 
   const getAllConnectedUsers = (roomId) => {
@@ -45,14 +44,15 @@ function setupSocketIO(server) {
     });
 
     // Sync the code
-    socket.on(ACTIONS.CHANGE_CODE, ({ roomId, code }) => {
-      socket.in(roomId).emit(ACTIONS.CODE_CHANGE, { code });
+    socket.on("changes", ({ roomId, code }) => {
+      console.log(roomId, code);
+      io.to(roomId).emit(ACTIONS.CHANGE_CODE, { code });
     });
 
     // When new user join the room, all the previous code display on the new user's editor
-    socket.on(ACTIONS.SYNC_CODE, ({ socketId, code }) => {
-      io.to(socketId).emit(ACTIONS.CODE_CHANGE, { code });
-    });
+    // socket.on(ACTIONS.SYNC_CODE, ({ socketId, code }) => {
+    //   io.to(socketId).emit(ACTIONS.CHANGE_CODE, { code });
+    // });
 
     // leave room
     socket.on("disconnecting", () => {
@@ -61,11 +61,11 @@ function setupSocketIO(server) {
       rooms.forEach((roomId) => {
         socket.in(roomId).emit(ACTIONS.LEAVE_ROOM, {
           socketId: socket.id,
-          username: userSocketMap[socket.id],
+          username: userMap[socket.id],
         });
       });
 
-      delete userSocketMap[socket.id];
+      delete userMap[socket.id];
       socket.leave();
     });
   });

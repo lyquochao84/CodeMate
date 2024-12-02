@@ -1,3 +1,6 @@
+import { Dispatch, MutableRefObject, SetStateAction } from "react";
+import { Socket } from "socket.io-client";
+
 // Register Types
 export interface RegisterTypes {
   email: string;
@@ -95,6 +98,7 @@ export interface PaginationProps {
 export interface CodingProblemPageProps {
   params: { title: string; id?: string };
   roomUsers: User[];
+  socketRef: React.RefObject<Socket | null>;
 }
 
 // Problem Details Page Props
@@ -113,8 +117,10 @@ export interface ProblemDetailsProps {
 // Code Edtior Props
 export interface CodeEditorProps {
   language: string;
-  initialValue?: string;
+  code?: string;
   onChange: (value: string | undefined) => void;
+  socketRef?: React.RefObject<Socket | null>;
+  roomId?: string | null;
 }
 
 // Code Editor Header Dropdown
