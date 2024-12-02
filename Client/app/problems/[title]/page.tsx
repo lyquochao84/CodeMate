@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./codingChallenge.module.css";
 import { useAuth } from "@/hooks/useAuth";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import CodingInstruction from "@/components/coding-problem/coding-instruction/CodingInstruction";
 import CodeEditor from "@/components/coding-problem/code-editor/CodeEditor";
@@ -11,9 +11,12 @@ import CodeEditorTestCases from "@/components/coding-problem/code-editor/code-ed
 import { CodingProblemPageProps, ProblemsTypes } from "@/types/interfaces";
 import { formatURL } from "@/lib/formatURL";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { ACTIONS } from "@/lib/actionsSocket";
 
 export default function CodingProblemPage({
-  params, roomUsers
+  params,
+  roomUsers,
+  socketRef,
 }: CodingProblemPageProps) {
   const router: AppRouterInstance = useRouter();
   const { loading } = useAuth();
@@ -54,10 +57,15 @@ export default function CodingProblemPage({
 
     fetchProblemsData();
   }, []);
-  
-  // Function to handle code change and emit code updates
-  const handleCodeChange = (value: string | undefined) => {
-    setCode(value || "");
+
+  // Handle code change
+  const handleChangeCode = (value: string | undefined) => {
+    const newCode = value || "";
+    setCode(newCode);
+
+    if (params.id && socketRef?.current) {
+      socketRef.current.emit("changes", { roomId: params.id, code: newCode });
+    }
   };
 
   // Handle code submission
@@ -112,8 +120,8 @@ export default function CodingProblemPage({
           },
           body: JSON.stringify({
             roomId,
-            title: params.title
-          })
+            title: params.title,
+          }),
         }
       );
 
@@ -122,8 +130,7 @@ export default function CodingProblemPage({
       if (data.message === "Room created successfully!") {
         router.push(`/problems/${params.title}/${roomId}`);
       }
-    }
-    catch(error: unknown) {
+    } catch (error: unknown) {
       if (error instanceof Error) {
         console.log(error);
       }
@@ -149,7 +156,10 @@ export default function CodingProblemPage({
         />
         <CodeEditor
           language={language.toLowerCase()}
-          onChange={handleCodeChange}
+          onChange={handleChangeCode}
+          code={code}
+          socketRef={socketRef}
+          roomId={params.id}
         />
         <CodeEditorTestCases
           problemDetails={problemDetails}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import CodingProblemPage from "@/app/problems/[title]/page";
 import { ACTIONS } from "@/lib/actionsSocket";
@@ -11,52 +11,73 @@ import { User } from "@/types/interfaces";
 
 const RoomCodingPage = () => {
   const params = useParams();
-  const router = useRouter();
+
   const [roomUsers, setRoomUsers] = useState<User[]>([]);
+
   const title = Array.isArray(params.title) ? params.title[0] : params.title; // Ensure title is a string
   const id = Array.isArray(params.roomId) ? params.roomId[0] : params.roomId; // Ensure roomId is a string
+
   const { userNickname } = useAuth();
 
   const socketRef = useRef<Socket | null>(null);
 
+  // Listen to all the socket events
   useEffect(() => {
     const init = async () => {
       socketRef.current = await initSocket();
-  
+
       if (socketRef.current) {
         // Listen to the event join room
         socketRef.current.emit(ACTIONS.JOIN_ROOM, {
           id,
           userNickname,
         });
-  
+
         // Listen to the event user joined room
         socketRef.current.on(
           ACTIONS.JOINED_ROOM,
           (data: { users: User[]; userNickname: string; socketId: string }) => {
             const { users, userNickname, socketId } = data;
-  
+
             alert(`${userNickname} has joined the room`);
             setRoomUsers(users);
           }
         );
+
+        // Listen to the even when user left the room
+        socketRef.current.on(
+          ACTIONS.LEAVE_ROOM,
+          (data: { socketId: string; username: string }) => {
+            const { socketId, username } = data;
+            alert(`${username} left the room`);
+            setRoomUsers((prev) => {
+              return prev.filter((client) => client.socketId !== socketId);
+            });
+          }
+        );
       }
     };
-  
+
     init();
-  
+
     return () => {
       if (socketRef.current) {
+        socketRef.current && socketRef.current.disconnect();
         socketRef.current.off(ACTIONS.JOINED_ROOM);
+        socketRef.current.off(ACTIONS.LEAVE_ROOM);
       }
     };
   }, [id, userNickname]);
-  
+
   return (
     <div>
       <h1>Room Coding Page</h1>
       <p>Room ID: {id || "No Room ID"}</p>
-      <CodingProblemPage roomUsers={roomUsers} params={{ title, id }} />
+      <CodingProblemPage
+        socketRef={socketRef}
+        roomUsers={roomUsers}
+        params={{ title, id }}
+      />
     </div>
   );
 };
