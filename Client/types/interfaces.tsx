@@ -99,6 +99,8 @@ export interface CodingProblemPageProps {
   params: { title: string; id?: string };
   roomUsers: User[];
   socketRef: React.RefObject<Socket | null>;
+  codeRef: React.MutableRefObject<string | null>; 
+  liveCode?: string;
 }
 
 // Problem Details Page Props
@@ -117,10 +119,13 @@ export interface ProblemDetailsProps {
 // Code Edtior Props
 export interface CodeEditorProps {
   language: string;
-  code?: string;
   onChange: (value: string | undefined) => void;
+  onCodeChange?: (code: string) => void;
   socketRef?: React.RefObject<Socket | null>;
+  code: string;
+  codeRef?: React.MutableRefObject<string | null>; 
   roomId?: string | null;
+  liveCode?: string;
 }
 
 // Code Editor Header Dropdown

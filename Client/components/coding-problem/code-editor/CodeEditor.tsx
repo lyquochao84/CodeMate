@@ -6,44 +6,67 @@ import { ACTIONS } from "@/lib/actionsSocket";
 
 const CodeEditor: React.FC<CodeEditorProps> = ({
   language,
-  code,
   onChange,
+  onCodeChange,
+  code,
+  codeRef,
+  liveCode,
   socketRef,
   roomId,
 }): JSX.Element => {
+  const editorRef = useRef<any>(null); // To hold the Monaco editor instance
 
   useEffect(() => {
-    if (roomId && socketRef?.current) {
-      // Listen to the event when code updated from another user
-      socketRef.current.on(
-        ACTIONS.CHANGE_CODE,
-        (data: { roomId: string; code: string }) => {
-          const { roomId, code } = data;
-          console.log(`Received liveCode update: ${roomId}`, code);
-          onChange(code);
-        }
-      );
+    const changeLiveCode = async () => {
+      if (editorRef.current) {
+        editorRef.current.onDidChangeModelContent((event: any) => {
+          const code = editorRef.current.getValue(); // Get the current code value
+          onCodeChange?.(code);
+
+          socketRef?.current?.emit(ACTIONS.CHANGE_CODE, {
+            roomId: roomId,
+            code: code,
+          });
+        });
+      }
+    };
+
+    changeLiveCode();
+  }, [editorRef?.current, onCodeChange, roomId, socketRef]);
+
+  // Sync code received from server
+  useEffect(() => {
+    if (socketRef?.current) {
+      socketRef?.current.on(ACTIONS.CHANGE_CODE, (data: { code: string }) => {
+        const { code } = data;
+        editorRef?.current?.setValue(code);
+      });
     }
 
     return () => {
-      if (socketRef?.current) {
-        socketRef.current.off(ACTIONS.CHANGE_CODE);
-      }
-    };
-  }, []);
+      socketRef?.current?.off(ACTIONS.CHANGE_CODE);
+    }
+  }, [socketRef?.current]);
 
   return (
     <div className={styles.code_editor_part}>
       <Editor
         height="100%"
         language={language}
-        value={code}
-        onChange={onChange}
+        value={roomId ? liveCode : code}
+        onChange={(value) =>
+          roomId && onCodeChange
+            ? onCodeChange(value || "")
+            : onChange(value || "")
+        }
         theme="vs-dark"
         options={{
           scrollBeyondLastLine: true,
           fontSize: 17,
           fontWeight: "700",
+        }}
+        onMount={(editor) => {
+          editorRef.current = editor;
         }}
       />
     </div>

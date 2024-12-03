@@ -14,9 +14,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { ACTIONS } from "@/lib/actionsSocket";
 
 export default function CodingProblemPage({
-  params,
-  roomUsers,
-  socketRef,
+  params, roomUsers, socketRef, codeRef, liveCode
 }: CodingProblemPageProps) {
   const router: AppRouterInstance = useRouter();
   const { loading } = useAuth();
@@ -57,17 +55,11 @@ export default function CodingProblemPage({
 
     fetchProblemsData();
   }, []);
-
-  // Handle code change
+  
   const handleChangeCode = (value: string | undefined) => {
-    const newCode = value || "";
-    setCode(newCode);
-
-    if (params.id && socketRef?.current) {
-      socketRef.current.emit("changes", { roomId: params.id, code: newCode });
-    }
+    setCode(value || "");
   };
-
+  
   // Handle code submission
   const handleCodeSubmission = async (): Promise<void> => {
     if (!code || !language) {
@@ -120,8 +112,8 @@ export default function CodingProblemPage({
           },
           body: JSON.stringify({
             roomId,
-            title: params.title,
-          }),
+            title: params.title
+          })
         }
       );
 
@@ -130,16 +122,16 @@ export default function CodingProblemPage({
       if (data.message === "Room created successfully!") {
         router.push(`/problems/${params.title}/${roomId}`);
       }
-    } catch (error: unknown) {
+    }
+    catch(error: unknown) {
       if (error instanceof Error) {
         console.log(error);
       }
     }
-
-    router.push(`/problems/${params.title}/${roomId}`);
   };
 
   if (loading) return <p>Loading...</p>;
+
 
   return (
     <div className={styles.coding_problem_page}>
@@ -157,8 +149,10 @@ export default function CodingProblemPage({
         <CodeEditor
           language={language.toLowerCase()}
           onChange={handleChangeCode}
-          code={code}
+          onCodeChange={(code: string) => codeRef.current = code}
           socketRef={socketRef}
+          code={code}
+          liveCode={liveCode}
           roomId={params.id}
         />
         <CodeEditorTestCases
