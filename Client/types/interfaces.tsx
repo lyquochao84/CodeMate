@@ -20,7 +20,15 @@ export interface AuthContextTypes {
   isLoggedIn: boolean;
   logIn: () => void;
   logOut: () => void;
-  userNickname: string;
+  username: string;
+}
+
+// Coding Context Types
+export interface CodingContextProps {
+  language: string;
+  setLanguage: React.Dispatch<React.SetStateAction<string>>;
+  code: string;
+  setCode: React.Dispatch<React.SetStateAction<string>>;
 }
 
 // Problem Params Title Types
@@ -97,10 +105,7 @@ export interface PaginationProps {
 // Coding Problem Page
 export interface CodingProblemPageProps {
   params: { title: string; id?: string };
-  roomUsers: User[];
-  socketRef: React.RefObject<Socket | null>;
-  codeRef: React.MutableRefObject<string | null>; 
-  liveCode?: string;
+  roomUsers: any;
 }
 
 // Problem Details Page Props
@@ -110,7 +115,7 @@ export interface ProblemDetailsProps {
   submissionResults?: any;
   isSubmissionTriggered?: boolean;
   roomId?: string | null;
-  roomUsers?: User[];
+  roomUsers?: any;
   paramsId?: string | null;
   handleGenerateRoomId?: () => void;
   handleCreateRoom?: () => void;
@@ -120,12 +125,8 @@ export interface ProblemDetailsProps {
 export interface CodeEditorProps {
   language: string;
   onChange: (value: string | undefined) => void;
-  onCodeChange?: (code: string) => void;
-  socketRef?: React.RefObject<Socket | null>;
   code: string;
-  codeRef?: React.MutableRefObject<string | null>; 
   roomId?: string | null;
-  liveCode?: string;
 }
 
 // Code Editor Header Dropdown
@@ -150,12 +151,12 @@ export interface CollaborationModalProps {
   handleCreateRoom?: () => void;
 }
 
-export interface User {
-  socketId: string;
-  username: string;
-}
+// export interface User {
+//   socketId: string;
+//   username: string;
+// }
 
 // Chat Window
 export interface ChatWindowProps {
-  roomUsers: User[];
+  roomUsers: any;
 }

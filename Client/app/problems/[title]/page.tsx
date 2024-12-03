@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./codingChallenge.module.css";
 import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
+import socket from "@/config/socket_io";
 
 import CodingInstruction from "@/components/coding-problem/coding-instruction/CodingInstruction";
 import CodeEditor from "@/components/coding-problem/code-editor/CodeEditor";
@@ -11,18 +12,18 @@ import CodeEditorTestCases from "@/components/coding-problem/code-editor/code-ed
 import { CodingProblemPageProps, ProblemsTypes } from "@/types/interfaces";
 import { formatURL } from "@/lib/formatURL";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { ACTIONS } from "@/lib/actionsSocket";
+import { useCoding } from "@/hooks/useCoding";
 
 export default function CodingProblemPage({
-  params, roomUsers, socketRef, codeRef, liveCode
+  params,
+  roomUsers,
 }: CodingProblemPageProps) {
   const router: AppRouterInstance = useRouter();
   const { loading } = useAuth();
+  const { language, setLanguage, code, setCode } = useCoding();
   const [problemDetails, setProblemDetails] = useState<ProblemsTypes | null>(
     null
   );
-  const [code, setCode] = useState<string>("");
-  const [language, setLanguage] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [submissionResults, setSubmissionResults] = useState<any>(null);
   const [isSubmissionTriggered, setIsSubmissionTriggered] =
@@ -55,11 +56,30 @@ export default function CodingProblemPage({
 
     fetchProblemsData();
   }, []);
-  
-  const handleChangeCode = (value: string | undefined) => {
-    setCode(value || "");
+
+  // Handle choose language
+  const handleChooseLanguage = (selectedLanguage: string): void => {
+    setLanguage(selectedLanguage);
+
+    if (params.id) {
+      socket.emit("update-language", {
+        roomId: params.id,
+        languageUsed: selectedLanguage,
+      });
+      socket.emit("sync-language", { roomId: params.id });
+    }
   };
-  
+
+  const handleChangeCode = (value: string | undefined) => {
+    let newCode = value || "";
+    setCode(newCode);
+
+    if (params.id) {
+      socket.emit("update-code", { roomId: params.id, code: newCode });
+      socket.emit("sync-code", { roomId: params.id });
+    }
+  };
+
   // Handle code submission
   const handleCodeSubmission = async (): Promise<void> => {
     if (!code || !language) {
@@ -112,8 +132,8 @@ export default function CodingProblemPage({
           },
           body: JSON.stringify({
             roomId,
-            title: params.title
-          })
+            title: params.title,
+          }),
         }
       );
 
@@ -122,8 +142,7 @@ export default function CodingProblemPage({
       if (data.message === "Room created successfully!") {
         router.push(`/problems/${params.title}/${roomId}`);
       }
-    }
-    catch(error: unknown) {
+    } catch (error: unknown) {
       if (error instanceof Error) {
         console.log(error);
       }
@@ -132,16 +151,13 @@ export default function CodingProblemPage({
 
   if (loading) return <p>Loading...</p>;
 
-
   return (
     <div className={styles.coding_problem_page}>
       <CodingInstruction problemDetails={problemDetails} />
       <div className={styles.coding_problem_code_editor}>
         <CodeEditorHeader
           language={language}
-          handleChooseLanguage={(selectedLanguage) =>
-            setLanguage(selectedLanguage)
-          }
+          handleChooseLanguage={handleChooseLanguage}
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           handleCodeSubmission={handleCodeSubmission}
@@ -149,10 +165,7 @@ export default function CodingProblemPage({
         <CodeEditor
           language={language.toLowerCase()}
           onChange={handleChangeCode}
-          onCodeChange={(code: string) => codeRef.current = code}
-          socketRef={socketRef}
           code={code}
-          liveCode={liveCode}
           roomId={params.id}
         />
         <CodeEditorTestCases

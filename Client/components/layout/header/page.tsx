@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { usePathname, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,6 +17,7 @@ import logo from "@/public/img/Logo.png";
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { IoMdCloseCircleOutline } from "react-icons/io";
+import socket from "@/config/socket_io";
 
 const Header: React.FC = (): JSX.Element => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -30,7 +32,10 @@ const Header: React.FC = (): JSX.Element => {
   const joinRoomRef = useRef<HTMLDivElement | null>(null);
   const router: AppRouterInstance = useRouter();
   const pathname = usePathname(); // Get the current route path
-  const { isLoggedIn, logOut, loading, userNickname } = useAuth();
+  const params = useParams();
+  const { roomId } = params;
+  const { isLoggedIn, logOut, loading, username } = useAuth();
+  
 
   // Toggle modal open/close
   const toggleModal = (): void => {
@@ -170,7 +175,9 @@ const Header: React.FC = (): JSX.Element => {
 
   // Leave Room Button
   const handleLeaveRoom = (): void => {
-    router.push("/problems");
+    socket.emit("leave-room", { roomId });
+    socket.disconnect();
+    router.push('/problems');
   };
 
   // Loading until component mount
@@ -181,7 +188,7 @@ const Header: React.FC = (): JSX.Element => {
       <div className={styles.header_features_logo_part}>
         <Link
           href={isLoggedIn ? "/dashboard" : "/"}
-          className={styles.header_logo_link}
+          className={`${styles.header_logo_link} ${isInRoom ? styles.disabled : ""}`}
         >
           <Image src={logo} alt="CodeMate Logo" className={styles.logo} />
         </Link>
@@ -189,10 +196,10 @@ const Header: React.FC = (): JSX.Element => {
           // Features
           <>
             <div className={styles.header_features}>
-              <Link href="/problems" className={styles.header_navigation_link}>
+              <Link href="/problems" className={`${styles.header_navigation_link} ${isInRoom ? styles.disabled : ""}`}>
                 <p className={styles.header_navigation_item}>Problems</p>
               </Link>
-              <Link href="/about" className={styles.header_navigation_link}>
+              <Link href="/about" className={`${styles.header_navigation_link} ${isInRoom ? styles.disabled : ""}`}>
                 <p className={styles.header_navigation_item}>About</p>
               </Link>
             </div>
@@ -278,7 +285,7 @@ const Header: React.FC = (): JSX.Element => {
               </div>
               <div ref={iconRef}>
                 <FaRegUserCircle
-                  className={styles.header_user_infos_icon}
+                  className={`${styles.header_user_infos_icon} ${isInRoom ? styles.disabled : ""}`}
                   onClick={toggleModal}
                 />
               </div>
@@ -286,7 +293,7 @@ const Header: React.FC = (): JSX.Element => {
             {isModalOpen && (
               <div className={styles.modal} ref={modalRef}>
                 <div className={styles.modal_content}>
-                  <h3 className={styles.modal_option_header}>{userNickname}</h3>
+                  <h3 className={styles.modal_option_header}>{username}</h3>
                   <div className={styles.modal_content_options}>
                     <div className={styles.modal_option}>
                       <Image

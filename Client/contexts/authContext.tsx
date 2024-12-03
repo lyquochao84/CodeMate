@@ -10,7 +10,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-  const [userNickname, setUserNickname] = useState<string>("");
+  const [username, setUserName] = useState<string>("");
 
   useEffect(() => {
     const checkAuth = (): void => {
@@ -63,7 +63,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
           const result = await response.json();
 
           if (response.ok) {
-            setUserNickname(result.nickname);
+            setUserName(result.nickname);
           } 
           else {
             console.error(`Error fetching user data: ${result.message}`);
@@ -80,7 +80,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   }, [isLoggedIn]);
 
   return (
-    <AuthContext.Provider value={{ loading, isLoggedIn, logIn, logOut, userNickname }}>
+    <AuthContext.Provider value={{ loading, isLoggedIn, logIn, logOut, username }}>
       {children}
     </AuthContext.Provider>
   );

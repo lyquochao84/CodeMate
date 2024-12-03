@@ -18,8 +18,11 @@ const insertRecommendationLists = require('./scripts/recommendationLists');
 const insertGeneralLists = require('./scripts/generalLists');
 
 const app = express();
+
+// Set up Socket.io
 const server = http.createServer(app);
-const io = setupSocketIO(server);
+setupSocketIO(server);
+
 const PORT = 5000;
 
 // Connect to DB
