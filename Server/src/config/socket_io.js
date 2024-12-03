@@ -12,7 +12,6 @@ function setupSocketIO(server) {
   });
 
   const userMap = {};
-
   const getAllConnectedUsers = (roomId) => {
     return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(
       (socketId) => {
@@ -25,12 +24,11 @@ function setupSocketIO(server) {
   };
 
   io.on("connection", (socket) => {
-    console.log("Socket connected", socket.id);
-
     // Join Room
     socket.on(ACTIONS.JOIN_ROOM, ({ roomId, userNickname }) => {
       userMap[socket.id] = userNickname;
       socket.join(roomId);
+
       const users = getAllConnectedUsers(roomId);
 
       // Notify to all the users in the room that the new user just joined
@@ -44,15 +42,15 @@ function setupSocketIO(server) {
     });
 
     // Sync the code
-    socket.on("changes", ({ roomId, code }) => {
-      console.log(roomId, code);
-      io.to(roomId).emit(ACTIONS.CHANGE_CODE, { code });
+    socket.on(ACTIONS.CHANGE_CODE, ({ roomId, code }) => {
+      console.log(`${roomId}, ${code}`);
+      socket.in(roomId).emit(ACTIONS.CHANGE_CODE, { code });
     });
 
     // When new user join the room, all the previous code display on the new user's editor
-    // socket.on(ACTIONS.SYNC_CODE, ({ socketId, code }) => {
-    //   io.to(socketId).emit(ACTIONS.CHANGE_CODE, { code });
-    // });
+    socket.on(ACTIONS.SYNC_CODE, ({ socketId, code }) => {
+      io.to(socketId).emit(ACTIONS.CHANGE_CODE, { code });
+    });
 
     // leave room
     socket.on("disconnecting", () => {
