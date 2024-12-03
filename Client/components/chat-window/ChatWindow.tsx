@@ -4,17 +4,12 @@ import { ChatWindowProps } from "@/types/interfaces";
 import { FaRegUserCircle } from "react-icons/fa";
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ roomUsers }): JSX.Element => {
-  // Filter duplicates based on the username property
-  const uniqueRoomUsers = Array.from(
-    new Map(roomUsers.map((user) => [user.username, user])).values()
-  );
-
   return (
     <div className={styles.chat_window}>
       {/* User List */}
       <ul className={styles.chat_window_users}>
-        {uniqueRoomUsers.map((user, index) => (
-          <li key={index} className={styles.chat_window_user}>{user.username}</li>
+        {roomUsers.map((user: any, index: any) => (
+          <li key={index} className={styles.chat_window_user}>{user}</li>
         ))}
       </ul>
       {/* Chat Content */}

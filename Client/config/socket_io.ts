@@ -1,12 +1,9 @@
+// socket.js
 import { io } from "socket.io-client";
 
-export const initSocket = async () => {
-  const options = {
-    'force new connection': true,
-    reconnectionAttempts: Infinity,
-    timeout: 10000,
-    transports: ["websocket"],
-  };
-  
-  return io("http://localhost:5000", options);
-};
+const SOCKET_URL = "http://localhost:5000";
+
+// Initialize Socket.IO client
+const socket = io(SOCKET_URL);
+
+export default socket;

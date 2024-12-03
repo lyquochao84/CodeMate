@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/components/layout/header/page";
 // import Footer from "@/components/layout/footer/page";
 import { AuthProvider } from "@/contexts/authContext";
+import { CodingProvider } from "@/contexts/codingContext";
 
 export const metadata: Metadata = {
   title: "CodeMate",
@@ -19,7 +20,7 @@ export default function RootLayout({
       <body>
         <AuthProvider>
           <Header />
-          {children}
+          <CodingProvider>{children}</CodingProvider>
           {/* <Footer /> */}
         </AuthProvider>
       </body>
