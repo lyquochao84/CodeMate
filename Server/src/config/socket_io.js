@@ -1,5 +1,4 @@
 const { Server } = require("socket.io");
-const ACTIONS = require("../lib/actions");
 
 const usersMap = {};
 const codeMap = {};
@@ -18,6 +17,7 @@ async function getUsersinRoom(roomId, io) {
   return usersList;
 }
 
+// Update user and code
 async function updateUserslistAndCodeMap(io, socket, roomId) {
   socket.in(roomId).emit("member-left", {
     username: usersMap[socket.id].username,
@@ -43,11 +43,8 @@ function setupSocketIO(server) {
   });
 
   io.on("connection", (socket) => {
-    console.log("A user connected", socket.id);
-
     // Join Room
     socket.on("join-room", async ({ roomId, username }) => {
-      console.log("username: ", username);
       usersMap[socket.id] = { username };
       socket.join(roomId);
 
@@ -105,6 +102,12 @@ function setupSocketIO(server) {
       if (roomId in codeMap) {
         socket.in(roomId).emit("change-code", { code: codeMap[roomId].code });
       }
+    });
+
+    // Handle sending a message
+    socket.on("send-message", ({ roomId, username, message }) => {
+      // Broadcast message to other users in the room
+      socket.in(roomId).emit("receive-message", { username, message });
     });
 
     // Leave Room

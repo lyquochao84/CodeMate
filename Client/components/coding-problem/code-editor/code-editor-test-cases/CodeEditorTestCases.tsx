@@ -6,6 +6,8 @@ import { FaUserFriends } from "react-icons/fa";
 import CollaborationModal from "@/components/collaboration-modal/CollaborationModal";
 import { IoChatbubble } from "react-icons/io5";
 import ChatWindow from "@/components/chat-window/ChatWindow";
+import LoadingScreen from "@/components/loading-screen/LoadingScreen";
+import socket from "@/config/socket_io";
 
 const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
   problemDetails,
@@ -16,11 +18,13 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
   paramsId,
   handleGenerateRoomId,
   handleCreateRoom,
+  activeTab,
+  setActiveTab,
+  isOpenTestCases,
+  setIsOpenTestCases,
 }): JSX.Element => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isOpenTestCases, setIsOpenTestCases] = useState<boolean>(false);
   const [activeTestCase, setActiveTestCase] = useState<number>(0);
-  const [activeTab, setActiveTab] = useState<string>("Test Case");
   const [testResults, setTestResults] = useState<string[]>([]);
   const [outputs, setOutputs] = useState<
     { actual: string; expected: string }[]
@@ -28,6 +32,9 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
   const [isOpenCollaborationModal, setIsOpenCollaborationModal] =
     useState<boolean>(false);
   const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
+  const [messages, setMessages] = useState<
+    { username: string; message: string }[]
+  >([]);
 
   // Effect to handle the loading delay after "Run" is triggered
   useEffect(() => {
@@ -66,16 +73,30 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
     }
   }, [submissionResults, problemDetails]);
 
+  useEffect(() => {
+    // Listen for incoming messages
+    socket.on(
+      "receive-message",
+      (data: { username: string; message: string }) => {
+        setMessages((prev) => [...prev, data]);
+      }
+    );
+
+    return () => {
+      socket.off("receive-message");
+    };
+  }, []);
+
   const handleTestCaseClick = (index: number): void => {
-    setActiveTestCase(index);
+    setActiveTestCase?.(index);
   };
 
   const handleChangeTab = (tab: string): void => {
-    setActiveTab(tab);
+    setActiveTab?.(tab);
   };
 
   const handleOpenTestCasesModal = (): void => {
-    setIsOpenTestCases((prev) => !prev);
+    setIsOpenTestCases?.((prev) => !prev);
   };
 
   const handleOpenChat = (): void => {
@@ -138,7 +159,7 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
                 {problemDetails?.testCases && (
                   <div className={styles.test_case_details}>
                     {Object.entries(
-                      problemDetails.testCases[activeTestCase].input
+                      problemDetails.testCases[activeTestCase || 0].input
                     ).map(([key, value]) => (
                       <>
                         <p className={styles.test_case_details_key}>{key} =</p>
@@ -155,7 +176,9 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
             ) : testResults.length > 0 ? (
               <>
                 {isLoading ? (
-                  <div className={styles.loadingScreen}>Loading...</div>
+                  <div className={styles.loadingScreen}>
+                    <LoadingScreen />
+                  </div>
                 ) : (
                   <>
                     <div className={styles.test_case_header_wrapper}>
@@ -197,12 +220,12 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
                         </button>
                       ))}
                     </div>
-                    {outputs[activeTestCase] && (
+                    {outputs[activeTestCase || 0] && (
                       <div className={styles.test_case_details_output}>
                         <strong>Expected Output:</strong>{" "}
-                        <p>{outputs[activeTestCase].expected}</p>
+                        <p>{outputs[activeTestCase || 0].expected}</p>
                         <strong>Actual Output:</strong>{" "}
-                        <p>{outputs[activeTestCase].actual}</p>
+                        <p>{outputs[activeTestCase || 0].actual}</p>
                       </div>
                     )}
                   </>
@@ -248,7 +271,13 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
           handleCreateRoom={handleCreateRoom}
         />
       )}
-      {isChatOpen && <ChatWindow roomUsers={roomUsers || []} />}
+      {isChatOpen && (
+        <ChatWindow
+          roomUsers={roomUsers || []}
+          messages={messages}
+          setMessages={setMessages}
+        />
+      )}
     </div>
   );
 };
