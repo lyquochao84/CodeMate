@@ -15,4 +15,7 @@ router.get("/problems", dataController.getProblems);
 // [POST] Problems
 router.post("/problems", dataController.filterProblemTitle);
 
+// [GET] Search for problems
+router.get("/search-problems", dataController.searchProblems);
+
 module.exports = router;
