@@ -8,9 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import listImg from "@/public/img/check-list.png";
-import friendListImg from "@/public/img/followers.png";
 import progressImg from "@/public/img/goal.png";
-import settingImg from "@/public/img/settings.png";
 
 import styles from "./header.module.css";
 import logo from "@/public/img/Logo.png";
@@ -19,6 +17,7 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import socket from "@/config/socket_io";
 import { toast, Toaster } from "react-hot-toast";
+import SearchResult from "@/components/search-problems/SearchResult";
 
 const Header: React.FC = (): JSX.Element => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -26,6 +25,8 @@ const Header: React.FC = (): JSX.Element => {
   const [isJoinRoomOpen, setIsJoinRoomOpen] = useState<boolean>(false);
   const [isInRoom, setIsInRoom] = useState<boolean>(false);
   const [inputRoomId, setInputRoomId] = useState<string>("");
+  const [searchInput, setSearchInput] = useState<string>("");
+  const [searchResults, setSearchResults] = useState<{ title: string }[]>([]);
   const modalRef = useRef<HTMLDivElement | null>(null);
   const iconRef = useRef<HTMLDivElement | null>(null);
   const notifyModalRef = useRef<HTMLDivElement | null>(null);
@@ -179,6 +180,40 @@ const Header: React.FC = (): JSX.Element => {
     router.push("/problems");
   };
 
+  // Handle search input
+  const handleSearchInput = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchInput(event.target.value);
+
+    if (value.trim() === "") {
+      // Clear results if input is empty
+      setSearchResults([]); 
+      return;
+    }
+
+    try {
+      const response: Response = await fetch(
+        `http://localhost:5000/data/search-problems?query=${encodeURIComponent(value)}`
+      );
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setSearchResults(data); 
+    } 
+    catch (error: unknown) {
+      if (error instanceof Error) {
+       console.error('Error fetching search results', error); 
+      }
+    }
+  };
+
+  const clearSearch = (): void => {
+    setSearchInput(""); 
+    setSearchResults([]); 
+  };
+
   // Loading until component mount
   if (loading) return <p>Loading...</p>;
 
@@ -224,7 +259,10 @@ const Header: React.FC = (): JSX.Element => {
                   autoComplete="off"
                   autoCorrect="off"
                   spellCheck="false"
+                  value={searchInput}
+                  onChange={handleSearchInput}
                 />
+                {searchInput && <SearchResult searchResults={searchResults} clearSearch={clearSearch}/>}
               </div>
             </>
           )}

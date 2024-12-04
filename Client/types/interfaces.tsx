@@ -168,3 +168,9 @@ export interface ChatWindowProps {
     React.SetStateAction<{ username: string; message: string }[]>
   >;
 }
+
+// Search Bar
+export interface SearchBarProps {
+  searchResults: { title: string }[];
+  clearSearch: () => void;
+}

@@ -8,8 +8,7 @@ class dataController {
     try {
       const recommendationLists = await RecommendationLists.find();
       res.status(200).json(recommendationLists);
-    } 
-    catch (error) {
+    } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal Server Error" });
     }
@@ -20,8 +19,7 @@ class dataController {
     try {
       const generalLists = await GeneralLists.find();
       res.status(200).json(generalLists);
-    } 
-    catch (error) {
+    } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal Server Error" });
     }
@@ -32,8 +30,7 @@ class dataController {
     try {
       const problemsList = await Problems.find();
       res.status(200).json(problemsList);
-    } 
-    catch (error) {
+    } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal Server Error" });
     }
@@ -51,12 +48,32 @@ class dataController {
 
       if (problem) {
         res.json({ problem });
-      } else {
+      } 
+      else {
         res.status(404).json({ message: "Problem not found" });
       }
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+
+  // [GET] Search for problems
+  async searchProblems(req, res) {
+    const { query } = req.query;
+    
+    if (!query) {
+      return res.status(400).json({ message: "Query is required." });
+    }
+
+    try {
+      const results = await Problems.find({
+        title: { $regex: query, $options: "i" }, // Case-insensitive regex
+      }).select("title"); // Only return the title field
+
+      res.status(200).json(results);
     } 
     catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: "Error searching for problems", error });
     }
   }
 }
