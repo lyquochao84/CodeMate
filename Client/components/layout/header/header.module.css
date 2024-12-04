@@ -191,9 +191,9 @@
 }
 
 .modal_content_options {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   list-style: none;
   padding: 20px 0;
   place-items: center;

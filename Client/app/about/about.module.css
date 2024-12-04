@@ -1,0 +1,23 @@
+.about {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+  background-color: transparent; 
+}
+
+.about_content {
+  text-align: center;
+  max-width: 1000px; 
+  padding: 20px;
+  /* background-color: var(--button-color);  */
+  border-radius: 8px; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+.about_content p {
+  font-size: 26px; /* Adjust the font size for readability */
+  color: white; /* Dark gray text for good contrast */
+  line-height: 1.6;
+  font-weight: 700;
+}

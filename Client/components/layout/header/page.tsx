@@ -219,7 +219,7 @@ const Header: React.FC = (): JSX.Element => {
               <div className={styles.search_container}>
                 <input
                   type="text"
-                  placeholder="🔎 Search for friends..."
+                  placeholder="🔎 Search for problems..."
                   className={styles.search_input}
                   autoComplete="off"
                   autoCorrect="off"
@@ -322,32 +322,12 @@ const Header: React.FC = (): JSX.Element => {
                       <div className={styles.modal_option}>
                         <Image
                           className={styles.modal_options_icon}
-                          src={friendListImg}
-                          alt="Freepik"
-                          width={46}
-                          height={46}
-                        />
-                        <p className={styles.modal_option_text}>Friends</p>
-                      </div>
-                      <div className={styles.modal_option}>
-                        <Image
-                          className={styles.modal_options_icon}
                           src={progressImg}
                           alt="Freepik"
                           width={46}
                           height={46}
                         />
-                        <p className={styles.modal_option_text}>Progress</p>
-                      </div>
-                      <div className={styles.modal_option}>
-                        <Image
-                          className={styles.modal_options_icon}
-                          src={settingImg}
-                          alt="Prosymbols"
-                          width={46}
-                          height={46}
-                        />
-                        <p className={styles.modal_option_text}>Settings</p>
+                        <p className={styles.modal_option_text}>Dashboard</p>
                       </div>
                     </div>
                     <button
