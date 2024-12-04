@@ -18,6 +18,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import socket from "@/config/socket_io";
+import { toast, Toaster } from "react-hot-toast";
 
 const Header: React.FC = (): JSX.Element => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -35,7 +36,6 @@ const Header: React.FC = (): JSX.Element => {
   const params = useParams();
   const { roomId } = params;
   const { isLoggedIn, logOut, loading, username } = useAuth();
-  
 
   // Toggle modal open/close
   const toggleModal = (): void => {
@@ -108,8 +108,7 @@ const Header: React.FC = (): JSX.Element => {
     if (
       joinRoomRef.current &&
       !joinRoomRef.current.contains(e.target as Node)
-    ) 
-    {
+    ) {
       setIsJoinRoomOpen(false);
     }
   };
@@ -144,29 +143,29 @@ const Header: React.FC = (): JSX.Element => {
     try {
       const response: Response = await fetch(
         "http://localhost:5000/room/join-room",
-        { 
+        {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ roomId: inputRoomId })
+          body: JSON.stringify({ roomId: inputRoomId }),
         }
-      )
+      );
 
       const data = await response.json();
       const problemTitle = data.problemTitle;
 
       // If the room-id does not matches
       if (data.message === "This room does not exist!") {
-        alert("This room does not exist!");
+        toast.error("This room does not exist!");
       }
 
       // If the room-id matches, redirect user to the existing room
       if (data.message === "Redirect the user to the existing room!") {
         router.push(`/problems/${problemTitle}/${inputRoomId}`);
+        setIsJoinRoomOpen(false);
       }
-    }
-    catch(error: unknown) {
+    } catch (error: unknown) {
       if (error instanceof Error) {
         console.log(error);
       }
@@ -177,226 +176,243 @@ const Header: React.FC = (): JSX.Element => {
   const handleLeaveRoom = (): void => {
     socket.emit("leave-room", { roomId });
     socket.disconnect();
-    router.push('/problems');
+    router.push("/problems");
   };
 
   // Loading until component mount
   if (loading) return <p>Loading...</p>;
 
   return (
-    <header className={styles.header}>
-      <div className={styles.header_features_logo_part}>
-        <Link
-          href={isLoggedIn ? "/dashboard" : "/"}
-          className={`${styles.header_logo_link} ${isInRoom ? styles.disabled : ""}`}
-        >
-          <Image src={logo} alt="CodeMate Logo" className={styles.logo} />
-        </Link>
-        {isLoggedIn && (
-          // Features
-          <>
-            <div className={styles.header_features}>
-              <Link href="/problems" className={`${styles.header_navigation_link} ${isInRoom ? styles.disabled : ""}`}>
-                <p className={styles.header_navigation_item}>Problems</p>
-              </Link>
-              <Link href="/about" className={`${styles.header_navigation_link} ${isInRoom ? styles.disabled : ""}`}>
-                <p className={styles.header_navigation_item}>About</p>
-              </Link>
-            </div>
-            {/* Search bar */}
-            <div className={styles.search_container}>
-              <input
-                type="text"
-                placeholder="🔎 Search for friends..."
-                className={styles.search_input}
-                autoComplete="off"
-                autoCorrect="off"
-                spellCheck="false"
-              />
-            </div>
-          </>
-        )}
-      </div>
-      <div className={styles.header_register}>
-        {isLoggedIn ? (
-          <>
+    <>
+      <header className={styles.header}>
+        <div className={styles.header_features_logo_part}>
+          <Link
+            href={isLoggedIn ? "/dashboard" : "/"}
+            className={`${styles.header_logo_link} ${
+              isInRoom ? styles.disabled : ""
+            }`}
+          >
+            <Image src={logo} alt="CodeMate Logo" className={styles.logo} />
+          </Link>
+          {isLoggedIn && (
+            // Features
             <>
-              <button
-                className={`${
-                  isInRoom ? styles.leave_room_btn : styles.join_room_btn
-                }`}
-                onClick={isInRoom ? handleLeaveRoom : toggleJoinRoom}
-              >
-                {isInRoom ? "Leave Room" : "Join Room"}
-              </button>
-              <div className={styles.notification_wrapper}>
-                <div ref={iconNotifyRef}>
-                  <IoNotificationsOutline
-                    className={styles.header_notify_icon}
-                    onClick={toggleNotifyModal}
-                  />
-                </div>
-                {isNotiModalOpen && (
-                  <div
-                    className={styles.notification_modal_wrapper}
-                    ref={notifyModalRef}
-                  >
-                    <h3 className={styles.modal_option_header}>Notification</h3>
-                    <div className={styles.notification_item_wrapper}>
-                      <Link href="/" className={styles.notification_item_link}>
-                        <div className={styles.notification_item_header}>
-                          <p>Update A</p>
-                          <p>October 14, 2024, 10:30 PM</p>
-                        </div>
-                      </Link>
-                      <p className={styles.notification_item_content}>
-                        Update ABCDFEJOWJDDW
-                      </p>
-                    </div>
-                    <div className={styles.notification_item_wrapper}>
-                      <div className={styles.notification_item_header}>
-                        <p>Update B</p>
-                        <p>October 14, 2024, 10:30 PM</p>
-                      </div>
-                      <p className={styles.notification_item_content}>
-                        Update ABCDFEJOWJDDW
-                      </p>
-                    </div>
-                    <div className={styles.notification_item_wrapper}>
-                      <div className={styles.notification_item_header}>
-                        <p>Update C</p>
-                        <p>October 14, 2024, 10:30 PM</p>
-                      </div>
-                      <p className={styles.notification_item_content}>
-                        Update ABCDFEJOWJDDW
-                      </p>
-                    </div>
-                    <div className={styles.notification_item_wrapper}>
-                      <div className={styles.notification_item_header}>
-                        <p>Update D</p>
-                        <p>October 14, 2024, 10:30 PM</p>
-                      </div>
-                      <p className={styles.notification_item_content}>
-                        Update ABCDFEJOWJDDW
-                      </p>
-                    </div>
-                  </div>
-                )}
+              <div className={styles.header_features}>
+                <Link
+                  href="/problems"
+                  className={`${styles.header_navigation_link} ${
+                    isInRoom ? styles.disabled : ""
+                  }`}
+                >
+                  <p className={styles.header_navigation_item}>Problems</p>
+                </Link>
+                <Link
+                  href="/about"
+                  className={`${styles.header_navigation_link} ${
+                    isInRoom ? styles.disabled : ""
+                  }`}
+                >
+                  <p className={styles.header_navigation_item}>About</p>
+                </Link>
               </div>
-              <div ref={iconRef}>
-                <FaRegUserCircle
-                  className={`${styles.header_user_infos_icon} ${isInRoom ? styles.disabled : ""}`}
-                  onClick={toggleModal}
+              {/* Search bar */}
+              <div className={styles.search_container}>
+                <input
+                  type="text"
+                  placeholder="🔎 Search for friends..."
+                  className={styles.search_input}
+                  autoComplete="off"
+                  autoCorrect="off"
+                  spellCheck="false"
                 />
               </div>
             </>
-            {isModalOpen && (
-              <div className={styles.modal} ref={modalRef}>
-                <div className={styles.modal_content}>
-                  <h3 className={styles.modal_option_header}>{username}</h3>
-                  <div className={styles.modal_content_options}>
-                    <div className={styles.modal_option}>
-                      <Image
-                        className={styles.modal_options_icon}
-                        src={listImg}
-                        alt="Freepik"
-                        width={46}
-                        height={46}
-                      />
-                      <p className={styles.modal_option_text}>Favorite</p>
-                    </div>
-                    <div className={styles.modal_option}>
-                      <Image
-                        className={styles.modal_options_icon}
-                        src={friendListImg}
-                        alt="Freepik"
-                        width={46}
-                        height={46}
-                      />
-                      <p className={styles.modal_option_text}>Friends</p>
-                    </div>
-                    <div className={styles.modal_option}>
-                      <Image
-                        className={styles.modal_options_icon}
-                        src={progressImg}
-                        alt="Freepik"
-                        width={46}
-                        height={46}
-                      />
-                      <p className={styles.modal_option_text}>Progress</p>
-                    </div>
-                    <div className={styles.modal_option}>
-                      <Image
-                        className={styles.modal_options_icon}
-                        src={settingImg}
-                        alt="Prosymbols"
-                        width={46}
-                        height={46}
-                      />
-                      <p className={styles.modal_option_text}>Settings</p>
-                    </div>
-                  </div>
-                  <button
-                    className={styles.sign_out_btn}
-                    onClick={handleLogout}
-                  >
-                    Sign Out
-                  </button>
-                </div>
-              </div>
-            )}
-            {isJoinRoomOpen && (
-              <div className={styles.modal_overlay}>
-                <div
-                  className={styles.join_room_modal_content}
-                  onClick={(e) => e.stopPropagation()}
-                  ref={joinRoomRef}
+          )}
+        </div>
+        <div className={styles.header_register}>
+          {isLoggedIn ? (
+            <>
+              <>
+                <button
+                  className={`${
+                    isInRoom ? styles.leave_room_btn : styles.join_room_btn
+                  }`}
+                  onClick={isInRoom ? handleLeaveRoom : toggleJoinRoom}
                 >
-                  <IoMdCloseCircleOutline
-                    className={styles.modal_close_btn}
-                    onClick={toggleJoinRoom}
-                  />
-                  <div className={styles.create_room_content}>
-                    <h3 className={styles.room_header}>Join Room</h3>
-                    <form className={styles.room_form}>
-                      <div className={styles.room_form_id_wrapper}>
-                        <input
-                          type="text"
-                          id="room"
-                          name="room"
-                          placeholder="Enter Room ID"
-                          value={inputRoomId}
-                          onChange={(
-                            e: React.ChangeEvent<HTMLInputElement>
-                          ) => {
-                            setInputRoomId(e.target.value);
-                          }}
-                        />
-                      </div>
-                    </form>
-                    <button
-                      className={styles.create_room_btn}
-                      onClick={handleJoinRoom}
+                  {isInRoom ? "Leave Room" : "Join Room"}
+                </button>
+                <div className={styles.notification_wrapper}>
+                  <div ref={iconNotifyRef}>
+                    <IoNotificationsOutline
+                      className={styles.header_notify_icon}
+                      onClick={toggleNotifyModal}
+                    />
+                  </div>
+                  {isNotiModalOpen && (
+                    <div
+                      className={styles.notification_modal_wrapper}
+                      ref={notifyModalRef}
                     >
-                      Join Room
+                      <h3 className={styles.modal_option_header}>Notification</h3>
+                      <div className={styles.notification_item_wrapper}>
+                        <Link href="/" className={styles.notification_item_link}>
+                          <div className={styles.notification_item_header}>
+                            <p>Update A</p>
+                            <p>October 14, 2024, 10:30 PM</p>
+                          </div>
+                        </Link>
+                        <p className={styles.notification_item_content}>
+                          Update ABCDFEJOWJDDW
+                        </p>
+                      </div>
+                      <div className={styles.notification_item_wrapper}>
+                        <div className={styles.notification_item_header}>
+                          <p>Update B</p>
+                          <p>October 14, 2024, 10:30 PM</p>
+                        </div>
+                        <p className={styles.notification_item_content}>
+                          Update ABCDFEJOWJDDW
+                        </p>
+                      </div>
+                      <div className={styles.notification_item_wrapper}>
+                        <div className={styles.notification_item_header}>
+                          <p>Update C</p>
+                          <p>October 14, 2024, 10:30 PM</p>
+                        </div>
+                        <p className={styles.notification_item_content}>
+                          Update ABCDFEJOWJDDW
+                        </p>
+                      </div>
+                      <div className={styles.notification_item_wrapper}>
+                        <div className={styles.notification_item_header}>
+                          <p>Update D</p>
+                          <p>October 14, 2024, 10:30 PM</p>
+                        </div>
+                        <p className={styles.notification_item_content}>
+                          Update ABCDFEJOWJDDW
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <div ref={iconRef}>
+                  <FaRegUserCircle
+                    className={`${styles.header_user_infos_icon} ${
+                      isInRoom ? styles.disabled : ""
+                    }`}
+                    onClick={toggleModal}
+                  />
+                </div>
+              </>
+              {isModalOpen && (
+                <div className={styles.modal} ref={modalRef}>
+                  <div className={styles.modal_content}>
+                    <h3 className={styles.modal_option_header}>{username}</h3>
+                    <div className={styles.modal_content_options}>
+                      <div className={styles.modal_option}>
+                        <Image
+                          className={styles.modal_options_icon}
+                          src={listImg}
+                          alt="Freepik"
+                          width={46}
+                          height={46}
+                        />
+                        <p className={styles.modal_option_text}>Favorite</p>
+                      </div>
+                      <div className={styles.modal_option}>
+                        <Image
+                          className={styles.modal_options_icon}
+                          src={friendListImg}
+                          alt="Freepik"
+                          width={46}
+                          height={46}
+                        />
+                        <p className={styles.modal_option_text}>Friends</p>
+                      </div>
+                      <div className={styles.modal_option}>
+                        <Image
+                          className={styles.modal_options_icon}
+                          src={progressImg}
+                          alt="Freepik"
+                          width={46}
+                          height={46}
+                        />
+                        <p className={styles.modal_option_text}>Progress</p>
+                      </div>
+                      <div className={styles.modal_option}>
+                        <Image
+                          className={styles.modal_options_icon}
+                          src={settingImg}
+                          alt="Prosymbols"
+                          width={46}
+                          height={46}
+                        />
+                        <p className={styles.modal_option_text}>Settings</p>
+                      </div>
+                    </div>
+                    <button
+                      className={styles.sign_out_btn}
+                      onClick={handleLogout}
+                    >
+                      Sign Out
                     </button>
                   </div>
                 </div>
-              </div>
-            )}
-          </>
-        ) : (
-          <>
-            <Link href="/log-in" className={styles.header_log_in}>
-              Log In
-            </Link>
-            <Link href="/register" className={styles.header_sign_up}>
-              Sign Up
-            </Link>
-          </>
-        )}
-      </div>
-    </header>
+              )}
+              {isJoinRoomOpen && (
+                <div className={styles.modal_overlay}>
+                  <div
+                    className={styles.join_room_modal_content}
+                    onClick={(e) => e.stopPropagation()}
+                    ref={joinRoomRef}
+                  >
+                    <IoMdCloseCircleOutline
+                      className={styles.modal_close_btn}
+                      onClick={toggleJoinRoom}
+                    />
+                    <div className={styles.create_room_content}>
+                      <h3 className={styles.room_header}>Join Room</h3>
+                      <form className={styles.room_form}>
+                        <div className={styles.room_form_id_wrapper}>
+                          <input
+                            type="text"
+                            id="room"
+                            name="room"
+                            placeholder="Enter Room ID"
+                            value={inputRoomId}
+                            onChange={(
+                              e: React.ChangeEvent<HTMLInputElement>
+                            ) => {
+                              setInputRoomId(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </form>
+                      <button
+                        className={styles.create_room_btn}
+                        onClick={handleJoinRoom}
+                      >
+                        Join Room
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              <Link href="/log-in" className={styles.header_log_in}>
+                Log In
+              </Link>
+              <Link href="/register" className={styles.header_sign_up}>
+                Sign Up
+              </Link>
+            </>
+          )}
+        </div>
+      </header>
+      <Toaster position="top-center" reverseOrder={false} />
+    </>
   );
 };
 

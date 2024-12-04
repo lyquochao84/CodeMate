@@ -119,6 +119,10 @@ export interface ProblemDetailsProps {
   paramsId?: string | null;
   handleGenerateRoomId?: () => void;
   handleCreateRoom?: () => void;
+  activeTab?: string;
+  setActiveTab?: React.Dispatch<React.SetStateAction<string>>;
+  isOpenTestCases?: boolean;
+  setIsOpenTestCases?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // Code Edtior Props
@@ -159,4 +163,8 @@ export interface CollaborationModalProps {
 // Chat Window
 export interface ChatWindowProps {
   roomUsers: any;
+  messages: { username: string; message: string }[];
+  setMessages: React.Dispatch<
+    React.SetStateAction<{ username: string; message: string }[]>
+  >;
 }

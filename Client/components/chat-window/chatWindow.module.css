@@ -13,7 +13,7 @@
 .chat_window_users {
   width: 25%;
   border-right: 2px solid var(--border);
-  padding: 10px;
+  padding: 20px;
   list-style: none;
   font-size: 22px;
   font-weight: 700;
@@ -34,11 +34,16 @@
 
 .chat_window_messages {
   flex: 1;
-  overflow-y: auto;
   margin-bottom: 10px;
   padding: 5px;
-  border: 1px solid var(--border);
-  background-color: #282c34; /* Slightly darker for contrast */
+  padding-right: 15px;
+  background-color: rgb(30 30 30); /* Slightly darker for contrast */
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) var(--background-color);
+  word-wrap: break-word; /* Breaks words if they are too long */
+  word-break: break-word; /* Ensures word breaking for overflow */
+  white-space: pre-wrap; /* Preserves spaces and line breaks */
 }
 
 .chat_message_self {
@@ -64,6 +69,7 @@
   display: flex;
   border: 1px solid var(--border);
   background-color: #3b4048;
+  align-items: center;
 }
 
 .chat_input_field {
@@ -77,4 +83,32 @@
 .chat_input_field:focus {
   outline: none;
   background-color: #434953;
+}
+
+.chat_window_send {
+  color: #f2f2f2;
+  background-color: #3b4048;
+  border: none;
+}
+
+.chat_window_send:hover {
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.chat_window_send_icon {
+  font-size: 26px;
+}
+
+.chat_message {
+  font-size: 18px;
+  color: white;
+  margin-bottom: 16px;
+  line-height: 30px;
+}
+
+.chat_message strong {
+  font-size: 20px;
+  color: var(--button-color);
+  font-weight: 700;
 }

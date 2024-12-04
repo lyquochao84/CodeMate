@@ -29,6 +29,8 @@ export default function CodingProblemPage({
   const [isSubmissionTriggered, setIsSubmissionTriggered] =
     useState<boolean>(false);
   const [roomId, setRoomId] = useState<string>("");
+  const [isOpenTestCases, setIsOpenTestCases] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<string>("Test Case");
 
   // Fetch problem details
   useEffect(() => {
@@ -60,7 +62,7 @@ export default function CodingProblemPage({
   // Handle choose language
   const handleChooseLanguage = (selectedLanguage: string): void => {
     setLanguage(selectedLanguage);
-
+    setIsOpen((prev) => !prev);
     if (params.id) {
       socket.emit("update-language", {
         roomId: params.id,
@@ -105,6 +107,8 @@ export default function CodingProblemPage({
     const data = await response.json();
     setSubmissionResults(data);
     setIsSubmissionTriggered(true);
+    setIsOpenTestCases(true);
+    setActiveTab("Output");
   };
 
   // Generate random room ID
@@ -163,7 +167,7 @@ export default function CodingProblemPage({
           handleCodeSubmission={handleCodeSubmission}
         />
         <CodeEditor
-          language={language.toLowerCase()}
+          language={language?.toLowerCase()}
           onChange={handleChangeCode}
           code={code}
           roomId={params.id}
@@ -177,6 +181,10 @@ export default function CodingProblemPage({
           paramsId={params.id}
           handleGenerateRoomId={handleGenerateRoomId}
           handleCreateRoom={handleCreateRoom}
+          isOpenTestCases={isOpenTestCases}
+          setIsOpenTestCases={setIsOpenTestCases}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
         />
       </div>
     </div>
