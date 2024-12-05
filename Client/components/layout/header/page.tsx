@@ -208,7 +208,8 @@ const Header: React.FC = (): JSX.Element => {
       }
     }
   };
-
+ 
+  // Clear search input and search result after user clicked
   const clearSearch = (): void => {
     setSearchInput(""); 
     setSearchResults([]); 
