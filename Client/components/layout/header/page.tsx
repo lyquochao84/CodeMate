@@ -280,60 +280,6 @@ const Header: React.FC = (): JSX.Element => {
                 >
                   {isInRoom ? "Leave Room" : "Join Room"}
                 </button>
-                <div className={styles.notification_wrapper}>
-                  <div ref={iconNotifyRef}>
-                    <IoNotificationsOutline
-                      className={styles.header_notify_icon}
-                      onClick={toggleNotifyModal}
-                    />
-                  </div>
-                  {isNotiModalOpen && (
-                    <div
-                      className={styles.notification_modal_wrapper}
-                      ref={notifyModalRef}
-                    >
-                      <h3 className={styles.modal_option_header}>Notification</h3>
-                      <div className={styles.notification_item_wrapper}>
-                        <Link href="/" className={styles.notification_item_link}>
-                          <div className={styles.notification_item_header}>
-                            <p>Update A</p>
-                            <p>October 14, 2024, 10:30 PM</p>
-                          </div>
-                        </Link>
-                        <p className={styles.notification_item_content}>
-                          Update ABCDFEJOWJDDW
-                        </p>
-                      </div>
-                      <div className={styles.notification_item_wrapper}>
-                        <div className={styles.notification_item_header}>
-                          <p>Update B</p>
-                          <p>October 14, 2024, 10:30 PM</p>
-                        </div>
-                        <p className={styles.notification_item_content}>
-                          Update ABCDFEJOWJDDW
-                        </p>
-                      </div>
-                      <div className={styles.notification_item_wrapper}>
-                        <div className={styles.notification_item_header}>
-                          <p>Update C</p>
-                          <p>October 14, 2024, 10:30 PM</p>
-                        </div>
-                        <p className={styles.notification_item_content}>
-                          Update ABCDFEJOWJDDW
-                        </p>
-                      </div>
-                      <div className={styles.notification_item_wrapper}>
-                        <div className={styles.notification_item_header}>
-                          <p>Update D</p>
-                          <p>October 14, 2024, 10:30 PM</p>
-                        </div>
-                        <p className={styles.notification_item_content}>
-                          Update ABCDFEJOWJDDW
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                </div>
                 <div ref={iconRef}>
                   <FaRegUserCircle
                     className={`${styles.header_user_infos_icon} ${
@@ -348,26 +294,7 @@ const Header: React.FC = (): JSX.Element => {
                   <div className={styles.modal_content}>
                     <h3 className={styles.modal_option_header}>{username}</h3>
                     <div className={styles.modal_content_options}>
-                      <div className={styles.modal_option}>
-                        <Image
-                          className={styles.modal_options_icon}
-                          src={listImg}
-                          alt="Freepik"
-                          width={46}
-                          height={46}
-                        />
-                        <p className={styles.modal_option_text}>Favorite</p>
-                      </div>
-                      <div className={styles.modal_option}>
-                        <Image
-                          className={styles.modal_options_icon}
-                          src={progressImg}
-                          alt="Freepik"
-                          width={46}
-                          height={46}
-                        />
-                        <p className={styles.modal_option_text}>Dashboard</p>
-                      </div>
+                      
                     </div>
                     <button
                       className={styles.sign_out_btn}

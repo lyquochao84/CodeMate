@@ -110,7 +110,7 @@ export interface CodingProblemPageProps {
 
 // Problem Details Page Props
 export interface ProblemDetailsProps {
-  // params: { title: string };
+  problemTitle?: string;
   problemDetails: ProblemsTypes | null;
   submissionResults?: any;
   isSubmissionTriggered?: boolean;

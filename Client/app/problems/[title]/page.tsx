@@ -173,6 +173,7 @@ export default function CodingProblemPage({
           roomId={params.id}
         />
         <CodeEditorTestCases
+          problemTitle={formatURL(params.title)}
           problemDetails={problemDetails}
           submissionResults={submissionResults}
           isSubmissionTriggered={isSubmissionTriggered}

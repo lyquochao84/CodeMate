@@ -205,9 +205,25 @@
   color: white;
 }
 
+.code_editor_bottom_btn_wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .code_editor_bottom_wrapper {
   display: flex;
   align-items: center;
+}
+
+.code_editor_favorite_btn {
+  color: var(--medium);
+  font-size: 30px;
+}
+
+.code_editor_favorite_btn:hover {
+  opacity: 0.8;
+  cursor: pointer;
 }
 
 .code_editor_buttons_txt {
