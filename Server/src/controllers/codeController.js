@@ -14,15 +14,15 @@ class codeController {
     // Define the code submission details
     const options = {
       method: "POST",
-      url: `https://${process.env.NEXT_PUBLIC_JUDGE0_HOSTNAME}/submissions`,
+      url: `https://${process.env.JUDGE0_HOSTNAME}/submissions`,
       params: {
         base64_encoded: "false",
         wait: "true",
         fields: "*",
       },
       headers: {
-        "x-rapidapi-key": `${process.env.NEXT_PUBLIC_JUDGE0_RAPIDAPI_KEY}`,
-        "x-rapidapi-host": `${process.env.NEXT_PUBLIC_JUDGE0_HOSTNAME}`,
+        "x-rapidapi-key": `${process.env.JUDGE0_RAPIDAPI_KEY}`,
+        "x-rapidapi-host": `${process.env.JUDGE0_HOSTNAME}`,
         "Content-Type": "application/json",
       },
       data: {
@@ -62,8 +62,8 @@ class codeController {
         base64_encoded: 'false',
       },
       headers: {
-        "x-rapidapi-key": `${process.env.NEXT_PUBLIC_JUDGE0_RAPIDAPI_KEY}`,
-        "x-rapidapi-host": `${process.env.NEXT_PUBLIC_JUDGE0_HOSTNAME}`,
+        "x-rapidapi-key": `${process.env.JUDGE0_RAPIDAPI_KEY}`,
+        "x-rapidapi-host": `${process.env.JUDGE0_HOSTNAME}`,
       }
     };
 

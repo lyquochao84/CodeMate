@@ -55,7 +55,7 @@ class authController {
       // Create JWT Token
       const token = jwt.sign(
         { id: user._id, email: user.email },
-        process.env.NEXT_PUBLIC_JWT_SECRET,
+        process.env.JWT_SECRET,
         { expiresIn: "1h" }
       );
 
@@ -83,7 +83,7 @@ class authController {
         return res.status(403).json({ message: "No token provided." });
       }
 
-      const decodedToken = jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET);
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
       const user = await User.findById(decodedToken.id).select(
         "nickname email"
       );
@@ -110,21 +110,21 @@ class authController {
   githubCallback(req, res, next) {
     passport.authenticate(
       "github",
-      { failureRedirect: `${process.env.NEXT_PUBLIC_CLIENT_PRODUCTION}/log-in` },
+      { failureRedirect: `${process.env.CLIENT_PRODUCTION}/log-in` },
       (error, user, info) => {
         if (error) {
           return next(error);
         }
 
         if (!user) {
-          return res.redirect(`${process.env.NEXT_PUBLIC_CLIENT_PRODUCTION}/log-in`);
+          return res.redirect(`${process.env.CLIENT_PRODUCTION}/log-in`);
         }
 
         try {
           // Generate JWT token
           const token = jwt.sign(
             { id: user._id, githubId: user.githubId, email: user.email },
-            process.env.NEXT_PUBLIC_JWT_SECRET,
+            process.env.JWT_SECRET,
             { expiresIn: "1h" }
           );
 
@@ -138,7 +138,7 @@ class authController {
           });
 
           // Redirect to the client-side dashboard after successful authentication
-          res.redirect(`${process.env.NEXT_PUBLIC_CLIENT_PRODUCTION}/dashboard`);
+          res.redirect(`${process.env.CLIENT_PRODUCTION}/dashboard`);
         } 
         catch (error) {
           return next(error);
