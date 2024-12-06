@@ -63,7 +63,7 @@ const LogInForm: React.FC<RegisterFormProps> = ({
         setSuccessMessage("Log In Successfully");
         setUserInfos({ email: "", password: "" });
         logIn();
-        router.replace("/dashboard");
+        router.push("/dashboard");
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
