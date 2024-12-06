@@ -110,14 +110,14 @@ class authController {
   githubCallback(req, res, next) {
     passport.authenticate(
       "github",
-      { failureRedirect: "http://localhost:3000/log-in" },
+      { failureRedirect: `${process.env.CLIENT_PRODUCTION}/log-in` },
       (error, user, info) => {
         if (error) {
           return next(error);
         }
 
         if (!user) {
-          return res.redirect("http://localhost:3000/log-in");
+          return res.redirect(`${process.env.CLIENT_PRODUCTION}/log-in`);
         }
 
         try {
@@ -138,7 +138,7 @@ class authController {
           });
 
           // Redirect to the client-side dashboard after successful authentication
-          res.redirect("http://localhost:3000/dashboard");
+          res.redirect(`${process.env.CLIENT_PRODUCTION}/dashboard`);
         } 
         catch (error) {
           return next(error);
