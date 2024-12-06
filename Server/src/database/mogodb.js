@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const uri = process.env.MONGO_URI;
+const uri = process.env.NEXT_PUBLIC_MONGO_URI;
 
 // Connect to MongoDB using Mongoose
 async function connectDB() {
