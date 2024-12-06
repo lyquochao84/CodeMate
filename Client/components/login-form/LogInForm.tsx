@@ -29,7 +29,7 @@ const LogInForm: React.FC<RegisterFormProps> = ({
 
     try {
       const response: Response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_PRODUCTION}/auth/log-in`,
+        `${process.env.NEXT_PUBLIC_SERVER_PRODUCTION}auth/log-in`,
         {
           method: "POST",
           headers: {
@@ -122,7 +122,7 @@ const LogInForm: React.FC<RegisterFormProps> = ({
           </div>
           <div className={styles.sign_in_options}>
             <Link
-              href={`${process.env.NEXT_PUBLIC_SERVER_PRODUCTION}/auth/github`}
+              href={`${process.env.NEXT_PUBLIC_SERVER_PRODUCTION}auth/github`}
               className={styles.sign_in_github_btn}
             >
               <FaGithub className={styles.sign_in_github} />

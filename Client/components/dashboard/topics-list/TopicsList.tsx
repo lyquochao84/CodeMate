@@ -14,7 +14,7 @@ const TopicsList: React.FC = (): JSX.Element => {
       try {
         // Fetch General Lists
         const generalResponse: Response = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_PRODUCTION}/data/general-list`
+          `${process.env.NEXT_PUBLIC_SERVER_PRODUCTION}data/general-list`
         );
         const generalData = await generalResponse.json();
         setGeneralLists(generalData);

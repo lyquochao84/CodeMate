@@ -13,7 +13,7 @@ const configurePassport = () => {
       {
         clientID: process.env.OAUTH_CLIENT_ID,
         clientSecret: process.env.OAUTH_CLIENT_SECRETS,
-        callbackURL: `${process.env.NEXT_PUBLIC_SERVER_PRODUCTION}/auth/github/callback`, // Server URL
+        callbackURL: `${process.env.NEXT_PUBLIC_SERVER_PRODUCTION}auth/github/callback`, // Server URL
         scope: ["user:email"],
       },
       async (accessToken, refreshToken, profile, done) => {
