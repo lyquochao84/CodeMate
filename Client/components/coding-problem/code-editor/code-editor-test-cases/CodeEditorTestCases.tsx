@@ -5,14 +5,11 @@ import { HiOutlineCodeBracketSquare } from "react-icons/hi2";
 import { FaUserFriends } from "react-icons/fa";
 import CollaborationModal from "@/components/collaboration-modal/CollaborationModal";
 import { IoChatbubble } from "react-icons/io5";
-import { IoIosStarOutline } from "react-icons/io";
-import { IoMdStar } from "react-icons/io";
 import ChatWindow from "@/components/chat-window/ChatWindow";
 import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import socket from "@/config/socket_io";
 
 const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
-  problemTitle,
   problemDetails,
   submissionResults,
   isSubmissionTriggered,
@@ -38,7 +35,6 @@ const CodeEditorTestCases: React.FC<ProblemDetailsProps> = ({
   const [messages, setMessages] = useState<
     { username: string; message: string }[]
   >([]);
-  const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
   // Effect to handle the loading delay after "Run" is triggered
   useEffect(() => {

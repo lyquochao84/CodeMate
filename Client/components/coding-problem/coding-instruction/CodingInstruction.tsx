@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styles from "./codingInstruction.module.css";
-import { ProblemDetailsProps, ProblemsTypes } from "@/types/interfaces";
-import { formatURL } from "@/lib/formatURL";
+import { ProblemDetailsProps } from "@/types/interfaces";
 
 const CodingInstruction: React.FC<ProblemDetailsProps> = ({ problemDetails }): JSX.Element => {
   // Change styles for difficulty

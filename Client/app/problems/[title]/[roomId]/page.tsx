@@ -13,7 +13,7 @@ const RoomCodingPage = () => {
   const { username } = useAuth();
   const { setLanguage, setCode } = useCoding();
 
-  const [roomUsers, setRoomUsers] = useState<any>(() => []);
+  const [roomUsers, setRoomUsers] = useState<string[]>(() => []);
 
   const title = Array.isArray(params.title) ? params.title[0] : params.title; // Ensure title is a string
   const id = Array.isArray(params.roomId) ? params.roomId[0] : params.roomId; // Ensure roomId is a string
@@ -54,7 +54,7 @@ const RoomCodingPage = () => {
       socket.off("new-user-joined");
       socket.off("member-left");
     };
-  }, [id, username, socket]);
+  }, [id, username, setCode, setLanguage]);
 
   return (
     <div>

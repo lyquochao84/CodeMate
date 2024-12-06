@@ -30,8 +30,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomUsers, messages, setMessage
     <div className={styles.chat_window}>
       {/* User List */}
       <ul className={styles.chat_window_users}>
-        {roomUsers.map((user: any, index: any) => (
-          <li key={index} className={styles.chat_window_user}>
+        {roomUsers.map((user: string) => (
+          <li key={user} className={styles.chat_window_user}>
             {user}
           </li>
         ))}

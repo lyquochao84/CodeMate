@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import styles from "./codeEditorDropdown.module.css";
 import programmingLanguages from "@/lib/programmingLanguages";
 import { CodeEditorHeaderProps } from "@/types/interfaces";
@@ -15,18 +15,22 @@ const CodeEditorDropdown: React.FC<CodeEditorHeaderProps> = ({
     setIsOpen((prev) => !prev);
   };
 
-  // Handle close if user click somewhere outside the dropdown
-  const handleClickDropdownOutside = (event: MouseEvent) => {
-    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-      setIsOpen(false);
-    }
-  };
-
   useEffect(() => {
+    // Handle close if user click somewhere outside the dropdown
+    const handleClickDropdownOutside = (event: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
     // Add event listener for clicks outside the modal
     if (isOpen) {
       document.addEventListener("mousedown", handleClickDropdownOutside);
-    } else {
+    } 
+    else {
       document.removeEventListener("mousedown", handleClickDropdownOutside);
     }
 
@@ -34,7 +38,7 @@ const CodeEditorDropdown: React.FC<CodeEditorHeaderProps> = ({
     return () => {
       document.removeEventListener("mousedown", handleClickDropdownOutside);
     };
-  }, [isOpen]);
+  }, [isOpen, setIsOpen]);
 
   return (
     <div className={styles.code_editor_dropdown} ref={modalRef}>

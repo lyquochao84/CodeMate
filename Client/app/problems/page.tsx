@@ -2,8 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ProblemsTypes } from "@/types/interfaces";
 import { useAuth } from "@/hooks/useAuth";
-import { GrSort, GrPrevious, GrNext } from "react-icons/gr";
-import Link from "next/link";
+import { GrSort } from "react-icons/gr";
 
 import styles from "./problems.module.css";
 import Pagination from "@/components/pagination/Pagination";

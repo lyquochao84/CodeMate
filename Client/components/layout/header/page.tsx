@@ -7,13 +7,9 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import Image from "next/image";
 import Link from "next/link";
 
-import listImg from "@/public/img/check-list.png";
-import progressImg from "@/public/img/goal.png";
-
 import styles from "./header.module.css";
 import logo from "@/public/img/Logo.png";
 import { FaRegUserCircle } from "react-icons/fa";
-import { IoNotificationsOutline } from "react-icons/io5";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import socket from "@/config/socket_io";
 import { toast, Toaster } from "react-hot-toast";
@@ -41,10 +37,6 @@ const Header: React.FC = (): JSX.Element => {
   // Toggle modal open/close
   const toggleModal = (): void => {
     setIsModalOpen((prev) => !prev);
-  };
-
-  const toggleNotifyModal = (): void => {
-    setIsNotiModalOpen((prev) => !prev);
   };
 
   const toggleJoinRoom = (): void => {

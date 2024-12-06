@@ -13,6 +13,7 @@ import { CodingProblemPageProps, ProblemsTypes } from "@/types/interfaces";
 import { formatURL } from "@/lib/formatURL";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useCoding } from "@/hooks/useCoding";
+import { SubmissionResult } from "@/types/type";
 
 export default function CodingProblemPage({
   params,
@@ -25,7 +26,7 @@ export default function CodingProblemPage({
     null
   );
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [submissionResults, setSubmissionResults] = useState<any>(null);
+  const [submissionResults, setSubmissionResults] = useState<SubmissionResult | null>(null);
   const [isSubmissionTriggered, setIsSubmissionTriggered] =
     useState<boolean>(false);
   const [roomId, setRoomId] = useState<string>("");
@@ -49,7 +50,8 @@ export default function CodingProblemPage({
         );
         const data = await response.json();
         setProblemDetails(data.problem);
-      } catch (error: unknown) {
+      } 
+      catch (error: unknown) {
         if (error instanceof Error) {
           console.log(error);
         }
@@ -57,7 +59,7 @@ export default function CodingProblemPage({
     };
 
     fetchProblemsData();
-  }, []);
+  }, [params.title]);
 
   // Handle choose language
   const handleChooseLanguage = (selectedLanguage: string): void => {
@@ -73,7 +75,7 @@ export default function CodingProblemPage({
   };
 
   const handleChangeCode = (value: string | undefined) => {
-    let newCode = value || "";
+    const newCode = value || "";
     setCode(newCode);
 
     if (params.id) {

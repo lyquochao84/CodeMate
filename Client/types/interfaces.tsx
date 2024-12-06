@@ -1,5 +1,3 @@
-import { Dispatch, MutableRefObject, SetStateAction } from "react";
-import { Socket } from "socket.io-client";
 
 // Register Types
 export interface RegisterTypes {
@@ -105,7 +103,7 @@ export interface PaginationProps {
 // Coding Problem Page
 export interface CodingProblemPageProps {
   params: { title: string; id?: string };
-  roomUsers: any;
+  roomUsers: string[];
 }
 
 // Problem Details Page Props
@@ -115,7 +113,7 @@ export interface ProblemDetailsProps {
   submissionResults?: any;
   isSubmissionTriggered?: boolean;
   roomId?: string | null;
-  roomUsers?: any;
+  roomUsers?: string[];
   paramsId?: string | null;
   handleGenerateRoomId?: () => void;
   handleCreateRoom?: () => void;
@@ -162,7 +160,7 @@ export interface CollaborationModalProps {
 
 // Chat Window
 export interface ChatWindowProps {
-  roomUsers: any;
+  roomUsers: string[];
   messages: { username: string; message: string }[];
   setMessages: React.Dispatch<
     React.SetStateAction<{ username: string; message: string }[]>
