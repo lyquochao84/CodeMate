@@ -32,7 +32,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ setSuccessMessage }): JSX.E
 
     try {
       const response: Response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_PRODUCTION}auth/register`,
+        `${process.env.NEXT_PUBLIC_SERVER_PRODUCTION}/auth/register`,
         {
           method: "POST",
           headers: {

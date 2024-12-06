@@ -41,7 +41,7 @@ const ListDetails: React.FC<ListDetailsProps> = ({ params }): JSX.Element => {
     const fetchProblems = async () => {
       try {
         const response: Response = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_PRODUCTION}data/problems`
+          `${process.env.NEXT_PUBLIC_SERVER_PRODUCTION}/data/problems`
         );
         const data: ProblemsTypes[] = await response.json();
         setProblems(data);

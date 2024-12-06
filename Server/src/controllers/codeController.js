@@ -14,7 +14,7 @@ class codeController {
     // Define the code submission details
     const options = {
       method: "POST",
-      url: `https://${process.env.JUDGE0_HOSTNAME}submissions`,
+      url: `https://${process.env.JUDGE0_HOSTNAME}/submissions`,
       params: {
         base64_encoded: "false",
         wait: "true",

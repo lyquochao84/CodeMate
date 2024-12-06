@@ -135,7 +135,7 @@ const Header: React.FC = (): JSX.Element => {
 
     try {
       const response: Response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_PRODUCTION}room/join-room`,
+        `${process.env.NEXT_PUBLIC_SERVER_PRODUCTION}/room/join-room`,
         {
           method: "POST",
           headers: {
@@ -185,7 +185,7 @@ const Header: React.FC = (): JSX.Element => {
 
     try {
       const response: Response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_PRODUCTION}data/search-problems?query=${encodeURIComponent(value)}`
+        `${process.env.NEXT_PUBLIC_SERVER_PRODUCTION}/data/search-problems?query=${encodeURIComponent(value)}`
       );
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
