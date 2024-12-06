@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const corsOptions = {
-  origin: `http://${process.env.CLIENT_PRODUCTION}`,
+  origin: process.env.CLIENT_PRODUCTION,
   credentials: true, // Allow cookies
 };
 

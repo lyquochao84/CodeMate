@@ -38,7 +38,7 @@ export default function CodingProblemPage({
     const fetchProblemsData = async () => {
       try {
         const response: Response = await fetch(
-          `http://${process.env.SERVER_PRODUCTION}/data/problems`,
+          `${process.env.SERVER_PRODUCTION}/data/problems`,
           {
             method: "POST",
             headers: {
@@ -92,7 +92,7 @@ export default function CodingProblemPage({
     }
 
     const response: Response = await fetch(
-      `http://${process.env.SERVER_PRODUCTION}/code/submission`,
+      `${process.env.SERVER_PRODUCTION}/code/submission`,
       {
         method: "POST",
         headers: {
@@ -130,7 +130,7 @@ export default function CodingProblemPage({
 
     try {
       const response: Response = await fetch(
-        `http://${process.env.SERVER_PRODUCTION}/room/create-room`,
+        `${process.env.SERVER_PRODUCTION}/room/create-room`,
         {
           method: "POST",
           headers: {
