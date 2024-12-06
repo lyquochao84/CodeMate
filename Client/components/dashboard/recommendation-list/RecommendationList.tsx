@@ -17,7 +17,7 @@ const RecommendationList: React.FC = (): JSX.Element => {
         try {
           // Fetch Recommendation Lists
           const recommendationsResponse: Response = await fetch(
-            "http://localhost:5000/data/recommendation-list"
+            `http://${process.env.SERVER_PRODUCTION}/data/recommendation-list`
           );
           const recommendationsData = await recommendationsResponse.json();
           setRecommendationLists(recommendationsData);

@@ -1,7 +1,7 @@
 // socket.js
 import { io } from "socket.io-client";
 
-const SOCKET_URL = "http://localhost:5000";
+const SOCKET_URL = `http://${process.env.SERVER_PRODUCTION}`;
 
 // Initialize Socket.IO client
 const socket = io(SOCKET_URL);

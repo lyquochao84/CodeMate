@@ -1,7 +1,11 @@
 const cors = require("cors");
 
+// Load .env file
+const dotenv = require("dotenv");
+dotenv.config();
+
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: `http://${process.env.CLIENT_PRODUCTION}`,
   credentials: true, // Allow cookies
 };
 

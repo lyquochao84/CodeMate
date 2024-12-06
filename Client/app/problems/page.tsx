@@ -37,7 +37,7 @@ const Problems: React.FC = (): JSX.Element => {
     const fetchProblems = async () => {
       try {
         const response: Response = await fetch(
-          "http://localhost:5000/data/problems"
+          `http://${process.env.SERVER_PRODUCTION}/data/problems`
         );
         const problemsData = await response.json();
         setProblems(problemsData);

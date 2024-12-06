@@ -53,7 +53,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       const fetchUserName = async () => {
         try {
           const response: Response = await fetch(
-            "http://localhost:5000/auth/user",
+            `http://${process.env.SERVER_PRODUCTION}/auth/user`,
             {
               method: "GET",
               credentials: "include", // Include cookie
