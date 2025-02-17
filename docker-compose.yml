@@ -1,0 +1,70 @@
+version: "3.8"
+
+services:
+  client:
+    build:
+      context: ./Client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./Client/.env
+    depends_on:
+      - server
+    volumes:
+      - ./Client:/app
+      - /app/node_modules
+    command: ["npm", "run", "dev"]
+
+  server:
+    build:
+      context: ./Server
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./Server/.env
+    depends_on:
+      - postgres
+      - mongodb
+    volumes:
+      - ./Server:/app
+      - /app/node_modules
+    command: ["npm", "run", "dev"]
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Kevin0609
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: codematedb
+      MONGO_URI: mongodb+srv://lyquochao84:Kevin0609@cluster.ipzbm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Kevin0609
+      POSTGRES_DB: codematedb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./Server/.env
+
+  mongodb:
+    image: mongo:latest
+    environment:
+      MONGO_USER: lyquochao84
+      MONGO_PASSWORD: Kevin0609
+      MONGO_DB: test
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    env_file:
+      - ./Server/.env
+
+volumes:
+  postgres_data:
+  mongodb_data:

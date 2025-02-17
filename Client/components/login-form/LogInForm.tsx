@@ -123,7 +123,7 @@ const LogInForm: React.FC<RegisterFormProps> = ({
           <div className={styles.sign_in_options}>
             <Link
               href={`${process.env.NEXT_PUBLIC_SERVER_PRODUCTION}/auth/github`}
-              className={styles.sign_in_github_btn}
+              className={styles.sign_in_github_btn} 
             >
               <FaGithub className={styles.sign_in_github} />
             </Link>

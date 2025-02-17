@@ -4,7 +4,8 @@ const express = require("express");
 const passport = require("passport");
 const route = require("./routes");
 
-const connectDB = require("./database/mogodb");
+const connectMongoDB = require("./database/mogodb");
+const connectPostgresDB = require("./database/postgresdb");
 
 const logger = require("./middlewares/logger");
 const cors = require("./middlewares/cors");
@@ -25,8 +26,11 @@ setupSocketIO(server);
 
 const PORT = 5000;
 
-// Connect to DB
-connectDB();
+// Connect to MongoDB
+connectMongoDB();
+
+// Connect to PostgresSQL
+connectPostgresDB();
 
 // Convert body to json
 app.use(express.json());
